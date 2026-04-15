@@ -11,65 +11,53 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--tx1);min-height:100vh}
 .shell{max-width:1140px;margin:0 auto;padding:1.5rem 1rem}
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
-.login-box{background:var(--bg1);border:0.5px solid var(--bd3);border-radius:var(--rlg);padding:2rem;width:100%;max-width:360px}
-.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem}
-.tab-bar{display:flex;gap:3px;background:var(--bg2);border-radius:var(--rmd);padding:3px;flex-wrap:wrap}
+.lw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.lb{background:var(--bg1);border:0.5px solid var(--bd3);border-radius:var(--rlg);padding:2rem;width:100%;max-width:360px}
+.tb{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem}
+.tabs{display:flex;gap:3px;background:var(--bg2);border-radius:var(--rmd);padding:3px;flex-wrap:wrap}
 .tab{font-size:13px;padding:5px 11px;border-radius:6px;border:none;background:transparent;color:var(--tx2);cursor:pointer}
 .tab.on{background:var(--bg1);color:var(--tx1);font-weight:500;border:0.5px solid var(--bd3)}
 .btn{font-size:13px;padding:6px 13px;border-radius:var(--rmd);border:0.5px solid var(--bd2);background:var(--bg1);color:var(--tx1);cursor:pointer}
 .btn:hover{background:var(--bg2)}
-.btnp{background:var(--bgi);color:var(--txi);border-color:transparent}
-.btnp:hover{opacity:.85}
+.bp{background:var(--bgi);color:var(--txi);border-color:transparent}.bp:hover{opacity:.85}
 .card{background:var(--bg1);border:0.5px solid var(--bd3);border-radius:var(--rlg);padding:14px 16px;margin-bottom:9px}
-.card.sel{border:1.5px solid var(--bdi)}
-.card.cp:hover{border-color:var(--bd2);cursor:pointer}
+.card.sel{border:1.5px solid var(--bdi)}.card.cp:hover{border-color:var(--bd2);cursor:pointer}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
 .stat{background:var(--bg2);border-radius:var(--rmd);padding:12px 14px}
-.sl{font-size:12px;color:var(--tx2);margin-bottom:3px}
-.sv{font-size:22px;font-weight:500}
-.ss{font-size:11px;color:var(--tx3);margin-top:2px}
+.sl{font-size:12px;color:var(--tx2);margin-bottom:3px}.sv{font-size:22px;font-weight:500}.ss{font-size:11px;color:var(--tx3);margin-top:2px}
 .slbl{font-size:12px;font-weight:500;color:var(--tx2);letter-spacing:.05em;text-transform:uppercase;margin-bottom:9px}
 .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
 .gg{background:#EAF3DE;color:#3B6D11}.gb{background:#E6F1FB;color:#185FA5}.gy{background:#F1EFE8;color:#5F5E5A}.gr{background:#FCEBEB;color:#A32D2D}.ga{background:#FAEEDA;color:#854F0B}.gt{background:#E1F5EE;color:#0F6E56}.gp{background:#EEEDFE;color:#534AB7}.gc{background:#FAECE7;color:#993C1D}
 @media(prefers-color-scheme:dark){.gg{background:#1a3308;color:#97c459}.gb{background:#0c3558;color:#85b7eb}.gy{background:#2a2a28;color:#b4b2a9}.gr{background:#3d1515;color:#f09595}.ga{background:#3d2504;color:#ef9f27}.gt{background:#04342c;color:#5dcaa5}.gp{background:#26215c;color:#afa9ec}.gc{background:#4a1b0c;color:#f0997b}}
-.pbar{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
-.pfill{height:100%;border-radius:3px}
+.pbar{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}.pfill{height:100%;border-radius:3px}
 .ava{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;flex-shrink:0}
 .chip{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--bg2);color:var(--tx2);border:0.5px solid var(--bd3)}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
-.gwrap{overflow-x:auto;margin-top:10px}
-.gtbl{min-width:580px;width:100%;border-collapse:collapse}
-.gtbl th{font-size:11px;color:var(--tx2);font-weight:500;text-align:left;padding:4px 5px 7px;border-bottom:0.5px solid var(--bd3)}
-.gtbl td{padding:4px 5px;vertical-align:middle;border-bottom:0.5px solid var(--bd3)}
+.gw{overflow-x:auto;margin-top:10px}
+.gt2{min-width:580px;width:100%;border-collapse:collapse}
+.gt2 th{font-size:11px;color:var(--tx2);font-weight:500;text-align:left;padding:4px 5px 7px;border-bottom:0.5px solid var(--bd3)}
+.gt2 td{padding:4px 5px;vertical-align:middle;border-bottom:0.5px solid var(--bd3)}
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:flex-start;justify-content:center;padding-top:60px;z-index:100}
 .mbox{background:var(--bg1);border:0.5px solid var(--bd2);border-radius:var(--rlg);padding:20px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
-.mtit{font-size:15px;font-weight:500;margin-bottom:13px}
-.frow{margin-bottom:11px}
-.frow label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px}
-.frow input,.frow select{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1)}
+.mt{font-size:15px;font-weight:500;margin-bottom:13px}
+.fr{margin-bottom:11px}.fr label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px}
+.fr input,.fr select{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.mbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.mbs{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:14px}
 .act{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px;padding-top:13px;border-top:0.5px solid var(--bd3)}
 .alr{background:var(--bgd);border:0.5px solid rgba(163,45,45,.25);border-radius:var(--rmd);padding:10px 14px;margin-bottom:14px}
-.tlw{overflow-x:auto}
-.tli{min-width:660px}
+.tlw{overflow-x:auto}.tli{min-width:660px}
 .whr{display:flex;align-items:center;margin-bottom:5px}
-.rlbl{flex-shrink:0;padding-right:10px}
-.rcel{display:flex;flex:1}
+.rl{flex-shrink:0;padding-right:10px}.rc{display:flex;flex:1}
 .wc{flex:1;min-width:19px;text-align:center;font-size:10px;color:var(--tx3)}
 .wc.hi{color:#BA7517;font-weight:500}.wc.ov{color:#E24B4A;font-weight:500}
-.brw{display:flex;align-items:center;margin-bottom:5px}
-.bcel{display:flex;flex:1;height:26px}
-.bc{flex:1;min-width:19px;position:relative}
-.bf{position:absolute;inset:3px 1px;border-radius:3px;cursor:pointer}
-.bf:hover{opacity:.65!important}
-.cm{position:absolute;top:2px;right:2px;width:5px;height:5px;border-radius:50%;background:#E24B4A;z-index:2}
-.tip{position:absolute;background:var(--bg1);border:0.5px solid var(--bd2);border-radius:8px;padding:7px 11px;font-size:12px;color:var(--tx1);z-index:30;pointer-events:none;white-space:nowrap;bottom:110%;left:50%;transform:translateX(-50%)}
+.br2{display:flex;align-items:center;margin-bottom:5px}
+.bc2{display:flex;flex:1;height:26px}.bc{flex:1;min-width:19px;position:relative}
+.bf{position:absolute;inset:3px 1px;border-radius:3px;cursor:pointer}.bf:hover{opacity:.65!important}
+.cm2{position:absolute;top:2px;right:2px;width:5px;height:5px;border-radius:50%;background:#E24B4A;z-index:2}
 .dvr{display:flex;align-items:center;margin:8px 0 4px}
-.dcel{display:flex;flex:1;height:18px}
-.dc{flex:1;min-width:19px;position:relative}
+.dc2{display:flex;flex:1;height:18px}.dc{flex:1;min-width:19px;position:relative}
 .df{position:absolute;inset:2px 1px;border-radius:2px}
 .leg{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:13px;font-size:11px;color:var(--tx2)}
 .lsq{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
@@ -79,7 +67,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .toast.show{opacity:1}
 .spin{display:flex;align-items:center;justify-content:center;height:200px;color:var(--tx2);font-size:14px}
 .abtn{font-size:11px;padding:2px 8px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);cursor:pointer;white-space:nowrap}
-.abtn.red{color:var(--txd)}
+.abtn.rd{color:var(--txd)}
 @media(max-width:640px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}.tab{padding:4px 8px;font-size:12px}}
 </style>
 </head>
@@ -88,563 +76,548 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="toast" id="toast"></div>
 <script>
 const PH=['#378ADD','#1D9E75','#D85A30','#7F77DD','#BA7517'];
-const SH={done:'#639922',inprogress:'#378ADD',planned:'#B4B2A9',delayed:'#E24B4A',notstarted:'#D3D1C7'};
-const SL={done:'Zakończony',inprogress:'W trakcie',planned:'Planowany',delayed:'Opóźniony',notstarted:'Nie rozpoczęty'};
-const SC={done:'gg',inprogress:'gb',planned:'gy',delayed:'gr',notstarted:'gy'};
-const AC=['gb','gt','gp','gc','ga','gg'];
-const SM={'roboty ziemne':'ga','fundamenty':'gc','murowanie':'gc','beton':'gc','dach':'gt','konstrukcja stalowa':'gt','instalacje elektryczne':'gb','instalacje wod-kan':'gb','instalacje':'gb','tynki':'gy','elewacja':'gp','wykończenie':'gp','stolarka':'gg','zieleń':'gg','nadzór':'gy','projekt':'gp'};
-function scls(s){for(const k in SM)if(s.toLowerCase().includes(k))return SM[k];return'gy';}
+const SHX={done:'#639922',inprogress:'#378ADD',planned:'#B4B2A9',delayed:'#E24B4A',notstarted:'#D3D1C7'};
+const SLX={done:'Zakończony',inprogress:'W trakcie',planned:'Planowany',delayed:'Opóźniony',notstarted:'Nie rozpoczęty'};
+const SCX={done:'gg',inprogress:'gb',planned:'gy',delayed:'gr',notstarted:'gy'};
+const ACX=['gb','gt','gp','gc','ga','gg'];
+const SNXT={notstarted:{n:'planned',l:'→ Planowany'},planned:{n:'inprogress',l:'→ Rozpocznij'},inprogress:{n:'done',l:'→ Zakończ'},done:{n:'notstarted',l:'↺ Cofnij'},delayed:{n:'inprogress',l:'→ Wznów'}};
+const DSTAGES=['PAB','PT Konstrukcja + płyta','PT Warsztatowo-montażowy','PT Instalacje sanitarne','PT Instalacje elektryczne','Płyta fundamentowa','Wiązary – projekt','Prefabrykacja','Montaż konstrukcji','Montaż pokrycia','Montaż okien','Wylewki','Montaż instalacji sanitarnych','Montaż instalacji elektrycznych','Sufity','Elewacja + drzwi + parapety','Protokół końcowy'];
 
-const SNEXT={notstarted:{n:'planned',l:'→ Planowany'},planned:{n:'inprogress',l:'→ Rozpocznij'},inprogress:{n:'done',l:'→ Zakończ'},done:{n:'notstarted',l:'↺ Cofnij'},delayed:{n:'inprogress',l:'→ Wznów'}};
+var S={auth:false,loading:false,view:'projects',projects:[],subs:[],selP:null,selS:null,modal:null,sf:'all',ss:''};
+var cpi=null,csi=null,tipEl=null;
 
-let S={auth:false,loading:false,view:'projects',projects:[],subs:[],selP:null,selS:null,modal:null,sf:'all',ss:'',dsf:'all'};
-let cpi=null,csi=null,tipEl=null;
+function GP(id){return S.projects.find(function(p){return p.id===id;});}
+function GS(id){return S.subs.find(function(s){return s.id===id;});}
+function ini(n){return n.split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase();}
+function acls(id){return ACX[id%ACX.length];}
+function V(id){var e=document.getElementById(id);return e?e.value.trim():'';}
+function bdg(s){return '<span class="badge '+SCX[s]+'">'+SLX[s]+'</span>';}
+function MW(){return Math.max.apply(null,S.projects.map(function(p){return p.weeks;}).concat([1]));}
+function WS(){return Array.from({length:MW()},function(_,i){return i+1;});}
+function CP(p){var st=p.stages||[];return st.length?Math.round(st.filter(function(s){return s.status==='done';}).length/st.length*100):0;}
 
-const GP=id=>S.projects.find(p=>p.id===id);
-const GS=id=>S.subs.find(s=>s.id===id);
-const ini=n=>n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
-const acls=id=>AC[id%AC.length];
-const V=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
-const bdg=s=>`<span class="badge ${SC[s]}">${SL[s]}</span>`;
-const MW=()=>Math.max(...S.projects.map(p=>p.weeks),1);
-const WS=()=>Array.from({length:MW()},(_,i)=>i+1);
-const CP=p=>p.stages&&p.stages.length?Math.round(p.stages.filter(s=>s.status==='done').length/p.stages.length*100):0;
+function toast(msg,d){
+  d=d||2500;
+  var e=document.getElementById('toast');
+  e.textContent=msg;e.classList.add('show');
+  setTimeout(function(){e.classList.remove('show');},d);
+}
 
-function toast(msg,d=2500){const e=document.getElementById('toast');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),d);}
-function showTip(el,h){if(tipEl)tipEl.remove();tipEl=document.createElement('div');tipEl.className='tip';tipEl.innerHTML=h;el.parentElement.appendChild(tipEl);}
-function hideTip(){if(tipEl){tipEl.remove();tipEl=null;}}
+function subUsage(sid){
+  var r=[];
+  S.projects.forEach(function(p){
+    (p.stages||[]).filter(function(s){return s.subId===sid;}).forEach(function(s){
+      r.push({proj:p.name,stage:s.name,status:s.status});
+    });
+  });
+  return r;
+}
 
-function subUsage(sid){const r=[];S.projects.forEach(p=>(p.stages||[]).filter(s=>s.subId===sid).forEach(s=>r.push({proj:p.name,stage:s.name,status:s.status})));return r;}
-
-function conflicts(){
-  const cs=[];
-  S.subs.forEach(sub=>{
-    const bw={};
-    S.projects.forEach((p,pi)=>(p.stages||[]).filter(s=>s.subId===sub.id).forEach(s=>{for(let w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,pi});}}));
-    Object.entries(bw).forEach(([w,e])=>{const u=[...new Set(e.map(x=>x.proj.id))];if(u.length>1)cs.push({sub:sub.name,week:+w,projs:u.map(id=>S.projects.find(p=>p.id===id).short||'?').join(' + ')});});
+function getConflicts(){
+  var cs=[];
+  S.subs.forEach(function(sub){
+    var bw={};
+    S.projects.forEach(function(p,pi){
+      (p.stages||[]).filter(function(s){return s.subId===sub.id;}).forEach(function(s){
+        for(var w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,pi:pi});}
+      });
+    });
+    Object.keys(bw).forEach(function(w){
+      var e=bw[w];
+      var u=e.map(function(x){return x.proj.id;}).filter(function(v,i,a){return a.indexOf(v)===i;});
+      if(u.length>1)cs.push({sub:sub.name,week:+w,projs:u.map(function(id){var px=S.projects.find(function(p){return p.id===id;});return px?px.short||px.name:'?';}).join(' + ')});
+    });
   });
   return cs;
 }
-function wsl(w){const ids=new Set();S.projects.forEach(p=>(p.stages||[]).filter(s=>w>=s.start&&w<s.start+s.dur).forEach(s=>{if(s.subId)ids.add(s.subId);}));return ids.size;}
-function wpo(w){return S.projects.filter(p=>(p.stages||[]).some(s=>w>=s.start&&w<s.start+s.dur)).length;}
 
-async function api(m,u,b){
-  try{
-    const r=await fetch(u,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});
+function wsl(w){
+  var ids={};
+  S.projects.forEach(function(p){
+    (p.stages||[]).filter(function(s){return w>=s.start&&w<s.start+s.dur;}).forEach(function(s){if(s.subId)ids[s.subId]=true;});
+  });
+  return Object.keys(ids).length;
+}
+function wpo(w){return S.projects.filter(function(p){return(p.stages||[]).some(function(s){return w>=s.start&&w<s.start+s.dur;});}).length;}
+
+function api(m,u,b){
+  return fetch(u,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined}).then(function(r){
     if(r.status===401){S.auth=false;render();return null;}
-    return await r.json();
-  }catch(e){toast('Błąd połączenia');return null;}
+    return r.json();
+  }).catch(function(){toast('Błąd połączenia');return null;});
 }
 
-async function loadData(){
-  const [pr,sb]=await Promise.all([api('GET','/api/projects'),api('GET','/api/subcontractors')]);
-  if(pr)S.projects=pr;
-  if(sb)S.subs=sb;
-  if(S.projects.length&&!S.selP)S.selP=S.projects[0].id;
-  S.loading=false;
-  render();
+function loadData(){
+  return Promise.all([api('GET','/api/projects'),api('GET','/api/subcontractors')]).then(function(res){
+    if(res[0])S.projects=res[0];
+    if(res[1])S.subs=res[1];
+    if(S.projects.length&&!S.selP)S.selP=S.projects[0].id;
+    S.loading=false;
+    render();
+  });
 }
 
-// ── RENDER LOGIN ──
 function rLogin(){
-  return`<div class="login-wrap"><div class="login-box">
-    <div style="font-size:18px;font-weight:500;margin-bottom:6px">Harmonogramy budowlane</div>
-    <div style="font-size:13px;color:var(--tx2);margin-bottom:1.5rem">Zaloguj się hasłem zespołu</div>
-    <div class="frow"><label>Hasło zespołu</label><input type="password" id="pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <div id="lerr" style="font-size:12px;color:var(--txd);margin-bottom:10px;display:none">Nieprawidłowe hasło.</div>
-    <button class="btn btnp" style="width:100%" onclick="doLogin()">Zaloguj się</button>
-  </div></div>`;
+  return '<div class="lw"><div class="lb">'+
+    '<div style="font-size:18px;font-weight:500;margin-bottom:6px">Harmonogramy budowlane</div>'+
+    '<div style="font-size:13px;color:var(--tx2);margin-bottom:1.5rem">Zaloguj się hasłem zespołu</div>'+
+    '<div class="fr"><label>Hasło zespołu</label><input type="password" id="pw" placeholder="••••••••" onkeydown="if(event.key===\'Enter\')doLogin()"></div>'+
+    '<div id="lerr" style="font-size:12px;color:var(--txd);margin-bottom:10px;display:none">Nieprawidłowe hasło.</div>'+
+    '<button class="btn bp" style="width:100%" onclick="doLogin()">Zaloguj się</button>'+
+  '</div></div>';
 }
-async function doLogin(){
-  const r=await api('POST','/api/login',{password:V('pw')});
-  if(r&&r.ok){S.auth=true;S.loading=true;render();await loadData();}
-  else{const e=document.getElementById('lerr');if(e)e.style.display='block';}
-}
-async function doLogout(){await api('POST','/api/logout');S.auth=false;S.projects=[];S.subs=[];render();}
 
-// ── TOPBAR ──
+function doLogin(){
+  api('POST','/api/login',{password:V('pw')}).then(function(r){
+    if(r&&r.ok){S.auth=true;S.loading=true;render();loadData();}
+    else{var e=document.getElementById('lerr');if(e)e.style.display='block';}
+  });
+}
+function doLogout(){api('POST','/api/logout').then(function(){S.auth=false;S.projects=[];S.subs=[];render();});}
+
 function rTop(){
-  const tabs=[{id:'projects',l:'Projekty'},{id:'gantt',l:'Harmonogram'},{id:'subs',l:'Podwykonawcy'},{id:'dp',l:'Dashboard projektów'},{id:'ds',l:'Dashboard podwykonawców'}];
-  return`<div class="topbar">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <span style="font-size:15px;font-weight:500">Harmonogramy budowlane</span>
-      <div class="tab-bar">${tabs.map(t=>`<button class="tab ${S.view===t.id?'on':''}" onclick="sv('${t.id}')">${t.l}</button>`).join('')}</div>
-    </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btnp" onclick="om(S.view==='subs'?'as':'np')">+ ${S.view==='subs'?'Nowy podwykonawca':'Nowy projekt'}</button>
-      <button class="btn" style="font-size:12px;padding:4px 10px" onclick="exportAll()">Pobierz wszystko (Excel)</button>
-      <button class="btn" style="font-size:12px;padding:4px 10px" onclick="doLogout()">Wyloguj</button>
-    </div>
-  </div>`;
+  var tabs=[{id:'projects',l:'Projekty'},{id:'gantt',l:'Harmonogram'},{id:'subs',l:'Podwykonawcy'},{id:'dp',l:'Dashboard projektów'},{id:'ds',l:'Dashboard podwykonawców'}];
+  var t=tabs.map(function(x){return '<button class="tab '+(S.view===x.id?'on':'')+'" onclick="sv(\''+x.id+'\')">'+x.l+'</button>';}).join('');
+  return '<div class="tb">'+
+    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'+
+    '<span style="font-size:15px;font-weight:500">Harmonogramy budowlane</span>'+
+    '<div class="tabs">'+t+'</div></div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+    '<button class="btn bp" onclick="om(S.view===\'subs\'?\'as\':\'np\')">+ '+(S.view==='subs'?'Nowy podwykonawca':'Nowy projekt')+'</button>'+
+    '<button class="btn" style="font-size:12px;padding:4px 10px" onclick="exportAll()">Pobierz wszystko (Excel)</button>'+
+    '<button class="btn" style="font-size:12px;padding:4px 10px" onclick="doLogout()">Wyloguj</button>'+
+    '</div></div>';
 }
 
-// ── PROJECTS ──
 function rProjects(){
-  const del=S.projects.reduce((a,p)=>a+(p.stages||[]).filter(s=>s.status==='delayed').length,0);
-  const avg=S.projects.length?Math.round(S.projects.reduce((a,p)=>a+CP(p),0)/S.projects.length):0;
-  const actS=S.subs.filter(s=>s.active).length;
-  const rows=S.projects.map(p=>{
-    const pr=CP(p);
-    const del2=(p.stages||[]).some(s=>s.status==='delayed');
-    const col=del2?'#E24B4A':pr>=80?'#639922':'#378ADD';
-    const st=del2?'delayed':pr===100?'done':pr>0?'inprogress':'notstarted';
-    return`<div class="card cp ${p.id===S.selP?'sel':''}" onclick="selP(${p.id})">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <span style="font-size:14px;font-weight:500">${p.name}</span>${bdg(st)}
-      </div>
-      <div style="font-size:12px;color:var(--tx2);margin-bottom:8px">${p.location} · ${p.client} · ${p.weeks} tyg. · ${(p.stages||[]).length} etapów</div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="pbar" style="flex:1"><div class="pfill" style="width:${pr}%;background:${col}"></div></div>
-        <span style="font-size:12px;color:var(--tx2)">${pr}%</span>
-      </div>
-    </div>`;
+  var del=S.projects.reduce(function(a,p){return a+(p.stages||[]).filter(function(s){return s.status==='delayed';}).length;},0);
+  var avg=S.projects.length?Math.round(S.projects.reduce(function(a,p){return a+CP(p);},0)/S.projects.length):0;
+  var actS=S.subs.filter(function(s){return s.active;}).length;
+  var rows=S.projects.map(function(p){
+    var pr=CP(p);
+    var isDel=(p.stages||[]).some(function(s){return s.status==='delayed';});
+    var col=isDel?'#E24B4A':pr>=80?'#639922':'#378ADD';
+    var st=isDel?'delayed':pr===100?'done':pr>0?'inprogress':'notstarted';
+    return '<div class="card cp '+(p.id===S.selP?'sel':'')+'" onclick="selP('+p.id+')">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'+
+      '<span style="font-size:14px;font-weight:500">'+p.name+'</span>'+bdg(st)+'</div>'+
+      '<div style="font-size:12px;color:var(--tx2);margin-bottom:8px">'+p.location+' · '+p.client+' · '+p.weeks+' tyg. · '+(p.stages||[]).length+' etapów</div>'+
+      '<div style="display:flex;align-items:center;gap:10px">'+
+      '<div class="pbar" style="flex:1"><div class="pfill" style="width:'+pr+'%;background:'+col+'"></div></div>'+
+      '<span style="font-size:12px;color:var(--tx2)">'+pr+'%</span></div></div>';
   }).join('');
-  return`<div class="stats">
-    <div class="stat"><div class="sl">Projekty</div><div class="sv">${S.projects.length}</div></div>
-    <div class="stat"><div class="sl">Postęp średni</div><div class="sv">${avg}%</div></div>
-    <div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:${del?'#E24B4A':''}">${del}</div><div class="ss">etapów</div></div>
-    <div class="stat"><div class="sl">Podwykonawcy</div><div class="sv">${actS}</div><div class="ss">aktywnych</div></div>
-  </div><div class="slbl">Projekty</div>${rows}`;
+  return '<div class="stats">'+
+    '<div class="stat"><div class="sl">Projekty</div><div class="sv">'+S.projects.length+'</div></div>'+
+    '<div class="stat"><div class="sl">Postęp średni</div><div class="sv">'+avg+'%</div></div>'+
+    '<div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:'+(del?'#E24B4A':'')+'">'+del+'</div><div class="ss">etapów</div></div>'+
+    '<div class="stat"><div class="sl">Podwykonawcy</div><div class="sv">'+actS+'</div><div class="ss">aktywnych</div></div>'+
+    '</div><div class="slbl">Projekty</div>'+rows;
 }
 
-// ── GANTT ──
 function rGantt(){
-  const p=GP(S.selP);if(!p)return'<div class="spin">Wybierz projekt</div>';
-  const ws=Array.from({length:p.weeks},(_,i)=>i+1);
-  const wc=ws.map(w=>`<th style="min-width:26px;width:26px;text-align:center;font-size:10px">T${w}</th>`).join('');
-  const rows=(p.stages||[]).map(s=>{
-    const sub=GS(s.subId);
-    const col=SH[s.status];
-    const cells=ws.map(w=>{
-      if(w<s.start||w>=s.start+s.dur)return'<td></td>';
-      const r1=w===s.start?'3px':'0';
-      const r2=w===s.start+s.dur-1?'3px':'0';
-      return`<td style="padding:3px 1px"><div style="height:13px;background:${col};opacity:${s.status==='done'?1:s.status==='inprogress'?.75:.35};border-radius:${r1} ${r2} ${r2} ${r1}"></div></td>`;
+  var p=GP(S.selP);if(!p)return '<div class="spin">Wybierz projekt</div>';
+  var ws=Array.from({length:p.weeks},function(_,i){return i+1;});
+  var wc=ws.map(function(w){return '<th style="min-width:26px;width:26px;text-align:center;font-size:10px">T'+w+'</th>';}).join('');
+  var rows=(p.stages||[]).map(function(s){
+    var sub=GS(s.subId);
+    var col=SHX[s.status];
+    var cells=ws.map(function(w){
+      if(w<s.start||w>=s.start+s.dur)return '<td></td>';
+      var r1=w===s.start?'3px':'0';var r2=w===s.start+s.dur-1?'3px':'0';
+      return '<td style="padding:3px 1px"><div style="height:13px;background:'+col+';opacity:'+(s.status==='done'?1:s.status==='inprogress'?.75:.35)+';border-radius:'+r1+' '+r2+' '+r2+' '+r1+'"></div></td>';
     }).join('');
-    const sn=sub?`<span style="font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline dotted" onclick="goSub(${sub.id})">${sub.name}</span>`:`<span style="font-size:11px;color:var(--tx3)">— brak —</span>`;
-    const nx=SNEXT[s.status];
-    return`<tr>
-      <td style="font-size:13px;min-width:130px;max-width:150px">${s.name}<br>${sn}</td>
-      <td style="padding:4px 5px">${bdg(s.status)}</td>
-      <td style="padding:3px 5px;white-space:nowrap">
-        <button class="abtn" onclick="qStatus(${s.id},'${nx.n}')">${nx.l}</button>
-        <button class="abtn" onclick="om('es',null,${s.id})" style="margin-left:3px">Edytuj</button>
-        <button class="abtn red" onclick="delStage(${s.id})" style="margin-left:3px">✕</button>
-      </td>
-      ${cells}
-    </tr>`;
+    var sn=sub?'<span style="font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline dotted" onclick="goSub('+sub.id+')">'+sub.name+'</span>':'<span style="font-size:11px;color:var(--tx3)">— brak —</span>';
+    var nx=SNXT[s.status];
+    return '<tr>'+
+      '<td style="font-size:13px;min-width:130px;max-width:150px">'+s.name+'<br>'+sn+'</td>'+
+      '<td style="padding:4px 5px">'+bdg(s.status)+'</td>'+
+      '<td style="padding:3px 5px;white-space:nowrap">'+
+      '<button class="abtn" onclick="qSt('+s.id+',\''+nx.n+'\')">'+nx.l+'</button> '+
+      '<button class="abtn" onclick="om(\'es\',null,'+s.id+')">Edytuj</button> '+
+      '<button class="abtn rd" onclick="delStg('+s.id+')">✕</button>'+
+      '</td>'+cells+'</tr>';
   }).join('');
-  const isDel=(p.stages||[]).some(s=>s.status==='delayed');
-  const done=(p.stages||[]).filter(s=>s.status==='done').length;
-  return`<div class="card">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;flex-wrap:wrap;gap:8px">
-      <div><div style="font-size:15px;font-weight:500">${p.name}</div>
-      <div style="font-size:12px;color:var(--tx2);margin-top:3px">${p.location} · ${p.client}</div></div>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        ${bdg(isDel?'delayed':'inprogress')}
-        <button class="btn" onclick="om('ep')">Edytuj projekt</button>
-        <button class="btn" onclick="exportXls(${p.id})">Pobierz Excel</button>
-        <button class="btn" style="color:var(--txd)" onclick="delProj(${p.id})">Usuń</button>
-      </div>
-    </div>
-    <div class="stats" style="margin-bottom:13px">
-      <div class="stat"><div class="sl">Postęp</div><div class="sv">${CP(p)}%</div></div>
-      <div class="stat"><div class="sl">Etapów</div><div class="sv">${(p.stages||[]).length}</div></div>
-      <div class="stat"><div class="sl">Zakończone</div><div class="sv">${done}</div></div>
-      <div class="stat"><div class="sl">Tygodnie</div><div class="sv">${p.weeks}</div></div>
-    </div>
-    <div class="slbl">Harmonogram Gantta</div>
-    <div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Kliknij strzałkę aby zmienić status. "Edytuj" aby zmienić podwykonawcę lub terminy.</div>
-    <div class="gwrap"><table class="gtbl">
-      <thead><tr><th style="min-width:130px">Etap</th><th style="min-width:80px">Status</th><th style="min-width:190px">Akcje</th>${wc}</tr></thead>
-      <tbody>${rows}</tbody>
-    </table></div>
-    <div class="act"><button class="btn" onclick="om('ns')">+ Dodaj etap</button></div>
-  </div>`;
+  var isDel=(p.stages||[]).some(function(s){return s.status==='delayed';});
+  var done=(p.stages||[]).filter(function(s){return s.status==='done';}).length;
+  return '<div class="card">'+
+    '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;flex-wrap:wrap;gap:8px">'+
+    '<div><div style="font-size:15px;font-weight:500">'+p.name+'</div>'+
+    '<div style="font-size:12px;color:var(--tx2);margin-top:3px">'+p.location+' · '+p.client+'</div></div>'+
+    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+
+    bdg(isDel?'delayed':'inprogress')+
+    ' <button class="btn" onclick="om(\'ep\')">Edytuj projekt</button>'+
+    ' <button class="btn" onclick="exportXls('+p.id+')">Pobierz Excel</button>'+
+    ' <button class="btn" style="color:var(--txd)" onclick="delProj('+p.id+')">Usuń</button>'+
+    '</div></div>'+
+    '<div class="stats" style="margin-bottom:13px">'+
+    '<div class="stat"><div class="sl">Postęp</div><div class="sv">'+CP(p)+'%</div></div>'+
+    '<div class="stat"><div class="sl">Etapów</div><div class="sv">'+(p.stages||[]).length+'</div></div>'+
+    '<div class="stat"><div class="sl">Zakończone</div><div class="sv">'+done+'</div></div>'+
+    '<div class="stat"><div class="sl">Tygodnie</div><div class="sv">'+p.weeks+'</div></div>'+
+    '</div>'+
+    '<div class="slbl">Harmonogram Gantta</div>'+
+    '<div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Kliknij strzałkę aby zmienić status. "Edytuj" aby zmienić podwykonawcę lub terminy.</div>'+
+    '<div class="gw"><table class="gt2">'+
+    '<thead><tr><th style="min-width:130px">Etap</th><th style="min-width:80px">Status</th><th style="min-width:190px">Akcje</th>'+wc+'</tr></thead>'+
+    '<tbody>'+rows+'</tbody></table></div>'+
+    '<div class="act"><button class="btn" onclick="om(\'ns\')">+ Dodaj etap</button></div></div>';
 }
 
-// ── SUBS VIEW ──
 function rSubsList(){
-  const q=S.ss.toLowerCase();
-  let list=S.subs.filter(s=>!q||s.name.toLowerCase().includes(q)||(s.specs||[]).some(sp=>sp.toLowerCase().includes(q)));
-  if(S.sf==='active')list=list.filter(s=>s.active);
-  if(S.sf==='inactive')list=list.filter(s=>!s.active);
-  return list.map(s=>{
-    const u=subUsage(s.id);
-    return`<div class="card cp ${s.id===S.selS?'sel':''}" onclick="selSub(${s.id})">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="ava ${acls(s.id)}" style="width:36px;height:36px;font-size:12px">${ini(s.name)}</div>
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <span style="font-size:14px;font-weight:500">${s.name}</span>
-            <span class="badge ${s.active?'gg':'gy'}">${s.active?'Aktywny':'Nieaktywny'}</span>
-            ${u.length?`<span class="badge gb">${u.length} etap${u.length>1?'ów':''}</span>`:''}
-          </div>
-          <div style="font-size:12px;color:var(--tx2);margin-top:2px">${s.contact} · ${s.phone}</div>
-          <div class="chips">${(s.specs||[]).map(sp=>`<span class="chip">${sp}</span>`).join('')}</div>
-        </div>
-        <button class="btn" style="font-size:12px;padding:4px 10px;flex-shrink:0" onclick="event.stopPropagation();om('es2',${s.id})">Edytuj</button>
-      </div>
-    </div>`;
-  }).join('')||'<div style="color:var(--tx2);font-size:13px;padding:12px 0">Brak wyników</div>';
-}
-function rSubDetail(){
-  if(!S.selS)return`<div style="color:var(--tx2);font-size:13px;padding:24px 0;text-align:center">Wybierz podwykonawcę z listy</div>`;
-  const s=GS(S.selS);if(!s)return'';
-  const u=subUsage(s.id);
-  return`<div class="card">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-      <div class="ava ${acls(s.id)}" style="width:44px;height:44px;font-size:15px">${ini(s.name)}</div>
-      <div><div style="font-size:15px;font-weight:500">${s.name}</div><div style="font-size:12px;color:var(--tx2)">${s.contact}</div></div>
-      <span class="badge ${s.active?'gg':'gy'}" style="margin-left:auto">${s.active?'Aktywny':'Nieaktywny'}</span>
-    </div>
-    <div style="border-top:0.5px solid var(--bd3);padding-top:12px;margin-bottom:12px">
-      <table style="width:100%;font-size:13px">
-        <tr><td style="color:var(--tx2);padding:4px 0;width:80px">Telefon</td><td>${s.phone}</td></tr>
-        <tr><td style="color:var(--tx2);padding:4px 0">E-mail</td><td style="color:var(--txi)">${s.email}</td></tr>
-        ${s.notes?`<tr><td style="color:var(--tx2);padding:4px 0;vertical-align:top">Uwagi</td><td style="color:var(--tx2);font-size:12px">${s.notes}</td></tr>`:''}
-      </table>
-    </div>
-    <div class="slbl" style="margin-bottom:7px">Specjalności</div>
-    <div class="chips" style="margin-bottom:13px">${(s.specs||[]).map(sp=>`<span class="badge ${scls(sp)}">${sp}</span>`).join('')}</div>
-    <div class="slbl" style="margin-bottom:7px">Przypisane etapy (${u.length})</div>
-    ${u.length?u.map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 10px;background:var(--bg2);border-radius:var(--rmd);margin-bottom:4px"><div><span>${x.stage}</span><span style="color:var(--tx2);margin-left:6px;font-size:12px">${x.proj}</span></div>${bdg(x.status)}</div>`).join(''):`<div style="font-size:13px;color:var(--tx2)">Brak przypisanych etapów</div>`}
-    <div class="act">
-      <button class="btn" onclick="om('es2',${s.id})">Edytuj dane</button>
-      <button class="btn" style="color:var(--txd)" onclick="delSub(${s.id})">Usuń</button>
-    </div>
-  </div>`;
-}
-function rSubs(){
-  return`<div class="split">
-    <div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
-        <div class="slbl" style="margin:0">Podwykonawcy (${S.subs.length})</div>
-        <button class="btn btnp" onclick="om('as')">+ Dodaj</button>
-      </div>
-      <input placeholder="Szukaj…" value="${S.ss}" oninput="S.ss=this.value;rerSubs()" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1);margin-bottom:9px">
-      <div style="display:flex;gap:6px;margin-bottom:10px">
-        <button class="fbtn ${S.sf==='all'?'on':''}" onclick="S.sf='all';rerSubs()">Wszyscy</button>
-        <button class="fbtn ${S.sf==='active'?'on':''}" onclick="S.sf='active';rerSubs()">Aktywni</button>
-        <button class="fbtn ${S.sf==='inactive'?'on':''}" onclick="S.sf='inactive';rerSubs()">Nieaktywni</button>
-      </div>
-      <div id="sl">${rSubsList()}</div>
-    </div>
-    <div id="sd">${rSubDetail()}</div>
-  </div>`;
-}
-function rerSubs(){const e=document.getElementById('sl');if(e)e.innerHTML=rSubsList();const d=document.getElementById('sd');if(d)d.innerHTML=rSubDetail();}
-
-// ── DASH PROJ ──
-function rDP(){
-  const W=WS();
-  const del=S.projects.reduce((a,p)=>a+(p.stages||[]).filter(s=>s.status==='delayed').length,0);
-  const avg=S.projects.length?Math.round(S.projects.reduce((a,p)=>a+CP(p),0)/S.projects.length):0;
-  const wh=W.map(w=>{const n=wpo(w);return`<div class="wc ${n>=3?'ov':n>=2?'hi':''}"  >T${w}</div>`;}).join('');
-  const pr=S.projects.map((p,pi)=>{
-    const col=PH[pi%PH.length];
-    const cells=W.map(w=>{
-      const act=(p.stages||[]).filter(s=>w>=s.start&&w<s.start+s.dur);
-      if(!act.length)return`<div class="bc"></div>`;
-      const c=act.some(s=>s.status==='delayed')?'#E24B4A':col;
-      const op=act[0].status==='done'?1:act[0].status==='inprogress'?.8:.4;
-      return`<div class="bc"><div class="bf" style="background:${c};opacity:${op}"></div></div>`;
-    }).join('');
-    return`<div class="brw"><div class="rlbl" style="width:160px"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px">${p.name}</div><div style="font-size:10px;color:var(--tx2)">${CP(p)}% · ${p.weeks} tyg.</div></div><div class="bcel">${cells}</div></div>`;
+  var q=S.ss.toLowerCase();
+  var list=S.subs.filter(function(s){return !q||s.name.toLowerCase().indexOf(q)>=0||(s.specs||[]).some(function(sp){return sp.toLowerCase().indexOf(q)>=0;});});
+  if(S.sf==='active')list=list.filter(function(s){return s.active;});
+  if(S.sf==='inactive')list=list.filter(function(s){return !s.active;});
+  if(!list.length)return '<div style="color:var(--tx2);font-size:13px;padding:12px 0">Brak wyników</div>';
+  return list.map(function(s){
+    var u=subUsage(s.id);
+    return '<div class="card cp '+(s.id===S.selS?'sel':'')+'" onclick="selSub('+s.id+')">'+
+      '<div style="display:flex;align-items:center;gap:10px">'+
+      '<div class="ava '+acls(s.id)+'" style="width:36px;height:36px;font-size:12px">'+ini(s.name)+'</div>'+
+      '<div style="flex:1;min-width:0">'+
+      '<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">'+
+      '<span style="font-size:14px;font-weight:500">'+s.name+'</span>'+
+      '<span class="badge '+(s.active?'gg':'gy')+'">'+(s.active?'Aktywny':'Nieaktywny')+'</span>'+
+      (u.length?'<span class="badge gb">'+u.length+' etap'+(u.length>1?'ów':'')+'</span>':'')+
+      '</div>'+
+      '<div style="font-size:12px;color:var(--tx2);margin-top:2px">'+s.contact+' · '+s.phone+'</div>'+
+      '<div class="chips">'+(s.specs||[]).map(function(sp){return '<span class="chip">'+sp+'</span>';}).join('')+'</div>'+
+      '</div>'+
+      '<button class="btn" style="font-size:12px;padding:4px 10px;flex-shrink:0" onclick="event.stopPropagation();om(\'es2\','+s.id+')">Edytuj</button>'+
+      '</div></div>';
   }).join('');
-  const ov=W.map(w=>{const n=wpo(w);if(!n)return`<div class="dc"></div>`;const c=n>=3?'#E24B4A':n===2?'#BA7517':'#378ADD';const op=n===1?.25:n===2?.55:.85;return`<div class="dc"><div class="df" style="background:${c};opacity:${op}"></div></div>`;}).join('');
-  return`<div class="stats">
-    <div class="stat"><div class="sl">Projekty</div><div class="sv">${S.projects.length}</div></div>
-    <div class="stat"><div class="sl">Postęp średni</div><div class="sv">${avg}%</div></div>
-    <div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:${del?'#E24B4A':''}">${del}</div></div>
-    <div class="stat"><div class="sl">Etapów łącznie</div><div class="sv">${S.projects.reduce((a,p)=>a+(p.stages||[]).length,0)}</div></div>
-  </div>
-  <div class="card" style="margin-bottom:1.25rem">
-    <div class="slbl">Wszystkie projekty — oś tygodni</div>
-    <div class="leg">${S.projects.map((p,i)=>`<span><span class="lsq" style="background:${PH[i]}"></span>${p.short||p.name}</span>`).join('')}</div>
-    <div class="tlw"><div class="tli">
-      <div class="whr"><div class="rlbl" style="width:160px"></div><div class="rcel">${wh}</div></div>
-      ${pr}
-      <div class="dvr" style="margin-top:10px"><div class="rlbl" style="width:160px;font-size:11px;font-weight:500;color:var(--tx2)">Nakładanie projektów</div><div class="dcel">${ov}</div></div>
-    </div></div>
-  </div>
-  <div class="card">
-    <div class="slbl">Obciążenie tygodniowe — etapów</div>
-    <div style="position:relative;width:100%;height:170px"><canvas id="cpl" role="img" aria-label="Obciążenie tygodniowe"></canvas></div>
-  </div>`;
+}
+
+function rSubDetail(){
+  if(!S.selS)return '<div style="color:var(--tx2);font-size:13px;padding:24px 0;text-align:center">Wybierz podwykonawcę z listy</div>';
+  var s=GS(S.selS);if(!s)return '';
+  var u=subUsage(s.id);
+  return '<div class="card">'+
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">'+
+    '<div class="ava '+acls(s.id)+'" style="width:44px;height:44px;font-size:15px">'+ini(s.name)+'</div>'+
+    '<div><div style="font-size:15px;font-weight:500">'+s.name+'</div><div style="font-size:12px;color:var(--tx2)">'+s.contact+'</div></div>'+
+    '<span class="badge '+(s.active?'gg':'gy')+'" style="margin-left:auto">'+(s.active?'Aktywny':'Nieaktywny')+'</span></div>'+
+    '<div style="border-top:0.5px solid var(--bd3);padding-top:12px;margin-bottom:12px">'+
+    '<table style="width:100%;font-size:13px">'+
+    '<tr><td style="color:var(--tx2);padding:4px 0;width:80px">Telefon</td><td>'+s.phone+'</td></tr>'+
+    '<tr><td style="color:var(--tx2);padding:4px 0">E-mail</td><td style="color:var(--txi)">'+s.email+'</td></tr>'+
+    (s.notes?'<tr><td style="color:var(--tx2);padding:4px 0;vertical-align:top">Uwagi</td><td style="color:var(--tx2);font-size:12px">'+s.notes+'</td></tr>':'')+
+    '</table></div>'+
+    '<div class="slbl" style="margin-bottom:7px">Specjalności</div>'+
+    '<div class="chips" style="margin-bottom:13px">'+(s.specs||[]).map(function(sp){return '<span class="badge gy">'+sp+'</span>';}).join('')+'</div>'+
+    '<div class="slbl" style="margin-bottom:7px">Przypisane etapy ('+u.length+')</div>'+
+    (u.length?u.map(function(x){return '<div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 10px;background:var(--bg2);border-radius:var(--rmd);margin-bottom:4px"><div><span>'+x.stage+'</span><span style="color:var(--tx2);margin-left:6px;font-size:12px">'+x.proj+'</span></div>'+bdg(x.status)+'</div>';}).join(''):'<div style="font-size:13px;color:var(--tx2)">Brak przypisanych etapów</div>')+
+    '<div class="act"><button class="btn" onclick="om(\'es2\','+s.id+')">Edytuj dane</button> <button class="btn" style="color:var(--txd)" onclick="delSub('+s.id+')">Usuń</button></div></div>';
+}
+
+function rSubs(){
+  return '<div class="split">'+
+    '<div>'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">'+
+    '<div class="slbl" style="margin:0">Podwykonawcy ('+S.subs.length+')</div>'+
+    '<button class="btn bp" onclick="om(\'as\')">+ Dodaj</button></div>'+
+    '<input placeholder="Szukaj…" value="'+S.ss+'" oninput="S.ss=this.value;rerS()" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1);margin-bottom:9px">'+
+    '<div style="display:flex;gap:6px;margin-bottom:10px">'+
+    '<button class="fbtn '+(S.sf==='all'?'on':'')+'" onclick="S.sf=\'all\';rerS()">Wszyscy</button>'+
+    '<button class="fbtn '+(S.sf==='active'?'on':'')+'" onclick="S.sf=\'active\';rerS()">Aktywni</button>'+
+    '<button class="fbtn '+(S.sf==='inactive'?'on':'')+'" onclick="S.sf=\'inactive\';rerS()">Nieaktywni</button>'+
+    '</div><div id="sl">'+rSubsList()+'</div></div>'+
+    '<div id="sd">'+rSubDetail()+'</div></div>';
+}
+function rerS(){var e=document.getElementById('sl');if(e)e.innerHTML=rSubsList();var d=document.getElementById('sd');if(d)d.innerHTML=rSubDetail();}
+
+function rDP(){
+  var W=WS();
+  var del=S.projects.reduce(function(a,p){return a+(p.stages||[]).filter(function(s){return s.status==='delayed';}).length;},0);
+  var avg=S.projects.length?Math.round(S.projects.reduce(function(a,p){return a+CP(p);},0)/S.projects.length):0;
+  var wh=W.map(function(w){var n=wpo(w);return '<div class="wc '+(n>=3?'ov':n>=2?'hi':'')+'">T'+w+'</div>';}).join('');
+  var pr=S.projects.map(function(p,pi){
+    var col=PH[pi%PH.length];
+    var cells=W.map(function(w){
+      var act=(p.stages||[]).filter(function(s){return w>=s.start&&w<s.start+s.dur;});
+      if(!act.length)return '<div class="bc"></div>';
+      var c=act.some(function(s){return s.status==='delayed';})?'#E24B4A':col;
+      var op=act[0].status==='done'?1:act[0].status==='inprogress'?.8:.4;
+      return '<div class="bc"><div class="bf" style="background:'+c+';opacity:'+op+'"></div></div>';
+    }).join('');
+    return '<div class="br2"><div class="rl" style="width:160px"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px">'+p.name+'</div><div style="font-size:10px;color:var(--tx2)">'+CP(p)+'% · '+p.weeks+' tyg.</div></div><div class="bc2">'+cells+'</div></div>';
+  }).join('');
+  var ov=W.map(function(w){var n=wpo(w);if(!n)return '<div class="dc"></div>';var c=n>=3?'#E24B4A':n===2?'#BA7517':'#378ADD';var op=n===1?.25:n===2?.55:.85;return '<div class="dc"><div class="df" style="background:'+c+';opacity:'+op+'"></div></div>';}).join('');
+  return '<div class="stats">'+
+    '<div class="stat"><div class="sl">Projekty</div><div class="sv">'+S.projects.length+'</div></div>'+
+    '<div class="stat"><div class="sl">Postęp średni</div><div class="sv">'+avg+'%</div></div>'+
+    '<div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:'+(del?'#E24B4A':'')+'">'+del+'</div></div>'+
+    '<div class="stat"><div class="sl">Etapów łącznie</div><div class="sv">'+S.projects.reduce(function(a,p){return a+(p.stages||[]).length;},0)+'</div></div>'+
+    '</div>'+
+    '<div class="card" style="margin-bottom:1.25rem">'+
+    '<div class="slbl">Wszystkie projekty — oś tygodni</div>'+
+    '<div class="leg">'+S.projects.map(function(p,i){return '<span><span class="lsq" style="background:'+PH[i]+'"></span>'+(p.short||p.name)+'</span>';}).join('')+'</div>'+
+    '<div class="tlw"><div class="tli">'+
+    '<div class="whr"><div class="rl" style="width:160px"></div><div class="rc">'+wh+'</div></div>'+pr+
+    '<div class="dvr" style="margin-top:10px"><div class="rl" style="width:160px;font-size:11px;font-weight:500;color:var(--tx2)">Nakładanie projektów</div><div class="dc2">'+ov+'</div></div>'+
+    '</div></div></div>'+
+    '<div class="card"><div class="slbl">Obciążenie tygodniowe — etapów</div>'+
+    '<div style="position:relative;width:100%;height:170px"><canvas id="cpl" role="img" aria-label="Obciążenie"></canvas></div></div>';
 }
 function initCP(){
-  const W=WS();
-  const loads=W.map(w=>S.projects.reduce((a,p)=>a+(p.stages||[]).filter(s=>w>=s.start&&w<s.start+s.dur).length,0));
-  const gc=matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
+  var W=WS();
+  var loads=W.map(function(w){return S.projects.reduce(function(a,p){return a+(p.stages||[]).filter(function(s){return w>=s.start&&w<s.start+s.dur;}).length;},0);});
+  var gc=matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
   if(cpi)cpi.destroy();
-  const el=document.getElementById('cpl');if(!el)return;
-  cpi=new Chart(el,{type:'bar',data:{labels:W.map(w=>`T${w}`),datasets:[{data:loads,backgroundColor:W.map(w=>{const n=wpo(w);return n>=3?'rgba(226,75,74,.65)':n>=2?'rgba(186,117,23,.6)':'rgba(55,138,221,.5)';}),borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780',font:{size:10},autoSkip:true,maxTicksLimit:12},grid:{color:gc}},y:{beginAtZero:true,ticks:{color:'#888780',stepSize:1},grid:{color:gc}}}}});
+  var el=document.getElementById('cpl');if(!el)return;
+  cpi=new Chart(el,{type:'bar',data:{labels:W.map(function(w){return 'T'+w;}),datasets:[{data:loads,backgroundColor:W.map(function(w){var n=wpo(w);return n>=3?'rgba(226,75,74,.65)':n>=2?'rgba(186,117,23,.6)':'rgba(55,138,221,.5)';}),borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780',font:{size:10},autoSkip:true,maxTicksLimit:12},grid:{color:gc}},y:{beginAtZero:true,ticks:{color:'#888780',stepSize:1},grid:{color:gc}}}}});
 }
 
-// ── DASH SUBS ──
 function rDS(){
-  const W=WS();
-  const cs=conflicts();
-  const actS=S.subs.filter(s=>S.projects.some(p=>(p.stages||[]).some(st=>st.subId===s.id)));
-  const uC=new Set(cs.map(c=>c.sub)).size;
-  const peak=W.reduce((b,w)=>wsl(w)>wsl(b)?w:b,1);
-  const alr=cs.length?`<div class="alr">
-    <div style="font-size:13px;font-weight:500;color:var(--txd);margin-bottom:6px">Wykryte konflikty — ${cs.length} tygodni</div>
-    ${Object.entries(cs.reduce((g,c)=>{if(!g[c.sub])g[c.sub]=[];g[c.sub].push(c);return g;},{})).map(([sub,items])=>`<div style="font-size:12px;color:var(--txd);margin-bottom:2px;padding-left:8px">· ${sub}: ${items.map(i=>`T${i.week} (${i.projs})`).join(', ')}</div>`).join('')}
-  </div>`:'';
-  const wh=W.map(w=>{const n=wsl(w);return`<div class="wc ${n>=4?'ov':n>=3?'hi':''}"  >T${w}</div>`;}).join('');
-  const srows=actS.map(sub=>{
-    const bw={};
-    S.projects.forEach((p,pi)=>(p.stages||[]).filter(s=>s.subId===sub.id).forEach(s=>{for(let w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,stage:s,pi});}}));
-    const tw=Object.keys(bw).length;
-    const hc=Object.entries(bw).some(([w,e])=>new Set(e.map(x=>x.proj.id)).size>1);
-    const sb=hc?`<span class="badge gr" style="font-size:10px">konflikt</span>`:tw?`<span class="badge gg" style="font-size:10px">${tw} tyg.</span>`:'';
-    const cells=W.map(w=>{
-      const entries=bw[w];if(!entries||!entries.length)return`<div class="bc"></div>`;
-      const uP=[...new Set(entries.map(e=>e.proj.id))];const isC=uP.length>1;
-      const pi=entries[0].pi;const col=isC?'#E24B4A':PH[pi%PH.length];
-      const op=entries[0].stage.status==='done'?1:entries[0].stage.status==='inprogress'?.8:.45;
-      return`<div class="bc"><div class="bf" style="background:${col};opacity:${op}"></div>${isC?'<div class="cm"></div>':''}</div>`;
+  var W=WS();var cs=getConflicts();
+  var actS=S.subs.filter(function(s){return S.projects.some(function(p){return(p.stages||[]).some(function(st){return st.subId===s.id;});});});
+  var uC=cs.map(function(c){return c.sub;}).filter(function(v,i,a){return a.indexOf(v)===i;}).length;
+  var peak=W.reduce(function(b,w){return wsl(w)>wsl(b)?w:b;},1);
+  var grp={};cs.forEach(function(c){if(!grp[c.sub])grp[c.sub]=[];grp[c.sub].push(c);});
+  var alr=cs.length?'<div class="alr"><div style="font-size:13px;font-weight:500;color:var(--txd);margin-bottom:6px">Wykryte konflikty — '+cs.length+' tygodni</div>'+Object.keys(grp).map(function(sub){return '<div style="font-size:12px;color:var(--txd);margin-bottom:2px;padding-left:8px">· '+sub+': '+grp[sub].map(function(i){return 'T'+i.week+' ('+i.projs+')';}).join(', ')+'</div>';}).join('')+'</div>':'';
+  var wh=W.map(function(w){var n=wsl(w);return '<div class="wc '+(n>=4?'ov':n>=3?'hi':'')+'">T'+w+'</div>';}).join('');
+  var srows=actS.map(function(sub){
+    var bw={};
+    S.projects.forEach(function(p,pi){(p.stages||[]).filter(function(s){return s.subId===sub.id;}).forEach(function(s){for(var w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,stage:s,pi:pi});}});});
+    var tw=Object.keys(bw).length;
+    var hc=Object.keys(bw).some(function(w){var e=bw[w];return e.map(function(x){return x.proj.id;}).filter(function(v,i,a){return a.indexOf(v)===i;}).length>1;});
+    var sb=hc?'<span class="badge gr" style="font-size:10px">konflikt</span>':(tw?'<span class="badge gg" style="font-size:10px">'+tw+' tyg.</span>':'');
+    var cells=W.map(function(w){
+      var entries=bw[w];if(!entries||!entries.length)return '<div class="bc"></div>';
+      var uP=entries.map(function(e){return e.proj.id;}).filter(function(v,i,a){return a.indexOf(v)===i;});
+      var isC=uP.length>1;var pi=entries[0].pi;
+      var col=isC?'#E24B4A':PH[pi%PH.length];
+      var op=entries[0].stage.status==='done'?1:entries[0].stage.status==='inprogress'?.8:.45;
+      return '<div class="bc"><div class="bf" style="background:'+col+';opacity:'+op+'"></div>'+(isC?'<div class="cm2"></div>':'')+'</div>';
     }).join('');
-    return`<div class="brw"><div class="rlbl" style="width:170px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:125px">${sub.name}</span>${sb}</div><div style="font-size:10px;color:var(--tx2)">${tw} tyg. pracy</div></div><div class="bcel">${cells}</div></div>`;
+    return '<div class="br2"><div class="rl" style="width:170px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:125px">'+sub.name+'</span>'+sb+'</div><div style="font-size:10px;color:var(--tx2)">'+tw+' tyg. pracy</div></div><div class="bc2">'+cells+'</div></div>';
   }).join('');
-  const lr=W.map(w=>{const n=wsl(w);if(!n)return`<div class="dc"></div>`;const mx=Math.max(...W.map(ww=>wsl(ww)));const col=n>=4?'#E24B4A':n>=3?'#BA7517':'#378ADD';return`<div class="dc"><div class="df" style="background:${col};opacity:.5;top:${20-Math.round((n/mx)*16)}px"></div></div>`;}).join('');
-  return`<div class="stats">
-    <div class="stat"><div class="sl">Aktywni podwykonawcy</div><div class="sv">${actS.length}</div></div>
-    <div class="stat"><div class="sl">Konflikty</div><div class="sv" style="color:${cs.length?'#E24B4A':''}">${cs.length}</div></div>
-    <div class="stat"><div class="sl">Z konfliktami</div><div class="sv" style="color:${uC?'#BA7517':''}">${uC}</div></div>
-    <div class="stat"><div class="sl">Szczyt obciążenia</div><div class="sv">T${peak}</div><div class="ss">${wsl(peak)} ekip</div></div>
-  </div>
-  ${alr}
-  <div class="card" style="margin-bottom:1.25rem">
-    <div class="slbl">Harmonogram podwykonawców</div>
-    <div class="leg">${S.projects.map((p,i)=>`<span><span class="lsq" style="background:${PH[i]}"></span>${p.short||p.name}</span>`).join('')}<span><span class="lsq" style="background:#E24B4A"></span>konflikt</span></div>
-    <div class="tlw"><div class="tli">
-      <div class="whr"><div class="rlbl" style="width:170px"></div><div class="rcel">${wh}</div></div>
-      ${srows}
-      <div class="dvr" style="margin-top:10px"><div class="rlbl" style="width:170px;font-size:11px;font-weight:500;color:var(--tx2)">Obciążenie łączne</div><div class="dcel">${lr}</div></div>
-    </div></div>
-  </div>
-  <div class="card">
-    <div class="slbl">Liczba aktywnych podwykonawców w tygodniu</div>
-    <div style="position:relative;width:100%;height:160px"><canvas id="csl" role="img" aria-label="Podwykonawcy tygodniowo"></canvas></div>
-  </div>`;
+  var lr=W.map(function(w){var n=wsl(w);if(!n)return '<div class="dc"></div>';var mx=Math.max.apply(null,W.map(wsl));var col=n>=4?'#E24B4A':n>=3?'#BA7517':'#378ADD';return '<div class="dc"><div class="df" style="background:'+col+';opacity:.5;top:'+(20-Math.round((n/mx)*16))+'px"></div></div>';}).join('');
+  return '<div class="stats">'+
+    '<div class="stat"><div class="sl">Aktywni podwykonawcy</div><div class="sv">'+actS.length+'</div></div>'+
+    '<div class="stat"><div class="sl">Konflikty</div><div class="sv" style="color:'+(cs.length?'#E24B4A':'')+'">'+cs.length+'</div></div>'+
+    '<div class="stat"><div class="sl">Z konfliktami</div><div class="sv" style="color:'+(uC?'#BA7517':'')+'">'+uC+'</div></div>'+
+    '<div class="stat"><div class="sl">Szczyt obciążenia</div><div class="sv">T'+peak+'</div><div class="ss">'+wsl(peak)+' ekip</div></div>'+
+    '</div>'+alr+
+    '<div class="card" style="margin-bottom:1.25rem">'+
+    '<div class="slbl">Harmonogram podwykonawców</div>'+
+    '<div class="leg">'+S.projects.map(function(p,i){return '<span><span class="lsq" style="background:'+PH[i]+'"></span>'+(p.short||p.name)+'</span>';}).join('')+'<span><span class="lsq" style="background:#E24B4A"></span>konflikt</span></div>'+
+    '<div class="tlw"><div class="tli">'+
+    '<div class="whr"><div class="rl" style="width:170px"></div><div class="rc">'+wh+'</div></div>'+srows+
+    '<div class="dvr" style="margin-top:10px"><div class="rl" style="width:170px;font-size:11px;font-weight:500;color:var(--tx2)">Obciążenie łączne</div><div class="dc2">'+lr+'</div></div>'+
+    '</div></div></div>'+
+    '<div class="card"><div class="slbl">Liczba aktywnych podwykonawców w tygodniu</div>'+
+    '<div style="position:relative;width:100%;height:160px"><canvas id="csl" role="img" aria-label="Podwykonawcy"></canvas></div></div>';
 }
 function initCS(){
-  const W=WS();
-  const loads=W.map(w=>wsl(w));
-  const gc=matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
+  var W=WS();var loads=W.map(wsl);
+  var gc=matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
   if(csi)csi.destroy();
-  const el=document.getElementById('csl');if(!el)return;
-  csi=new Chart(el,{type:'bar',data:{labels:W.map(w=>`T${w}`),datasets:[{data:loads,backgroundColor:loads.map(n=>n>=4?'rgba(226,75,74,.65)':n>=3?'rgba(186,117,23,.6)':'rgba(55,138,221,.5)'),borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780',font:{size:10},autoSkip:true,maxTicksLimit:12},grid:{color:gc}},y:{beginAtZero:true,ticks:{color:'#888780',stepSize:1},grid:{color:gc}}}}});
+  var el=document.getElementById('csl');if(!el)return;
+  csi=new Chart(el,{type:'bar',data:{labels:W.map(function(w){return 'T'+w;}),datasets:[{data:loads,backgroundColor:loads.map(function(n){return n>=4?'rgba(226,75,74,.65)':n>=3?'rgba(186,117,23,.6)':'rgba(55,138,221,.5)';}),borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780',font:{size:10},autoSkip:true,maxTicksLimit:12},grid:{color:gc}},y:{beginAtZero:true,ticks:{color:'#888780',stepSize:1},grid:{color:gc}}}}});
 }
 
-// ── MODAL ──
 function rModal(){
-  if(!S.modal)return'';
-  const m=S.modal;let inner='';
+  if(!S.modal)return '';
+  var m=S.modal;var inner='';
   if(m.t==='np'||m.t==='ep'){
-    const p=m.t==='ep'?GP(S.selP):{};
-    inner=`<div class="mtit">${m.t==='ep'?'Edytuj projekt':'Nowy plac budowy'}</div>
-      <div class="frow"><label>Nazwa projektu</label><input id="mn" value="${p.name||''}" placeholder="np. Osiedle Różana"></div>
-      <div class="two">
-        <div class="frow"><label>Miejscowość</label><input id="ml" value="${p.location||''}" placeholder="np. Żywiec"></div>
-        <div class="frow"><label>Tygodni</label><input id="mw" type="number" value="${p.weeks||16}" min="4" max="60"></div>
-      </div>
-      <div class="frow"><label>Klient</label><input id="mc" value="${p.client||''}" placeholder="np. Jan Kowalski"></div>
-      <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="${m.t==='ep'?'saveP()':'addP()'}">Zapisz</button></div>`;
+    var p=m.t==='ep'?GP(S.selP):{};if(!p)p={};
+    inner='<div class="mt">'+(m.t==='ep'?'Edytuj projekt':'Nowy plac budowy')+'</div>'+
+      '<div class="fr"><label>Nazwa projektu</label><input id="mn" value="'+(p.name||'')+'" placeholder="np. Osiedle Różana"></div>'+
+      '<div class="two">'+
+      '<div class="fr"><label>Miejscowość</label><input id="ml" value="'+(p.location||'')+'" placeholder="np. Żywiec"></div>'+
+      '<div class="fr"><label>Tygodni</label><input id="mw" type="number" value="'+(p.weeks||16)+'" min="4" max="60"></div>'+
+      '</div>'+
+      '<div class="fr"><label>Klient</label><input id="mc" value="'+(p.client||'')+'" placeholder="np. Jan Kowalski"></div>'+
+      '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="'+(m.t==='ep'?'saveP()':'addP()')+'">Zapisz</button></div>';
   } else if(m.t==='ns'){
-    const p=GP(S.selP);
-    const so=S.subs.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-    inner=`<div class="mtit">Nowy etap – ${p.name}</div>
-      <div class="frow"><label>Nazwa etapu</label><input id="sn" placeholder="np. Tynki wewnętrzne" list="dstages"><datalist id="dstages"><option value="PAB"><option value="PT Konstrukcja + płyta"><option value="PT Warsztatowo-montażowy"><option value="PT Instalacje sanitarne"><option value="PT Instalacje elektryczne"><option value="Płyta fundamentowa"><option value="Wiązary – projekt"><option value="Prefabrykacja"><option value="Montaż konstrukcji"><option value="Montaż pokrycia"><option value="Montaż okien"><option value="Wylewki"><option value="Montaż instalacji sanitarnych"><option value="Montaż instalacji elektrycznych"><option value="Sufity"><option value="Elewacja + drzwi + parapety"><option value="Protokół końcowy"></datalist></div>
-      <div class="frow"><label>Podwykonawca</label><select id="su"><option value="">— bez podwykonawcy —</option>${so}</select></div>
-      <div class="two">
-        <div class="frow"><label>Tydzień start</label><input id="st" type="number" value="1" min="1" max="${p.weeks}"></div>
-        <div class="frow"><label>Czas trwania (tyg.)</label><input id="sd" type="number" value="2" min="1"></div>
-      </div>
-      <div class="frow"><label>Status</label><select id="ss2">
-        <option value="notstarted">Nie rozpoczęty</option><option value="planned">Planowany</option>
-        <option value="inprogress">W trakcie</option><option value="done">Zakończony</option><option value="delayed">Opóźniony</option>
-      </select></div>
-      <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="addStg()">Dodaj etap</button></div>`;
+    var p2=GP(S.selP);if(!p2)return '';
+    var so=S.subs.map(function(s){return '<option value="'+s.id+'">'+s.name+'</option>';}).join('');
+    var dlist=DSTAGES.map(function(n){return '<option value="'+n+'">';}).join('');
+    inner='<div class="mt">Nowy etap – '+p2.name+'</div>'+
+      '<div class="fr"><label>Nazwa etapu</label><input id="sn" placeholder="np. Montaż konstrukcji" list="dsl"><datalist id="dsl">'+dlist+'</datalist></div>'+
+      '<div class="fr"><label>Podwykonawca</label><select id="su"><option value="">— bez podwykonawcy —</option>'+so+'</select></div>'+
+      '<div class="two">'+
+      '<div class="fr"><label>Tydzień start</label><input id="st2" type="number" value="1" min="1" max="'+p2.weeks+'"></div>'+
+      '<div class="fr"><label>Czas trwania (tyg.)</label><input id="sd2" type="number" value="2" min="1"></div>'+
+      '</div>'+
+      '<div class="fr"><label>Status</label><select id="ss2">'+
+      '<option value="notstarted">Nie rozpoczęty</option><option value="planned">Planowany</option>'+
+      '<option value="inprogress">W trakcie</option><option value="done">Zakończony</option><option value="delayed">Opóźniony</option>'+
+      '</select></div>'+
+      '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="addStg()">Dodaj etap</button></div>';
   } else if(m.t==='es'){
-    const p=GP(S.selP);
-    const s=(p.stages||[]).find(x=>x.id===m.stgid);
-    if(!s)return'';
-    const so=S.subs.map(sub=>`<option value="${sub.id}" ${sub.id===s.subId?'selected':''}>${sub.name}</option>`).join('');
-    const sto=['notstarted','planned','inprogress','done','delayed'].map(v=>`<option value="${v}" ${v===s.status?'selected':''}>${SL[v]}</option>`).join('');
-    inner=`<div class="mtit">Edytuj etap</div>
-      <div class="frow"><label>Nazwa etapu</label><input id="en" value="${s.name}"></div>
-      <div class="frow"><label>Podwykonawca</label><select id="eu"><option value="">— bez podwykonawcy —</option>${so}</select></div>
-      <div class="two">
-        <div class="frow"><label>Tydzień start</label><input id="et" type="number" value="${s.start}" min="1" max="${p.weeks}"></div>
-        <div class="frow"><label>Czas trwania (tyg.)</label><input id="ed" type="number" value="${s.dur}" min="1"></div>
-      </div>
-      <div class="frow"><label>Status</label><select id="es3">${sto}</select></div>
-      <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="saveStg(${s.id})">Zapisz zmiany</button></div>`;
+    var p3=GP(S.selP);if(!p3)return '';
+    var s=(p3.stages||[]).find(function(x){return x.id===m.stgid;});if(!s)return '';
+    var so2=S.subs.map(function(sub){return '<option value="'+sub.id+'"'+(sub.id===s.subId?' selected':'')+'>'+sub.name+'</option>';}).join('');
+    var sto=['notstarted','planned','inprogress','done','delayed'].map(function(v){return '<option value="'+v+'"'+(v===s.status?' selected':'')+'>'+SLX[v]+'</option>';}).join('');
+    inner='<div class="mt">Edytuj etap</div>'+
+      '<div class="fr"><label>Nazwa etapu</label><input id="en" value="'+s.name+'"></div>'+
+      '<div class="fr"><label>Podwykonawca</label><select id="eu"><option value="">— bez podwykonawcy —</option>'+so2+'</select></div>'+
+      '<div class="two">'+
+      '<div class="fr"><label>Tydzień start</label><input id="et" type="number" value="'+s.start+'" min="1" max="'+p3.weeks+'"></div>'+
+      '<div class="fr"><label>Czas trwania (tyg.)</label><input id="ed" type="number" value="'+s.dur+'" min="1"></div>'+
+      '</div>'+
+      '<div class="fr"><label>Status</label><select id="es3">'+sto+'</select></div>'+
+      '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="saveStg('+s.id+')">Zapisz zmiany</button></div>';
   } else if(m.t==='as'||m.t==='es2'){
-    const s=m.t==='es2'?GS(m.sid):{};
-    inner=`<div class="mtit">${m.t==='es2'?'Edytuj podwykonawcę':'Nowy podwykonawca'}</div>
-      <div class="frow"><label>Firma</label><input id="bname" value="${s.name||''}" placeholder="np. Hydro Serwis"></div>
-      <div class="two">
-        <div class="frow"><label>Osoba kontaktowa</label><input id="bcont" value="${s.contact||''}" placeholder="Jan Kowalski"></div>
-        <div class="frow"><label>Telefon</label><input id="bph" value="${s.phone||''}" placeholder="600 000 000"></div>
-      </div>
-      <div class="frow"><label>E-mail</label><input id="bmail" value="${s.email||''}" placeholder="biuro@firma.pl"></div>
-      <div class="frow"><label>Specjalności (oddzielone przecinkiem)</label><input id="bspec" value="${(s.specs||[]).join(', ')}" placeholder="np. Instalacje wod-kan, CO"></div>
-      <div class="frow"><label>Uwagi</label><input id="bnot" value="${s.notes||''}" placeholder="np. Wymaga zaliczki 30%"></div>
-      <div class="frow"><label>Status</label><select id="bact">
-        <option value="1" ${s.active!==false?'selected':''}>Aktywny</option>
-        <option value="0" ${s.active===false?'selected':''}>Nieaktywny</option>
-      </select></div>
-      <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="${m.t==='es2'?'saveB('+m.sid+')':'addB()'}">Zapisz</button></div>`;
+    var s2=m.t==='es2'?GS(m.sid):{};if(!s2)s2={};
+    inner='<div class="mt">'+(m.t==='es2'?'Edytuj podwykonawcę':'Nowy podwykonawca')+'</div>'+
+      '<div class="fr"><label>Firma</label><input id="bname" value="'+(s2.name||'')+'" placeholder="np. Hydro Serwis"></div>'+
+      '<div class="two">'+
+      '<div class="fr"><label>Osoba kontaktowa</label><input id="bcont" value="'+(s2.contact||'')+'" placeholder="Jan Kowalski"></div>'+
+      '<div class="fr"><label>Telefon</label><input id="bph" value="'+(s2.phone||'')+'" placeholder="600 000 000"></div>'+
+      '</div>'+
+      '<div class="fr"><label>E-mail</label><input id="bmail" value="'+(s2.email||'')+'" placeholder="biuro@firma.pl"></div>'+
+      '<div class="fr"><label>Specjalności (oddzielone przecinkiem)</label><input id="bspec" value="'+((s2.specs||[]).join(', '))+'" placeholder="np. Instalacje, Montaż"></div>'+
+      '<div class="fr"><label>Uwagi</label><input id="bnot" value="'+(s2.notes||'')+'" placeholder="np. Wymaga zaliczki 30%"></div>'+
+      '<div class="fr"><label>Status</label><select id="bact">'+
+      '<option value="1"'+(s2.active!==false?' selected':'')+'>Aktywny</option>'+
+      '<option value="0"'+(s2.active===false?' selected':'')+'>Nieaktywny</option>'+
+      '</select></div>'+
+      '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="'+(m.t==='es2'?'saveB('+m.sid+')':'addB()')+'">Zapisz</button></div>';
   }
-  return`<div class="mbg" onclick="bgC(event)"><div class="mbox" onclick="event.stopPropagation()">${inner}</div></div>`;
+  return '<div class="mbg" onclick="bgC(event)"><div class="mbox" onclick="event.stopPropagation()">'+inner+'</div></div>';
 }
 
-// ── MAIN RENDER ──
 function render(){
-  const root=document.getElementById('root');
+  var root=document.getElementById('root');
+  if(!root)return;
   if(!S.auth){root.innerHTML=rLogin();return;}
-  if(S.loading){root.innerHTML=`<div class="shell"><div class="spin">Ładowanie danych…</div></div>`;return;}
-  let c='';
+  if(S.loading){root.innerHTML='<div class="shell"><div class="spin">Ładowanie danych…</div></div>';return;}
+  var c='';
   if(S.view==='projects')c=rProjects();
   else if(S.view==='gantt')c=rGantt();
   else if(S.view==='subs')c=rSubs();
   else if(S.view==='dp')c=rDP();
   else if(S.view==='ds')c=rDS();
-  root.innerHTML=`<div class="shell">${rTop()}${c}${rModal()}</div>`;
+  root.innerHTML='<div class="shell">'+rTop()+c+rModal()+'</div>';
   if(S.view==='dp')setTimeout(initCP,50);
   if(S.view==='ds')setTimeout(initCS,50);
 }
 
-// ── NAVIGATION ──
 function sv(v){S.view=v;render();}
 function selP(id){S.selP=id;S.view='gantt';render();}
 function goSub(id){S.selS=id;S.view='subs';render();}
-function selSub(id){S.selS=id;const d=document.getElementById('sd');if(d)d.innerHTML=rSubDetail();else render();}
-function om(t,sid,stgid){S.modal={t,sid,stgid:stgid||null};render();}
+function selSub(id){S.selS=id;var d=document.getElementById('sd');if(d)d.innerHTML=rSubDetail();else render();}
+function om(t,sid,stgid){S.modal={t:t,sid:sid||null,stgid:stgid||null};render();}
 function cm(){S.modal=null;render();}
-function bgC(e){if(e.target.classList.contains('mbg'))cm();}
+function bgC(e){if(e.target.className==='mbg')cm();}
 
-// ── ACTIONS ──
-async function addP(){
-  const name=V('mn');if(!name)return;
-  const r=await api('POST','/api/projects',{name,short:name.split(' ')[0],location:V('ml')||'—',client:V('mc')||'—',weeks:+V('mw')||16,progress:0});
-  if(r){toast('Projekt dodany');cm();await loadData();S.selP=r.id;S.view='gantt';render();}
+function addP(){
+  var name=V('mn');if(!name)return;
+  api('POST','/api/projects',{name:name,short:name.split(' ')[0],location:V('ml')||'—',client:V('mc')||'—',weeks:+V('mw')||16,progress:0}).then(function(r){
+    if(r){toast('Projekt dodany');cm();loadData().then(function(){S.selP=r.id;S.view='gantt';render();});}
+  });
 }
-async function saveP(){
-  const p=GP(S.selP);if(!p)return;
-  await api('PUT',`/api/projects/${p.id}`,{name:V('mn')||p.name,short:(V('mn')||p.name).split(' ')[0],location:V('ml'),client:V('mc'),weeks:+V('mw')||p.weeks});
-  toast('Zapisano');cm();await loadData();render();
+function saveP(){
+  var p=GP(S.selP);if(!p)return;
+  api('PUT','/api/projects/'+p.id,{name:V('mn')||p.name,short:(V('mn')||p.name).split(' ')[0],location:V('ml'),client:V('mc'),weeks:+V('mw')||p.weeks}).then(function(){
+    toast('Zapisano');cm();loadData();
+  });
 }
-async function delProj(id){
+function delProj(id){
   if(!confirm('Usunąć projekt i wszystkie jego etapy?'))return;
-  await api('DELETE',`/api/projects/${id}`);
-  toast('Projekt usunięty');S.selP=S.projects[0]?.id||null;await loadData();S.view='projects';render();
+  api('DELETE','/api/projects/'+id).then(function(){
+    toast('Projekt usunięty');S.selP=S.projects[0]?S.projects[0].id:null;loadData().then(function(){S.view='projects';render();});
+  });
 }
-async function addStg(){
-  const p=GP(S.selP);if(!p)return;
-  const name=V('sn');if(!name)return;
-  await api('POST',`/api/projects/${p.id}/stages`,{name,subId:V('su')?+V('su'):null,start:+V('st')||1,dur:+V('sd')||2,status:V('ss2')||'planned'});
-  toast('Etap dodany');cm();await loadData();render();
+function addStg(){
+  var p=GP(S.selP);if(!p)return;
+  var name=V('sn');if(!name)return;
+  var subId=V('su')?+V('su'):null;
+  api('POST','/api/projects/'+p.id+'/stages',{name:name,subId:subId,start:+V('st2')||1,dur:+V('sd2')||2,status:V('ss2')||'planned'}).then(function(){
+    toast('Etap dodany');cm();loadData();
+  });
 }
-async function saveStg(id){
-  const p=GP(S.selP);if(!p)return;
-  const s=(p.stages||[]).find(x=>x.id===id);if(!s)return;
-  const name=V('en');if(!name)return;
-  await api('PUT',`/api/stages/${id}`,{name,subId:V('eu')?+V('eu'):null,start:+V('et')||s.start,dur:+V('ed')||s.dur,status:V('es3')||s.status});
-  toast('Etap zaktualizowany');cm();await loadData();render();
+function saveStg(id){
+  var p=GP(S.selP);if(!p)return;
+  var s=(p.stages||[]).find(function(x){return x.id===id;});if(!s)return;
+  var name=V('en');if(!name)return;
+  var subId=V('eu')?+V('eu'):null;
+  api('PUT','/api/stages/'+id,{name:name,subId:subId,start:+V('et')||s.start,dur:+V('ed')||s.dur,status:V('es3')||s.status}).then(function(){
+    toast('Etap zaktualizowany');cm();loadData();
+  });
 }
-async function qStatus(id,ns){
-  const p=GP(S.selP);if(!p)return;
-  const s=(p.stages||[]).find(x=>x.id===id);if(!s)return;
-  await api('PUT',`/api/stages/${id}`,{...s,status:ns});
-  toast('Status zmieniony');await loadData();render();
+function qSt(id,ns){
+  var p=GP(S.selP);if(!p)return;
+  var s=(p.stages||[]).find(function(x){return x.id===id;});if(!s)return;
+  api('PUT','/api/stages/'+id,{name:s.name,subId:s.subId,start:s.start,dur:s.dur,status:ns}).then(function(){
+    toast('Status zmieniony');loadData();
+  });
 }
-async function delStage(id){
+function delStg(id){
   if(!confirm('Usunąć ten etap?'))return;
-  await api('DELETE',`/api/stages/${id}`);
-  toast('Etap usunięty');await loadData();render();
+  api('DELETE','/api/stages/'+id).then(function(){toast('Etap usunięty');loadData();});
 }
-async function addB(){
-  const name=V('bname');if(!name)return;
-  await api('POST','/api/subcontractors',{name,contact:V('bcont'),phone:V('bph'),email:V('bmail'),specs:V('bspec').split(',').map(x=>x.trim()).filter(Boolean),notes:V('bnot'),active:V('bact')!=='0'});
-  toast('Podwykonawca dodany');cm();await loadData();render();
+function addB(){
+  var name=V('bname');if(!name)return;
+  api('POST','/api/subcontractors',{name:name,contact:V('bcont'),phone:V('bph'),email:V('bmail'),specs:V('bspec').split(',').map(function(x){return x.trim();}).filter(Boolean),notes:V('bnot'),active:V('bact')!=='0'}).then(function(){
+    toast('Podwykonawca dodany');cm();loadData();
+  });
 }
-async function saveB(id){
-  await api('PUT',`/api/subcontractors/${id}`,{name:V('bname'),contact:V('bcont'),phone:V('bph'),email:V('bmail'),specs:V('bspec').split(',').map(x=>x.trim()).filter(Boolean),notes:V('bnot'),active:V('bact')!=='0'});
-  toast('Zapisano');cm();await loadData();render();
+function saveB(id){
+  api('PUT','/api/subcontractors/'+id,{name:V('bname'),contact:V('bcont'),phone:V('bph'),email:V('bmail'),specs:V('bspec').split(',').map(function(x){return x.trim();}).filter(Boolean),notes:V('bnot'),active:V('bact')!=='0'}).then(function(){
+    toast('Zapisano');cm();loadData();
+  });
 }
-async function delSub(id){
+function delSub(id){
   if(!confirm('Usunąć podwykonawcę?'))return;
-  await api('DELETE',`/api/subcontractors/${id}`);
-  toast('Usunięto');S.selS=null;await loadData();render();
+  api('DELETE','/api/subcontractors/'+id).then(function(){toast('Usunięto');S.selS=null;loadData();});
 }
-
-// ── EXPORT ──
-const SL_EXP={done:'Zakończony',inprogress:'W trakcie',planned:'Planowany',delayed:'Opóźniony',notstarted:'Nie rozpoczęty'};
 
 function toCSV(rows){
-  return '﻿'+rows.map(r=>r.length===0?'':r.map(c=>'"'+String(c===null||c===undefined?'':c).replace(/"/g,'""')+'"').join(';')).join('
-');
+  return '\uFEFF'+rows.map(function(r){
+    if(!r.length)return '';
+    return r.map(function(c){return '"'+String(c===null||c===undefined?'':c).replace(/"/g,'""')+'"';}).join(';');
+  }).join('\r\n');
 }
-function dlCSV(csv, filename){
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
+function dlFile(csv,filename){
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
   a.href=url;a.download=filename;
   document.body.appendChild(a);a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},100);
 }
 function exportXls(projId){
-  const p=S.projects.find(x=>x.id===projId);
+  var p=S.projects.find(function(x){return x.id===projId;});
   if(!p){toast('Nie znaleziono projektu');return;}
-  const rows=[
-    ['Projekt:',p.name],
-    ['Lokalizacja:',p.location||''],
-    ['Klient:',p.client||''],
-    ['Tygodnie:',p.weeks],
+  var rows=[
+    ['Projekt:',p.name],['Lokalizacja:',p.location||''],['Klient:',p.client||''],['Tygodnie:',p.weeks],
     [],
-    ['Etap','Podwykonawca','Tydzień start','Czas trwania (tyg.)','Tydzień końca','Status'],
+    ['Etap','Podwykonawca','Tydzień start','Czas trwania (tyg.)','Tydzień końca','Status']
   ];
-  (p.stages||[]).forEach(s=>{
-    const sub=S.subs.find(x=>x.id===s.subId);
-    rows.push([s.name,sub?sub.name:'—',s.start,s.dur,(s.start+s.dur-1),SL_EXP[s.status]||s.status]);
+  (p.stages||[]).forEach(function(s){
+    var sub=S.subs.find(function(x){return x.id===s.subId;});
+    rows.push([s.name,sub?sub.name:'—',s.start,s.dur,s.start+s.dur-1,SLX[s.status]||s.status]);
   });
-  const fname='harmonogram_'+(p.name||'projekt').replace(/[^a-zA-Z0-9]/g,'_')+'.csv';
-  dlCSV(toCSV(rows),fname);
-  toast('Plik pobrany: '+fname);
+  var fname='harmonogram_'+(p.name||'projekt').replace(/[^a-zA-Z0-9]/g,'_')+'.csv';
+  dlFile(toCSV(rows),fname);
+  toast('Pobrano: '+fname);
 }
 function exportAll(){
-  const rows=[['Projekt','Lokalizacja','Klient','Etap','Podwykonawca','Tydzień start','Czas trwania (tyg.)','Tydzień końca','Status']];
-  S.projects.forEach(p=>{
+  var rows=[['Projekt','Lokalizacja','Klient','Etap','Podwykonawca','Tydzień start','Czas trwania (tyg.)','Tydzień końca','Status']];
+  S.projects.forEach(function(p){
     if(!(p.stages||[]).length){rows.push([p.name,p.location||'',p.client||'','—','—','','','','']);return;}
-    p.stages.forEach(s=>{
-      const sub=S.subs.find(x=>x.id===s.subId);
-      rows.push([p.name,p.location||'',p.client||'',s.name,sub?sub.name:'—',s.start,s.dur,(s.start+s.dur-1),SL_EXP[s.status]||s.status]);
+    p.stages.forEach(function(s){
+      var sub=S.subs.find(function(x){return x.id===s.subId;});
+      rows.push([p.name,p.location||'',p.client||'',s.name,sub?sub.name:'—',s.start,s.dur,s.start+s.dur-1,SLX[s.status]||s.status]);
     });
   });
-  dlCSV(toCSV(rows),'harmonogram_wszystkie_projekty.csv');
-  toast('Plik pobrany');
+  dlFile(toCSV(rows),'harmonogram_wszystkie_projekty.csv');
+  toast('Pobrano plik z wszystkimi projektami');
 }
 
-// ── INIT ──
-(async()=>{
-  try{
-    const me=await api('GET','/api/me');
-    if(me&&me.authenticated){
-      S.auth=true;S.loading=true;render();await loadData();
-    } else {
-      S.auth=false;S.loading=false;render();
-    }
-  } catch(e){
+api('GET','/api/me').then(function(me){
+  if(me&&me.authenticated){
+    S.auth=true;S.loading=true;render();loadData();
+  } else {
     S.auth=false;S.loading=false;render();
   }
-})();
+}).catch(function(){
+  S.auth=false;S.loading=false;render();
+});
 </script>
 </body>
 </html>
