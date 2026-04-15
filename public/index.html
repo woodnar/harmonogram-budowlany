@@ -313,20 +313,21 @@ function renderTopbar() {
 ══════════════════════════════ */
 function renderProjects() {
   const del = state.projects.reduce((a,p)=>a+p.stages.filter(s=>s.status==='delayed').length,0);
-  const avg = state.projects.length ? Math.round(state.projects.reduce((a,p)=>a+p.progress,0)/state.projects.length) : 0;
+  const avg = state.projects.length ? Math.round(state.projects.reduce((a,p)=>a+calcProgress(p),0)/state.projects.length) : 0;
   const actS = state.subs.filter(s=>s.active).length;
   const rows = state.projects.map(p => {
     const isDel = p.stages.some(s=>s.status==='delayed');
-    const col = isDel?'#E24B4A':p.progress>=80?'#639922':'#378ADD';
-    const st = isDel?'delayed':p.progress===100?'done':p.progress>0?'inprogress':'notstarted';
+    const prog = calcProgress(p);
+    const col = isDel?'#E24B4A':prog>=80?'#639922':'#378ADD';
+    const st = isDel?'delayed':prog===100?'done':prog>0?'inprogress':'notstarted';
     return `<div class="card card-hover ${p.id===state.selProjId?'sel':''}" onclick="selectProj(${p.id})">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
         <span style="font-size:14px;font-weight:500;color:var(--tx1)">${p.name}</span>${badge(st)}
       </div>
       <div style="font-size:12px;color:var(--tx2);margin-bottom:8px">${p.location} · ${p.client} · ${p.weeks} tyg. · ${p.stages.length} etapów</div>
       <div style="display:flex;align-items:center;gap:10px">
-        <div class="pbar" style="flex:1"><div class="pfill" style="width:${p.progress}%;background:${col}"></div></div>
-        <span style="font-size:12px;color:var(--tx2);min-width:30px;text-align:right">${p.progress}%</span>
+        <div class="pbar" style="flex:1"><div class="pfill" style="width:${prog}%;background:${col}"></div></div>
+        <span style="font-size:12px;color:var(--tx2);min-width:30px;text-align:right">${prog}%</span>
       </div>
     </div>`;
   }).join('');
@@ -387,7 +388,7 @@ function renderGantt() {
       </div>
     </div>
     <div class="stats" style="margin-bottom:13px">
-      <div class="stat"><div class="sl">Postęp</div><div class="sv">${p.progress}%</div></div>
+      <div class="stat"><div class="sl">Postęp</div><div class="sv">${calcProgress(p)}%</div></div>
       <div class="stat"><div class="sl">Etapów</div><div class="sv">${p.stages.length}</div></div>
       <div class="stat"><div class="sl">Zakończone</div><div class="sv">${done}</div></div>
       <div class="stat"><div class="sl">Tygodnie</div><div class="sv">${p.weeks}</div></div>
@@ -488,7 +489,7 @@ function renderSubsView() {
 function renderDashProj() {
   const W = weeks();
   const del = state.projects.reduce((a,p)=>a+p.stages.filter(s=>s.status==='delayed').length,0);
-  const avg = state.projects.length ? Math.round(state.projects.reduce((a,p)=>a+p.progress,0)/state.projects.length) : 0;
+  const avg = state.projects.length ? Math.round(state.projects.reduce((a,p)=>a+calcProgress(p),0)/state.projects.length) : 0;
   const wHead = W.map(w=>{const n=getProjOverlap(w);return`<div class="wc ${n>=3?'ov':n>=2?'hi':''}">T${w}</div>`;}).join('');
   const projRows = state.projects.map((p,pi)=>{
     const col = PROJ_HEX[pi%PROJ_HEX.length];
@@ -499,7 +500,7 @@ function renderDashProj() {
       const c=isDel?'#E24B4A':col;const op=act[0].status==='done'?1:act[0].status==='inprogress'?.8:.4;
       return`<div class="bc"><div class="bfill" style="background:${c};opacity:${op}" onmouseenter="showTip(this,'T${w}: ${act.map(s=>s.name).join(', ')}')" onmouseleave="hideTip()"></div></div>`;
     }).join('');
-    return`<div class="bar-row"><div class="row-lbl" style="width:160px"><div style="font-size:13px;font-weight:500;color:var(--tx1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px">${p.name}</div><div style="font-size:10px;color:var(--tx2)">${p.progress}% · ${p.weeks} tyg.</div></div><div class="bar-cells">${cells}</div></div>`;
+    return`<div class="bar-row"><div class="row-lbl" style="width:160px"><div style="font-size:13px;font-weight:500;color:var(--tx1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px">${p.name}</div><div style="font-size:10px;color:var(--tx2)">${calcProgress(p)}% · ${p.weeks} tyg.</div></div><div class="bar-cells">${cells}</div></div>`;
   }).join('');
   const overRow = W.map(w=>{const n=getProjOverlap(w);if(!n)return`<div class="div-c"></div>`;const c=n>=3?'#E24B4A':n===2?'#BA7517':'#378ADD';const op=n===1?.25:n===2?.55:.85;return`<div class="div-c"><div class="div-fill" style="background:${c};opacity:${op}"></div></div>`;}).join('');
   return `<div class="stats">
@@ -616,7 +617,6 @@ function renderModal() {
         <div class="frow"><label>Tygodni</label><input id="m-weeks" type="number" value="${p.weeks||16}" min="4" max="60"></div>
       </div>
       <div class="frow"><label>Klient</label><input id="m-client" value="${p.client||''}" placeholder="np. Jan Kowalski"></div>
-      <div class="frow"><label>Postęp (%)</label><input id="m-progress" type="number" value="${p.progress||0}" min="0" max="100"></div>
       <div class="mbtns"><button class="btn" onclick="closeModal()">Anuluj</button><button class="btn btn-primary" onclick="${m.type==='editproj'?'saveProj()':'addProj()'}">Zapisz</button></div>`;
   } else if(m.type==='addstage') {
     const p = getProj(state.selProjId);
@@ -710,12 +710,12 @@ function bgClose(e) { if(e.target.classList.contains('modal-bg')) closeModal(); 
 
 async function addProj() {
   const name=val('m-name'); if(!name)return;
-  const r = await api('POST','/api/projects',{name,short:name.split(' ')[0],location:val('m-loc')||'—',client:val('m-client')||'—',weeks:+val('m-weeks')||16,progress:+val('m-progress')||0});
+  const r = await api('POST','/api/projects',{name,short:name.split(' ')[0],location:val('m-loc')||'—',client:val('m-client')||'—',weeks:+val('m-weeks')||16,progress:0});
   if(r){toast('Projekt dodany');closeModal();await loadData();state.selProjId=r.id;state.view='gantt';render();}
 }
 async function saveProj() {
   const p=getProj(state.selProjId);if(!p)return;
-  await api('PUT',`/api/projects/${p.id}`,{name:val('m-name')||p.name,short:(val('m-name')||p.name).split(' ')[0],location:val('m-loc'),client:val('m-client'),weeks:+val('m-weeks')||p.weeks,progress:+val('m-progress')});
+  await api('PUT',`/api/projects/${p.id}`,{name:val('m-name')||p.name,short:(val('m-name')||p.name).split(' ')[0],location:val('m-loc'),client:val('m-client'),weeks:+val('m-weeks')||p.weeks});
   toast('Zapisano');closeModal();await loadData();render();
 }
 async function deleteProj(id) {
