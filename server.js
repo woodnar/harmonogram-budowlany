@@ -1,8 +1,9 @@
 const express = require('express');
 const session = require('express-session');
-const SQLiteStore = require('connect-sqlite3')(session);
 const bcrypt = require('bcryptjs');
-const Database = require('better-sqlite3');
+const { v4: uuidv4 } = require('uuid');
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
 const fs = require('fs');
 
@@ -10,96 +11,95 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const TEAM_PASSWORD = process.env.TEAM_PASSWORD || 'budowa2024';
 
-// Upewnij się że folder data istnieje
+// Folder na dane
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-// Baza danych
-const db = new Database(path.join(dataDir, 'harmonogram.db'));
+// Baza danych JSON
+const adapter = new FileSync(path.join(dataDir, 'db.json'));
+const db = low(adapter);
 
-// Inicjalizacja tabel
-db.exec(`
-  CREATE TABLE IF NOT EXISTS projects (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    short TEXT,
-    location TEXT,
-    client TEXT,
-    weeks INTEGER DEFAULT 16,
-    progress INTEGER DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
+// Domyślna struktura + przykładowe dane
+db.defaults({
+  projects: [],
+  subcontractors: [],
+  nextProjectId: 1,
+  nextStageId: 1,
+  nextSubId: 1,
+}).write();
 
-  CREATE TABLE IF NOT EXISTS stages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    project_id INTEGER NOT NULL,
-    name TEXT NOT NULL,
-    sub_id INTEGER,
-    start_week INTEGER DEFAULT 1,
-    duration INTEGER DEFAULT 2,
-    status TEXT DEFAULT 'planned',
-    sort_order INTEGER DEFAULT 0,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
-  );
-
-  CREATE TABLE IF NOT EXISTS subcontractors (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    contact TEXT,
-    phone TEXT,
-    email TEXT,
-    specs TEXT DEFAULT '[]',
-    notes TEXT DEFAULT '',
-    active INTEGER DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
-`);
-
-// Wstaw przykładowe dane jeśli baza jest pusta
-const projCount = db.prepare('SELECT COUNT(*) as n FROM projects').get();
-if (projCount.n === 0) {
-  const insertProj = db.prepare('INSERT INTO projects (name, short, location, client, weeks, progress) VALUES (?, ?, ?, ?, ?, ?)');
-  const insertStage = db.prepare('INSERT INTO stages (project_id, name, sub_id, start_week, duration, status, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)');
-  const insertSub = db.prepare('INSERT INTO subcontractors (name, contact, phone, email, specs, notes, active) VALUES (?, ?, ?, ?, ?, ?, ?)');
-
+// Wstaw przykładowe dane jeśli baza pusta
+if (db.get('projects').value().length === 0) {
   const subs = [
-    ['Kowalski Ziemne','Marek Kowalski','600 111 222','kowalski@ziemne.pl','["Roboty ziemne","Wykopy","Niwelacja"]','Dobra ekipa, zawsze na czas',1],
-    ['Beton-Bud Sp. z o.o.','Andrzej Bednarz','601 222 333','a.bednarz@betonbud.pl','["Fundamenty","Beton","Żelbet"]','Wymaga zaliczki 30%',1],
-    ['Mur-Pol Wojtas','Stanisław Wojtas','602 333 444','wojtas@murpol.pl','["Murowanie","Stan surowy","Ściany nośne"]','',1],
-    ['Ciesielstwo Nowak','Piotr Nowak','603 444 555','pnowak@ciesielstwo.pl','["Dach","Więźba","Konstrukcja drewniana"]','Tylko południe Polski',1],
-    ['Elektro-Plus','Tomasz Krawczyk','604 555 666','biuro@elektroplus.pl','["Instalacje elektryczne","Odgromówka","Fotowoltaika"]','',1],
-    ['Hydro Serwis','Krzysztof Zając','605 666 777','k.zajac@hydroserwis.pl','["Instalacje wod-kan","CO","Wentylacja"]','Certyfikat UDT',1],
-    ['Tynk-Art Pietrzak','Józef Pietrzak','606 777 888','tynkart@wp.pl','["Tynki","Elewacja","Gładzie"]','',1],
-    ['Finish Pro','Kamil Wiśniewski','607 888 999','kamil@finishpro.pl','["Wykończenie wnętrz","Podłogi","Malowanie"]','Sezonowo – dostępny IV–X',0],
-    ['Green-Land','Agnieszka Bąk','608 999 000','a.bak@greenland.pl','["Zieleń","Zagospodarowanie terenu","Małarchitektura"]','',1],
-    ['SteelPol Nowy Sącz','Ryszard Dąbrowski','609 000 111','r.dabrowski@steelpol.pl','["Konstrukcja stalowa","Hale","Wiaty"]','Min. zlecenie 50k PLN',1],
+    {id:1,name:'Kowalski Ziemne',contact:'Marek Kowalski',phone:'600 111 222',email:'kowalski@ziemne.pl',specs:['Roboty ziemne','Wykopy'],notes:'Dobra ekipa, zawsze na czas',active:true},
+    {id:2,name:'Beton-Bud Sp. z o.o.',contact:'Andrzej Bednarz',phone:'601 222 333',email:'a.bednarz@betonbud.pl',specs:['Fundamenty','Beton','Żelbet'],notes:'Wymaga zaliczki 30%',active:true},
+    {id:3,name:'Mur-Pol Wojtas',contact:'Stanisław Wojtas',phone:'602 333 444',email:'wojtas@murpol.pl',specs:['Murowanie','Stan surowy','Ściany nośne'],notes:'',active:true},
+    {id:4,name:'Ciesielstwo Nowak',contact:'Piotr Nowak',phone:'603 444 555',email:'pnowak@ciesielstwo.pl',specs:['Dach','Więźba'],notes:'Tylko południe Polski',active:true},
+    {id:5,name:'Elektro-Plus',contact:'Tomasz Krawczyk',phone:'604 555 666',email:'biuro@elektroplus.pl',specs:['Instalacje elektryczne','Fotowoltaika'],notes:'',active:true},
+    {id:6,name:'Hydro Serwis',contact:'Krzysztof Zając',phone:'605 666 777',email:'k.zajac@hydroserwis.pl',specs:['Instalacje wod-kan','CO','Wentylacja'],notes:'Certyfikat UDT',active:true},
+    {id:7,name:'Tynk-Art Pietrzak',contact:'Józef Pietrzak',phone:'606 777 888',email:'tynkart@wp.pl',specs:['Tynki','Elewacja','Gładzie'],notes:'',active:true},
+    {id:8,name:'Finish Pro',contact:'Kamil Wiśniewski',phone:'607 888 999',email:'kamil@finishpro.pl',specs:['Wykończenie wnętrz','Podłogi'],notes:'Sezonowo – dostępny IV–X',active:false},
+    {id:9,name:'Green-Land',contact:'Agnieszka Bąk',phone:'608 999 000',email:'a.bak@greenland.pl',specs:['Zieleń','Zagospodarowanie terenu'],notes:'',active:true},
+    {id:10,name:'SteelPol Nowy Sącz',contact:'Ryszard Dąbrowski',phone:'609 000 111',email:'r.dabrowski@steelpol.pl',specs:['Konstrukcja stalowa','Hale'],notes:'Min. zlecenie 50k PLN',active:true},
   ];
-  subs.forEach(s => insertSub.run(...s));
+  db.set('subcontractors', subs).set('nextSubId', 11).write();
 
-  const p1 = insertProj.run('Osiedle Słoneczne – blok A','Słoneczne','Bielsko-Biała','TBS Południe Sp. z o.o.',20,62).lastInsertRowid;
-  [[1,'Roboty ziemne',1,1,3,'done',1],[2,'Fundamenty',2,3,4,'done',2],[3,'Stan surowy zamknięty',3,6,7,'inprogress',3],[4,'Dach – konstrukcja',4,12,3,'planned',4],[5,'Instalacje elektryczne',5,10,6,'planned',5],[6,'Instalacje wod-kan',6,10,6,'planned',6],[7,'Elewacja i tynki',7,15,4,'planned',7],[8,'Odbiór techniczny',null,20,1,'planned',8]].forEach(s => insertStage.run(p1,...s.slice(1)));
-
-  const p2 = insertProj.run('Willa pod Skarpą','Willa Skarpa','Żywiec','Jan Wróblewski',16,85).lastInsertRowid;
-  [[1,'Roboty ziemne',1,1,2,'done',1],[2,'Fundamenty i piwnica',2,3,3,'done',2],[3,'Ściany nośne',3,6,4,'done',3],[4,'Strop i dach',4,9,3,'done',4],[5,'Okna i drzwi',null,12,2,'inprogress',5],[6,'Wykończenie wnętrz',8,14,3,'planned',6],[7,'Zagospodarowanie terenu',9,16,2,'notstarted',7]].forEach(s => insertStage.run(p2,...s.slice(1)));
-
-  const p3 = insertProj.run('Pawilon Galeria Beskidy','Beskidy','Sucha Beskidzka','Beskid Invest S.A.',24,28).lastInsertRowid;
-  [[1,'Projekt wykonawczy',null,1,4,'done',1],[2,'Roboty ziemne',1,4,3,'done',2],[3,'Fundamenty',2,6,4,'inprogress',3],[4,'Konstrukcja stalowa',10,9,6,'planned',4],[5,'Instalacje',5,12,8,'delayed',5],[6,'Tynki i elewacja',7,18,4,'notstarted',6],[7,'Wykończenie',8,21,4,'notstarted',7]].forEach(s => insertStage.run(p3,...s.slice(1)));
+  const projects = [
+    {
+      id:1, name:'Osiedle Słoneczne – blok A', short:'Słoneczne',
+      location:'Bielsko-Biała', client:'TBS Południe Sp. z o.o.', weeks:20, progress:62,
+      stages:[
+        {id:1,name:'Roboty ziemne',subId:1,start:1,dur:3,status:'done'},
+        {id:2,name:'Fundamenty',subId:2,start:3,dur:4,status:'done'},
+        {id:3,name:'Stan surowy zamknięty',subId:3,start:6,dur:7,status:'inprogress'},
+        {id:4,name:'Dach – konstrukcja',subId:4,start:12,dur:3,status:'planned'},
+        {id:5,name:'Instalacje elektryczne',subId:5,start:10,dur:6,status:'planned'},
+        {id:6,name:'Instalacje wod-kan',subId:6,start:10,dur:6,status:'planned'},
+        {id:7,name:'Elewacja i tynki',subId:7,start:15,dur:4,status:'planned'},
+        {id:8,name:'Odbiór techniczny',subId:null,start:20,dur:1,status:'planned'},
+      ]
+    },
+    {
+      id:2, name:'Willa pod Skarpą', short:'Willa Skarpa',
+      location:'Żywiec', client:'Jan Wróblewski', weeks:16, progress:85,
+      stages:[
+        {id:1,name:'Roboty ziemne',subId:1,start:1,dur:2,status:'done'},
+        {id:2,name:'Fundamenty i piwnica',subId:2,start:3,dur:3,status:'done'},
+        {id:3,name:'Ściany nośne',subId:3,start:6,dur:4,status:'done'},
+        {id:4,name:'Strop i dach',subId:4,start:9,dur:3,status:'done'},
+        {id:5,name:'Okna i drzwi',subId:null,start:12,dur:2,status:'inprogress'},
+        {id:6,name:'Wykończenie wnętrz',subId:8,start:14,dur:3,status:'planned'},
+        {id:7,name:'Zagospodarowanie terenu',subId:9,start:16,dur:2,status:'notstarted'},
+      ]
+    },
+    {
+      id:3, name:'Pawilon Galeria Beskidy', short:'Beskidy',
+      location:'Sucha Beskidzka', client:'Beskid Invest S.A.', weeks:24, progress:28,
+      stages:[
+        {id:1,name:'Projekt wykonawczy',subId:null,start:1,dur:4,status:'done'},
+        {id:2,name:'Roboty ziemne',subId:1,start:4,dur:3,status:'done'},
+        {id:3,name:'Fundamenty',subId:2,start:6,dur:4,status:'inprogress'},
+        {id:4,name:'Konstrukcja stalowa',subId:10,start:9,dur:6,status:'planned'},
+        {id:5,name:'Instalacje',subId:5,start:12,dur:8,status:'delayed'},
+        {id:6,name:'Tynki i elewacja',subId:7,start:18,dur:4,status:'notstarted'},
+        {id:7,name:'Wykończenie',subId:8,start:21,dur:4,status:'notstarted'},
+      ]
+    },
+  ];
+  db.set('projects', projects).set('nextProjectId', 4).set('nextStageId', 20).write();
 }
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-  store: new SQLiteStore({ db: 'sessions.db', dir: dataDir }),
-  secret: process.env.SESSION_SECRET || 'harmonogram-secret-key-2024',
+  secret: process.env.SESSION_SECRET || 'harmonogram-secret-2024',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 dni
+  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Auth middleware
 function requireAuth(req, res, next) {
   if (req.session && req.session.authenticated) return next();
   res.status(401).json({ error: 'Wymagane logowanie' });
@@ -107,106 +107,110 @@ function requireAuth(req, res, next) {
 
 // ── AUTH ──
 app.post('/api/login', (req, res) => {
-  const { password } = req.body;
-  if (password === TEAM_PASSWORD) {
+  if (req.body.password === TEAM_PASSWORD) {
     req.session.authenticated = true;
     res.json({ ok: true });
   } else {
     res.status(401).json({ error: 'Nieprawidłowe hasło' });
   }
 });
-
-app.post('/api/logout', (req, res) => {
-  req.session.destroy();
-  res.json({ ok: true });
-});
-
-app.get('/api/me', (req, res) => {
-  res.json({ authenticated: !!(req.session && req.session.authenticated) });
-});
+app.post('/api/logout', (req, res) => { req.session.destroy(); res.json({ ok: true }); });
+app.get('/api/me', (req, res) => { res.json({ authenticated: !!(req.session && req.session.authenticated) }); });
 
 // ── PROJECTS ──
 app.get('/api/projects', requireAuth, (req, res) => {
-  const projects = db.prepare('SELECT * FROM projects ORDER BY id').all();
-  const stages = db.prepare('SELECT * FROM stages ORDER BY project_id, sort_order').all();
-  const result = projects.map(p => ({
-    ...p,
-    stages: stages.filter(s => s.project_id === p.id).map(s => ({
-      ...s,
-      subId: s.sub_id,
-      start: s.start_week,
-      dur: s.duration,
-    }))
-  }));
-  res.json(result);
+  res.json(db.get('projects').value());
 });
 
 app.post('/api/projects', requireAuth, (req, res) => {
-  const { name, short, location, client, weeks, progress } = req.body;
-  const r = db.prepare('INSERT INTO projects (name, short, location, client, weeks, progress) VALUES (?, ?, ?, ?, ?, ?)').run(name, short || name.split(' ')[0], location || '—', client || '—', weeks || 16, progress || 0);
-  res.json({ id: r.lastInsertRowid });
+  const id = db.get('nextProjectId').value();
+  const proj = { id, stages: [], ...req.body };
+  proj.short = proj.short || proj.name.split(' ')[0];
+  db.get('projects').push(proj).write();
+  db.set('nextProjectId', id + 1).write();
+  res.json({ id });
 });
 
 app.put('/api/projects/:id', requireAuth, (req, res) => {
-  const { name, short, location, client, weeks, progress } = req.body;
-  db.prepare('UPDATE projects SET name=?, short=?, location=?, client=?, weeks=?, progress=?, updated_at=CURRENT_TIMESTAMP WHERE id=?').run(name, short || name.split(' ')[0], location, client, weeks, progress, req.params.id);
+  const id = parseInt(req.params.id);
+  db.get('projects').find({ id }).assign(req.body).write();
   res.json({ ok: true });
 });
 
 app.delete('/api/projects/:id', requireAuth, (req, res) => {
-  db.prepare('DELETE FROM stages WHERE project_id=?').run(req.params.id);
-  db.prepare('DELETE FROM projects WHERE id=?').run(req.params.id);
+  const id = parseInt(req.params.id);
+  db.get('projects').remove({ id }).write();
   res.json({ ok: true });
 });
 
 // ── STAGES ──
 app.post('/api/projects/:projectId/stages', requireAuth, (req, res) => {
-  const { name, subId, start, dur, status } = req.body;
-  const maxOrder = db.prepare('SELECT MAX(sort_order) as m FROM stages WHERE project_id=?').get(req.params.projectId);
-  const r = db.prepare('INSERT INTO stages (project_id, name, sub_id, start_week, duration, status, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)').run(req.params.projectId, name, subId || null, start || 1, dur || 2, status || 'planned', (maxOrder.m || 0) + 1);
-  res.json({ id: r.lastInsertRowid });
+  const projectId = parseInt(req.params.projectId);
+  const stageId = db.get('nextStageId').value();
+  const stage = { id: stageId, ...req.body };
+  db.get('projects').find({ id: projectId }).get('stages').push(stage).write();
+  db.set('nextStageId', stageId + 1).write();
+  res.json({ id: stageId });
 });
 
-app.put('/api/stages/:id', requireAuth, (req, res) => {
-  const { name, subId, start, dur, status } = req.body;
-  db.prepare('UPDATE stages SET name=?, sub_id=?, start_week=?, duration=?, status=? WHERE id=?').run(name, subId || null, start, dur, status, req.params.id);
-  res.json({ ok: true });
+app.put('/api/stages/:stageId', requireAuth, (req, res) => {
+  const stageId = parseInt(req.params.stageId);
+  const projects = db.get('projects').value();
+  for (const p of projects) {
+    const stage = p.stages.find(s => s.id === stageId);
+    if (stage) {
+      Object.assign(stage, req.body);
+      db.write();
+      return res.json({ ok: true });
+    }
+  }
+  res.status(404).json({ error: 'Nie znaleziono etapu' });
 });
 
-app.delete('/api/stages/:id', requireAuth, (req, res) => {
-  db.prepare('DELETE FROM stages WHERE id=?').run(req.params.id);
-  res.json({ ok: true });
+app.delete('/api/stages/:stageId', requireAuth, (req, res) => {
+  const stageId = parseInt(req.params.stageId);
+  const projects = db.get('projects').value();
+  for (const p of projects) {
+    const idx = p.stages.findIndex(s => s.id === stageId);
+    if (idx !== -1) {
+      p.stages.splice(idx, 1);
+      db.write();
+      return res.json({ ok: true });
+    }
+  }
+  res.status(404).json({ error: 'Nie znaleziono etapu' });
 });
 
 // ── SUBCONTRACTORS ──
 app.get('/api/subcontractors', requireAuth, (req, res) => {
-  const rows = db.prepare('SELECT * FROM subcontractors ORDER BY name').all();
-  res.json(rows.map(s => ({ ...s, specs: JSON.parse(s.specs || '[]'), active: !!s.active })));
+  res.json(db.get('subcontractors').value());
 });
 
 app.post('/api/subcontractors', requireAuth, (req, res) => {
-  const { name, contact, phone, email, specs, notes, active } = req.body;
-  const r = db.prepare('INSERT INTO subcontractors (name, contact, phone, email, specs, notes, active) VALUES (?, ?, ?, ?, ?, ?, ?)').run(name, contact || '', phone || '', email || '', JSON.stringify(specs || []), notes || '', active !== false ? 1 : 0);
-  res.json({ id: r.lastInsertRowid });
+  const id = db.get('nextSubId').value();
+  db.get('subcontractors').push({ id, ...req.body }).write();
+  db.set('nextSubId', id + 1).write();
+  res.json({ id });
 });
 
 app.put('/api/subcontractors/:id', requireAuth, (req, res) => {
-  const { name, contact, phone, email, specs, notes, active } = req.body;
-  db.prepare('UPDATE subcontractors SET name=?, contact=?, phone=?, email=?, specs=?, notes=?, active=? WHERE id=?').run(name, contact || '', phone || '', email || '', JSON.stringify(specs || []), notes || '', active !== false ? 1 : 0, req.params.id);
+  const id = parseInt(req.params.id);
+  db.get('subcontractors').find({ id }).assign(req.body).write();
   res.json({ ok: true });
 });
 
 app.delete('/api/subcontractors/:id', requireAuth, (req, res) => {
-  db.prepare('DELETE FROM subcontractors WHERE id=?').run(req.params.id);
+  const id = parseInt(req.params.id);
+  db.get('subcontractors').remove({ id }).write();
   res.json({ ok: true });
 });
 
-// Fallback do index.html
+// Fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`Harmonogram budowlany działa na porcie ${PORT}`);
+  console.log(`Aplikacja działa na porcie ${PORT}`);
   console.log(`Hasło zespołu: ${TEAM_PASSWORD}`);
 });
