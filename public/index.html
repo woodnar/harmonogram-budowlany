@@ -151,7 +151,7 @@ function specCls(s){for(const k in SPEC_MAP)if(s.toLowerCase().includes(k))retur
 ══════════════════════════════ */
 let state = {
   authenticated: false,
-  loading: true,
+  loading: false,
   view: 'projects',
   projects: [],
   subs: [],
@@ -774,10 +774,25 @@ async function deleteStage(stageId) {
    INIT
 ══════════════════════════════ */
 (async()=>{
-  const me = await api('GET','/api/me');
-  if(me && me.authenticated){
-    state.authenticated=true;state.loading=true;render();await loadData();
-  } else { render(); }
+  try {
+    state.loading = false;
+    render(); // najpierw pokaż ekran logowania
+    const me = await api('GET','/api/me');
+    if(me && me.authenticated){
+      state.authenticated=true;
+      state.loading=true;
+      render();
+      await loadData();
+    } else {
+      state.authenticated=false;
+      state.loading=false;
+      render();
+    }
+  } catch(e) {
+    state.authenticated=false;
+    state.loading=false;
+    render();
+  }
 })();
 </script>
 </body>
