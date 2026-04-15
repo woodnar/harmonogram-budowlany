@@ -345,6 +345,13 @@ function renderGantt() {
   const p = getProj(state.selProjId); if(!p) return '<div class="loading">Wybierz projekt</div>';
   const ws = Array.from({length:p.weeks},(_,i)=>i+1);
   const wCols = ws.map(w=>`<th style="min-width:26px;width:26px;text-align:center;font-size:10px">T${w}</th>`).join('');
+  const STATUS_NEXT = {
+    notstarted:{next:'planned',lbl:'→ Planowany'},
+    planned:{next:'inprogress',lbl:'→ Rozpocznij'},
+    inprogress:{next:'done',lbl:'→ Zakończ'},
+    done:{next:'notstarted',lbl:'↺ Cofnij'},
+    delayed:{next:'inprogress',lbl:'→ Wznów'},
+  };
   const rows = p.stages.map(s => {
     const sub = getSub(s.subId);
     const col = STAT_HEX[s.status];
@@ -356,7 +363,16 @@ function renderGantt() {
     const sn = sub
       ? `<span style="font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline dotted" onclick="goSub(${sub.id})">${sub.name}</span>`
       : `<span style="font-size:11px;color:var(--tx3)">— brak —</span>`;
-    return`<tr><td style="font-size:13px;color:var(--tx1);min-width:130px;max-width:150px">${s.name}<br>${sn}</td><td style="padding:4px 5px">${badge(s.status)}</td>${cells}</tr>`;
+    const nx = STATUS_NEXT[s.status];
+    const statusBtn = `<button onclick="quickStatus(${s.id},'${nx.next}')" style="font-size:11px;padding:2px 8px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);cursor:pointer;white-space:nowrap">${nx.lbl}</button>`;
+    const editBtn = `<button onclick="openModal('editstage',null,${s.id})" style="font-size:11px;padding:2px 8px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);cursor:pointer">Edytuj</button>`;
+    const delBtn = `<button onclick="deleteStage(${s.id})" style="font-size:11px;padding:2px 6px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx-danger);cursor:pointer">✕</button>`;
+    return`<tr>
+      <td style="font-size:13px;color:var(--tx1);min-width:140px;max-width:160px">${s.name}<br>${sn}</td>
+      <td style="padding:4px 5px;white-space:nowrap">${badge(s.status)}</td>
+      <td style="padding:3px 6px;white-space:nowrap"><div style="display:flex;gap:4px">${statusBtn}${editBtn}${delBtn}</div></td>
+      ${cells}
+    </tr>`;
   }).join('');
   const isDel = p.stages.some(s=>s.status==='delayed');
   const done = p.stages.filter(s=>s.status==='done').length;
@@ -364,7 +380,11 @@ function renderGantt() {
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;flex-wrap:wrap;gap:8px">
       <div><div style="font-size:15px;font-weight:500;color:var(--tx1)">${p.name}</div>
       <div style="font-size:12px;color:var(--tx2);margin-top:3px">${p.location} · ${p.client}</div></div>
-      <div style="display:flex;gap:6px;align-items:center">${badge(isDel?'delayed':'inprogress')}<button class="btn" onclick="openModal('editproj')">Edytuj</button><button class="btn" style="color:var(--tx-danger)" onclick="deleteProj(${p.id})">Usuń</button></div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        ${badge(isDel?'delayed':'inprogress')}
+        <button class="btn" onclick="openModal('editproj')">Edytuj projekt</button>
+        <button class="btn" style="color:var(--tx-danger)" onclick="deleteProj(${p.id})">Usuń</button>
+      </div>
     </div>
     <div class="stats" style="margin-bottom:13px">
       <div class="stat"><div class="sl">Postęp</div><div class="sv">${p.progress}%</div></div>
@@ -373,8 +393,14 @@ function renderGantt() {
       <div class="stat"><div class="sl">Tygodnie</div><div class="sv">${p.weeks}</div></div>
     </div>
     <div class="slbl">Harmonogram Gantta</div>
+    <div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Kliknij strzałkę aby zmienić status etapu. Kliknij "Edytuj" aby zmienić podwykonawcę lub terminy.</div>
     <div class="gantt-wrap"><table class="gtbl">
-      <thead><tr><th style="min-width:130px">Etap / Podwykonawca</th><th style="min-width:100px">Status</th>${wCols}</tr></thead>
+      <thead><tr>
+        <th style="min-width:140px">Etap / Podwykonawca</th>
+        <th style="min-width:80px">Status</th>
+        <th style="min-width:200px">Akcje</th>
+        ${wCols}
+      </tr></thead>
       <tbody>${rows}</tbody>
     </table></div>
     <div class="actions"><button class="btn" onclick="openModal('addstage')">+ Dodaj etap</button></div>
@@ -607,6 +633,21 @@ function renderModal() {
         <option value="inprogress">W trakcie</option><option value="done">Zakończony</option><option value="delayed">Opóźniony</option>
       </select></div>
       <div class="mbtns"><button class="btn" onclick="closeModal()">Anuluj</button><button class="btn btn-primary" onclick="addStage()">Dodaj etap</button></div>`;
+  } else if(m.type==='editstage') {
+    const p = getProj(state.selProjId);
+    const s = p.stages.find(st=>st.id===m.stageId);
+    if(!s) return '';
+    const subOpts = state.subs.map(sub=>`<option value="${sub.id}" ${sub.id===s.subId?'selected':''}>${sub.name}</option>`).join('');
+    const statOpts = ['notstarted','planned','inprogress','done','delayed'].map(v=>`<option value="${v}" ${v===s.status?'selected':''}>${STAT_LBL[v]}</option>`).join('');
+    inner = `<div class="mtitle">Edytuj etap</div>
+      <div class="frow"><label>Nazwa etapu</label><input id="es-name" value="${s.name}"></div>
+      <div class="frow"><label>Podwykonawca</label><select id="es-sub"><option value="">— bez podwykonawcy —</option>${subOpts}</select></div>
+      <div class="two-col">
+        <div class="frow"><label>Tydzień start</label><input id="es-start" type="number" value="${s.start}" min="1" max="${p.weeks}"></div>
+        <div class="frow"><label>Czas trwania (tyg.)</label><input id="es-dur" type="number" value="${s.dur}" min="1"></div>
+      </div>
+      <div class="frow"><label>Status</label><select id="es-status">${statOpts}</select></div>
+      <div class="mbtns"><button class="btn" onclick="closeModal()">Anuluj</button><button class="btn btn-primary" onclick="saveStage(${s.id})">Zapisz zmiany</button></div>`;
   } else if(m.type==='addsub'||m.type==='editsub') {
     const s = m.type==='editsub' ? getSub(m.subId) : {};
     inner = `<div class="mtitle">${m.type==='editsub'?'Edytuj podwykonawcę':'Nowy podwykonawca'}</div>
@@ -663,7 +704,7 @@ function selSub(id) {
   const det=document.getElementById('sub-detail');
   if(det) det.innerHTML=renderSubDetail(); else render();
 }
-function openModal(type, subId) { state.modal={type,subId}; render(); }
+function openModal(type, subId, stageId) { state.modal={type,subId,stageId}; render(); }
 function closeModal() { state.modal=null; render(); }
 function bgClose(e) { if(e.target.classList.contains('modal-bg')) closeModal(); }
 
@@ -701,6 +742,32 @@ async function deleteSub(id) {
   if(!confirm('Usunąć podwykonawcę?'))return;
   await api('DELETE',`/api/subcontractors/${id}`);
   toast('Usunięto');state.selSubId=null;await loadData();render();
+}
+
+async function quickStatus(stageId, newStatus) {
+  const p = getProj(state.selProjId); if(!p) return;
+  const s = p.stages.find(st=>st.id===stageId); if(!s) return;
+  await api('PUT',`/api/stages/${stageId}`,{...s, status:newStatus});
+  toast('Status zmieniony');
+  await loadData(); render();
+}
+
+async function saveStage(stageId) {
+  const p = getProj(state.selProjId); if(!p) return;
+  const s = p.stages.find(st=>st.id===stageId); if(!s) return;
+  const name = val('es-name'); if(!name) return;
+  const subId = val('es-sub') ? +val('es-sub') : null;
+  await api('PUT',`/api/stages/${stageId}`,{
+    name, subId, start:+val('es-start')||s.start,
+    dur:+val('es-dur')||s.dur, status:val('es-status')||s.status
+  });
+  toast('Etap zaktualizowany'); closeModal(); await loadData(); render();
+}
+
+async function deleteStage(stageId) {
+  if(!confirm('Usunąć ten etap?')) return;
+  await api('DELETE',`/api/stages/${stageId}`);
+  toast('Etap usunięty'); await loadData(); render();
 }
 
 /* ══════════════════════════════
