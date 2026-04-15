@@ -585,21 +585,51 @@ async function delSub(id){
 }
 
 // ── EXPORT ──
-function exportXls(projId){
+const SL_EXP={done:'Zakończony',inprogress:'W trakcie',planned:'Planowany',delayed:'Opóźniony',notstarted:'Nie rozpoczęty'};
+
+function toCSV(rows){
+  return '﻿'+rows.map(r=>r.length===0?'':r.map(c=>'"'+String(c===null||c===undefined?'':c).replace(/"/g,'""')+'"').join(';')).join('
+');
+}
+function dlCSV(csv, filename){
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href='/api/export/'+projId;
-  a.download='harmonogram.csv';
-  document.body.appendChild(a);
-  a.click();
+  a.href=url;a.download=filename;
+  document.body.appendChild(a);a.click();
   document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function exportXls(projId){
+  const p=S.projects.find(x=>x.id===projId);
+  if(!p){toast('Nie znaleziono projektu');return;}
+  const rows=[
+    ['Projekt:',p.name],
+    ['Lokalizacja:',p.location||''],
+    ['Klient:',p.client||''],
+    ['Tygodnie:',p.weeks],
+    [],
+    ['Etap','Podwykonawca','Tydzień start','Czas trwania (tyg.)','Tydzień końca','Status'],
+  ];
+  (p.stages||[]).forEach(s=>{
+    const sub=S.subs.find(x=>x.id===s.subId);
+    rows.push([s.name,sub?sub.name:'—',s.start,s.dur,(s.start+s.dur-1),SL_EXP[s.status]||s.status]);
+  });
+  const fname='harmonogram_'+(p.name||'projekt').replace(/[^a-zA-Z0-9]/g,'_')+'.csv';
+  dlCSV(toCSV(rows),fname);
+  toast('Plik pobrany: '+fname);
 }
 function exportAll(){
-  const a=document.createElement('a');
-  a.href='/api/export-all';
-  a.download='harmonogram_wszystkie.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  const rows=[['Projekt','Lokalizacja','Klient','Etap','Podwykonawca','Tydzień start','Czas trwania (tyg.)','Tydzień końca','Status']];
+  S.projects.forEach(p=>{
+    if(!(p.stages||[]).length){rows.push([p.name,p.location||'',p.client||'','—','—','','','','']);return;}
+    p.stages.forEach(s=>{
+      const sub=S.subs.find(x=>x.id===s.subId);
+      rows.push([p.name,p.location||'',p.client||'',s.name,sub?sub.name:'—',s.start,s.dur,(s.start+s.dur-1),SL_EXP[s.status]||s.status]);
+    });
+  });
+  dlCSV(toCSV(rows),'harmonogram_wszystkie_projekty.csv');
+  toast('Plik pobrany');
 }
 
 // ── INIT ──
