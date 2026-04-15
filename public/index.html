@@ -6,792 +6,593 @@
 <title>Harmonogramy budowlane</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-:root{
-  --bg1:#ffffff;--bg2:#f5f5f3;--bg3:#eeece7;
-  --bg-info:#e6f1fb;--bg-danger:#fcebeb;--bg-success:#eaf3de;--bg-warning:#faeeda;
-  --tx1:#1a1a18;--tx2:#5f5e5a;--tx3:#888780;
-  --tx-info:#185fa5;--tx-danger:#a32d2d;--tx-success:#3b6d11;--tx-warning:#854f0b;
-  --bd3:rgba(0,0,0,.12);--bd2:rgba(0,0,0,.22);--bd1:rgba(0,0,0,.32);
-  --bd-info:#378add;--r-md:8px;--r-lg:12px;
-  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-}
-@media(prefers-color-scheme:dark){:root{
-  --bg1:#1e1e1c;--bg2:#2a2a28;--bg3:#333330;
-  --bg-info:#0c3558;--bg-danger:#3d1515;--bg-success:#1a3308;--bg-warning:#3d2504;
-  --tx1:#f0ede6;--tx2:#b4b2a9;--tx3:#888780;
-  --tx-info:#85b7eb;--tx-danger:#f09595;--tx-success:#97c459;--tx-warning:#ef9f27;
-  --bd3:rgba(255,255,255,.10);--bd2:rgba(255,255,255,.20);--bd1:rgba(255,255,255,.32);
-}}
+:root{--bg1:#fff;--bg2:#f5f5f3;--bg3:#eeece7;--bgi:#e6f1fb;--bgd:#fcebeb;--bgs:#eaf3de;--bgw:#faeeda;--tx1:#1a1a18;--tx2:#5f5e5a;--tx3:#888780;--txi:#185fa5;--txd:#a32d2d;--txs:#3b6d11;--txw:#854f0b;--bd3:rgba(0,0,0,.12);--bd2:rgba(0,0,0,.22);--bdi:#378add;--rmd:8px;--rlg:12px}
+@media(prefers-color-scheme:dark){:root{--bg1:#1e1e1c;--bg2:#2a2a28;--bg3:#333330;--bgi:#0c3558;--bgd:#3d1515;--bgs:#1a3308;--bgw:#3d2504;--tx1:#f0ede6;--tx2:#b4b2a9;--tx3:#888780;--txi:#85b7eb;--txd:#f09595;--txs:#97c459;--txw:#ef9f27;--bd3:rgba(255,255,255,.10);--bd2:rgba(255,255,255,.20)}}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg3);color:var(--tx1);min-height:100vh}
-/* login */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
-.login-box{background:var(--bg1);border:0.5px solid var(--bd3);border-radius:var(--r-lg);padding:2rem;width:100%;max-width:360px}
-.login-title{font-size:18px;font-weight:500;margin-bottom:6px;color:var(--tx1)}
-.login-sub{font-size:13px;color:var(--tx2);margin-bottom:1.5rem}
-/* shell */
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--tx1);min-height:100vh}
 .shell{max-width:1140px;margin:0 auto;padding:1.5rem 1rem}
-/* nav */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.login-box{background:var(--bg1);border:0.5px solid var(--bd3);border-radius:var(--rlg);padding:2rem;width:100%;max-width:360px}
 .topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem}
-.app-title{font-size:15px;font-weight:500;color:var(--tx1)}
-.tab-bar{display:flex;gap:3px;background:var(--bg2);border-radius:var(--r-md);padding:3px;flex-wrap:wrap}
-.tab{font-size:13px;padding:5px 12px;border-radius:6px;border:none;background:transparent;color:var(--tx2);cursor:pointer;white-space:nowrap}
-.tab.active{background:var(--bg1);color:var(--tx1);font-weight:500;border:0.5px solid var(--bd3)}
-/* buttons */
-.btn{font-size:13px;padding:6px 13px;border-radius:var(--r-md);border:0.5px solid var(--bd2);background:var(--bg1);color:var(--tx1);cursor:pointer}
+.tab-bar{display:flex;gap:3px;background:var(--bg2);border-radius:var(--rmd);padding:3px;flex-wrap:wrap}
+.tab{font-size:13px;padding:5px 11px;border-radius:6px;border:none;background:transparent;color:var(--tx2);cursor:pointer}
+.tab.on{background:var(--bg1);color:var(--tx1);font-weight:500;border:0.5px solid var(--bd3)}
+.btn{font-size:13px;padding:6px 13px;border-radius:var(--rmd);border:0.5px solid var(--bd2);background:var(--bg1);color:var(--tx1);cursor:pointer}
 .btn:hover{background:var(--bg2)}
-.btn-primary{background:var(--bg-info);color:var(--tx-info);border-color:transparent}
-.btn-primary:hover{opacity:.85}
-.btn-sm{font-size:12px;padding:4px 10px}
-/* cards */
-.card{background:var(--bg1);border:0.5px solid var(--bd3);border-radius:var(--r-lg);padding:15px 16px;margin-bottom:10px}
-.card.sel{border:1.5px solid var(--bd-info)}
-.card-hover:hover{border-color:var(--bd2);cursor:pointer}
-/* stats */
+.btnp{background:var(--bgi);color:var(--txi);border-color:transparent}
+.btnp:hover{opacity:.85}
+.card{background:var(--bg1);border:0.5px solid var(--bd3);border-radius:var(--rlg);padding:14px 16px;margin-bottom:9px}
+.card.sel{border:1.5px solid var(--bdi)}
+.card.cp:hover{border-color:var(--bd2);cursor:pointer}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
-.stat{background:var(--bg2);border-radius:var(--r-md);padding:12px 14px}
+.stat{background:var(--bg2);border-radius:var(--rmd);padding:12px 14px}
 .sl{font-size:12px;color:var(--tx2);margin-bottom:3px}
-.sv{font-size:22px;font-weight:500;color:var(--tx1)}
+.sv{font-size:22px;font-weight:500}
 .ss{font-size:11px;color:var(--tx3);margin-top:2px}
 .slbl{font-size:12px;font-weight:500;color:var(--tx2);letter-spacing:.05em;text-transform:uppercase;margin-bottom:9px}
-/* badges */
 .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
-.g-green{background:#EAF3DE;color:#3B6D11}.g-blue{background:#E6F1FB;color:#185FA5}
-.g-gray{background:#F1EFE8;color:#5F5E5A}.g-red{background:#FCEBEB;color:#A32D2D}
-.g-amber{background:#FAEEDA;color:#854F0B}.g-teal{background:#E1F5EE;color:#0F6E56}
-.g-purple{background:#EEEDFE;color:#534AB7}.g-coral{background:#FAECE7;color:#993C1D}
-@media(prefers-color-scheme:dark){
-  .g-green{background:#1a3308;color:#97c459}.g-blue{background:#0c3558;color:#85b7eb}
-  .g-gray{background:#2a2a28;color:#b4b2a9}.g-red{background:#3d1515;color:#f09595}
-  .g-amber{background:#3d2504;color:#ef9f27}.g-teal{background:#04342c;color:#5dcaa5}
-  .g-purple{background:#26215c;color:#afa9ec}.g-coral{background:#4a1b0c;color:#f0997b}
-}
-/* progress */
+.gg{background:#EAF3DE;color:#3B6D11}.gb{background:#E6F1FB;color:#185FA5}.gy{background:#F1EFE8;color:#5F5E5A}.gr{background:#FCEBEB;color:#A32D2D}.ga{background:#FAEEDA;color:#854F0B}.gt{background:#E1F5EE;color:#0F6E56}.gp{background:#EEEDFE;color:#534AB7}.gc{background:#FAECE7;color:#993C1D}
+@media(prefers-color-scheme:dark){.gg{background:#1a3308;color:#97c459}.gb{background:#0c3558;color:#85b7eb}.gy{background:#2a2a28;color:#b4b2a9}.gr{background:#3d1515;color:#f09595}.ga{background:#3d2504;color:#ef9f27}.gt{background:#04342c;color:#5dcaa5}.gp{background:#26215c;color:#afa9ec}.gc{background:#4a1b0c;color:#f0997b}}
 .pbar{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
 .pfill{height:100%;border-radius:3px}
-/* avatar */
 .ava{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;flex-shrink:0}
-/* chip */
 .chip{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--bg2);color:var(--tx2);border:0.5px solid var(--bd3)}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
-/* gantt */
-.gantt-wrap{overflow-x:auto;margin-top:10px}
+.gwrap{overflow-x:auto;margin-top:10px}
 .gtbl{min-width:580px;width:100%;border-collapse:collapse}
 .gtbl th{font-size:11px;color:var(--tx2);font-weight:500;text-align:left;padding:4px 5px 7px;border-bottom:0.5px solid var(--bd3)}
 .gtbl td{padding:4px 5px;vertical-align:middle;border-bottom:0.5px solid var(--bd3)}
-/* modal */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:flex-start;justify-content:center;padding-top:60px;z-index:100}
-.modal{background:var(--bg1);border:0.5px solid var(--bd2);border-radius:var(--r-lg);padding:20px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
-.mtitle{font-size:15px;font-weight:500;margin-bottom:13px;color:var(--tx1)}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:flex-start;justify-content:center;padding-top:60px;z-index:100}
+.mbox{background:var(--bg1);border:0.5px solid var(--bd2);border-radius:var(--rlg);padding:20px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
+.mtit{font-size:15px;font-weight:500;margin-bottom:13px}
 .frow{margin-bottom:11px}
 .frow label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px}
-.frow input,.frow select,.frow textarea{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--r-md);background:var(--bg2);color:var(--tx1)}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.frow input,.frow select{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .mbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
-/* split */
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:14px}
-/* actions */
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px;padding-top:13px;border-top:0.5px solid var(--bd3)}
-/* alert */
-.alert-danger{background:var(--bg-danger);border:0.5px solid rgba(163,45,45,.25);border-radius:var(--r-md);padding:10px 14px;margin-bottom:14px}
-/* timeline */
-.tl-wrap{overflow-x:auto}
-.tl-inner{min-width:660px}
-.wh-row{display:flex;align-items:center;margin-bottom:5px}
-.row-lbl{flex-shrink:0;padding-right:10px}
-.row-cells{display:flex;flex:1}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px;padding-top:13px;border-top:0.5px solid var(--bd3)}
+.alr{background:var(--bgd);border:0.5px solid rgba(163,45,45,.25);border-radius:var(--rmd);padding:10px 14px;margin-bottom:14px}
+.tlw{overflow-x:auto}
+.tli{min-width:660px}
+.whr{display:flex;align-items:center;margin-bottom:5px}
+.rlbl{flex-shrink:0;padding-right:10px}
+.rcel{display:flex;flex:1}
 .wc{flex:1;min-width:19px;text-align:center;font-size:10px;color:var(--tx3)}
 .wc.hi{color:#BA7517;font-weight:500}.wc.ov{color:#E24B4A;font-weight:500}
-.bar-row{display:flex;align-items:center;margin-bottom:5px}
-.bar-cells{display:flex;flex:1;height:26px}
+.brw{display:flex;align-items:center;margin-bottom:5px}
+.bcel{display:flex;flex:1;height:26px}
 .bc{flex:1;min-width:19px;position:relative}
-.bfill{position:absolute;inset:3px 1px;border-radius:3px;cursor:pointer}
-.bfill:hover{opacity:.65!important}
-.cmark{position:absolute;top:2px;right:2px;width:5px;height:5px;border-radius:50%;background:#E24B4A;z-index:2}
-.tip{position:absolute;background:var(--bg1);border:0.5px solid var(--bd2);border-radius:8px;padding:7px 11px;font-size:12px;color:var(--tx1);z-index:30;pointer-events:none;white-space:nowrap;bottom:110%;left:50%;transform:translateX(-50%);min-width:160px;line-height:1.5}
-.div-row{display:flex;align-items:center;margin:8px 0 4px}
-.div-cells{display:flex;flex:1;height:18px}
-.div-c{flex:1;min-width:19px;position:relative}
-.div-fill{position:absolute;inset:2px 1px;border-radius:2px}
-.legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:13px;font-size:11px;color:var(--tx2)}
+.bf{position:absolute;inset:3px 1px;border-radius:3px;cursor:pointer}
+.bf:hover{opacity:.65!important}
+.cm{position:absolute;top:2px;right:2px;width:5px;height:5px;border-radius:50%;background:#E24B4A;z-index:2}
+.tip{position:absolute;background:var(--bg1);border:0.5px solid var(--bd2);border-radius:8px;padding:7px 11px;font-size:12px;color:var(--tx1);z-index:30;pointer-events:none;white-space:nowrap;bottom:110%;left:50%;transform:translateX(-50%)}
+.dvr{display:flex;align-items:center;margin:8px 0 4px}
+.dcel{display:flex;flex:1;height:18px}
+.dc{flex:1;min-width:19px;position:relative}
+.df{position:absolute;inset:2px 1px;border-radius:2px}
+.leg{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:13px;font-size:11px;color:var(--tx2)}
 .lsq{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
 .fbtn{font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--bd2);background:var(--bg1);color:var(--tx2);cursor:pointer}
-.fbtn.active{background:var(--bg-info);color:var(--tx-info);border-color:transparent;font-weight:500}
-/* toast */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--tx1);color:var(--bg1);font-size:13px;padding:10px 18px;border-radius:var(--r-md);z-index:200;opacity:0;transition:opacity .2s;pointer-events:none}
+.fbtn.on{background:var(--bgi);color:var(--txi);border-color:transparent;font-weight:500}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--tx1);color:var(--bg1);font-size:13px;padding:10px 18px;border-radius:var(--rmd);z-index:200;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
-/* loading */
-.loading{display:flex;align-items:center;justify-content:center;height:200px;color:var(--tx2);font-size:14px}
-@media(max-width:640px){
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .split{grid-template-columns:1fr}
-  .tab{padding:4px 8px;font-size:12px}
-}
+.spin{display:flex;align-items:center;justify-content:center;height:200px;color:var(--tx2);font-size:14px}
+.abtn{font-size:11px;padding:2px 8px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);cursor:pointer;white-space:nowrap}
+.abtn.red{color:var(--txd)}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}.tab{padding:4px 8px;font-size:12px}}
 </style>
 </head>
 <body>
-
 <div id="root"></div>
 <div class="toast" id="toast"></div>
-
 <script>
-/* ══════════════════════════════
-   CONSTANTS
-══════════════════════════════ */
-const PROJ_HEX = ['#378ADD','#1D9E75','#D85A30','#7F77DD','#BA7517'];
-const STAT_HEX = {done:'#639922',inprogress:'#378ADD',planned:'#B4B2A9',delayed:'#E24B4A',notstarted:'#D3D1C7'};
-const STAT_LBL = {done:'Zakończony',inprogress:'W trakcie',planned:'Planowany',delayed:'Opóźniony',notstarted:'Nie rozpoczęty'};
-const STAT_CLS = {done:'g-green',inprogress:'g-blue',planned:'g-gray',delayed:'g-red',notstarted:'g-gray'};
-const AVA_CLS  = ['g-blue','g-teal','g-purple','g-coral','g-amber','g-green'];
-const SPEC_MAP = {'roboty ziemne':'g-amber','fundamenty':'g-coral','murowanie':'g-coral','beton':'g-coral','dach':'g-teal','konstrukcja stalowa':'g-teal','instalacje elektryczne':'g-blue','instalacje wod-kan':'g-blue','instalacje':'g-blue','tynki':'g-gray','elewacja':'g-purple','wykończenie':'g-purple','stolarka':'g-green','zieleń':'g-green','nadzór':'g-gray','projekt':'g-purple'};
-function specCls(s){for(const k in SPEC_MAP)if(s.toLowerCase().includes(k))return SPEC_MAP[k];return'g-gray';}
+const PH=['#378ADD','#1D9E75','#D85A30','#7F77DD','#BA7517'];
+const SH={done:'#639922',inprogress:'#378ADD',planned:'#B4B2A9',delayed:'#E24B4A',notstarted:'#D3D1C7'};
+const SL={done:'Zakończony',inprogress:'W trakcie',planned:'Planowany',delayed:'Opóźniony',notstarted:'Nie rozpoczęty'};
+const SC={done:'gg',inprogress:'gb',planned:'gy',delayed:'gr',notstarted:'gy'};
+const AC=['gb','gt','gp','gc','ga','gg'];
+const SM={'roboty ziemne':'ga','fundamenty':'gc','murowanie':'gc','beton':'gc','dach':'gt','konstrukcja stalowa':'gt','instalacje elektryczne':'gb','instalacje wod-kan':'gb','instalacje':'gb','tynki':'gy','elewacja':'gp','wykończenie':'gp','stolarka':'gg','zieleń':'gg','nadzór':'gy','projekt':'gp'};
+function scls(s){for(const k in SM)if(s.toLowerCase().includes(k))return SM[k];return'gy';}
 
-/* ══════════════════════════════
-   STATE
-══════════════════════════════ */
-let state = {
-  authenticated: false,
-  loading: false,
-  view: 'projects',
-  projects: [],
-  subs: [],
-  selProjId: null,
-  selSubId: null,
-  modal: null,
-  subFilter: 'all',
-  subSearch: '',
-  dashSubFilter: 'all',
-  saving: false,
-};
-let chartProjInst = null;
-let chartSubInst  = null;
-let tipEl = null;
+const SNEXT={notstarted:{n:'planned',l:'→ Planowany'},planned:{n:'inprogress',l:'→ Rozpocznij'},inprogress:{n:'done',l:'→ Zakończ'},done:{n:'notstarted',l:'↺ Cofnij'},delayed:{n:'inprogress',l:'→ Wznów'}};
 
-/* ══════════════════════════════
-   API
-══════════════════════════════ */
-async function api(method, url, body) {
-  try {
-    const res = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-    if (res.status === 401) { state.authenticated = false; render(); return null; }
-    return await res.json();
-  } catch (e) {
-    toast('Błąd połączenia z serwerem');
-    return null;
-  }
-}
+let S={auth:false,loading:false,view:'projects',projects:[],subs:[],selP:null,selS:null,modal:null,sf:'all',ss:'',dsf:'all'};
+let cpi=null,csi=null,tipEl=null;
 
-async function loadData() {
-  const [projects, subs] = await Promise.all([
-    api('GET', '/api/projects'),
-    api('GET', '/api/subcontractors'),
-  ]);
-  if (projects) state.projects = projects;
-  if (subs) state.subs = subs;
-  if (state.projects.length && !state.selProjId) state.selProjId = state.projects[0].id;
-  state.loading = false;
-  render();
-}
+const GP=id=>S.projects.find(p=>p.id===id);
+const GS=id=>S.subs.find(s=>s.id===id);
+const ini=n=>n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const acls=id=>AC[id%AC.length];
+const V=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+const bdg=s=>`<span class="badge ${SC[s]}">${SL[s]}</span>`;
+const MW=()=>Math.max(...S.projects.map(p=>p.weeks),1);
+const WS=()=>Array.from({length:MW()},(_,i)=>i+1);
+const CP=p=>p.stages&&p.stages.length?Math.round(p.stages.filter(s=>s.status==='done').length/p.stages.length*100):0;
 
-/* ══════════════════════════════
-   HELPERS
-══════════════════════════════ */
-const getProj  = id => state.projects.find(p => p.id === id);
-const getSub   = id => state.subs.find(s => s.id === id);
-const ini      = n  => n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
-const avaCls   = id => AVA_CLS[id % AVA_CLS.length];
-const val      = id => { const e=document.getElementById(id); return e?e.value.trim():''; };
-const badge    = s  => `<span class="badge ${STAT_CLS[s]}">${STAT_LBL[s]}</span>`;
-const MAX_WEEK = () => Math.max(...state.projects.map(p=>p.weeks), 1);
-const weeks    = () => Array.from({length:MAX_WEEK()},(_,i)=>i+1);
+function toast(msg,d=2500){const e=document.getElementById('toast');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),d);}
+function showTip(el,h){if(tipEl)tipEl.remove();tipEl=document.createElement('div');tipEl.className='tip';tipEl.innerHTML=h;el.parentElement.appendChild(tipEl);}
+function hideTip(){if(tipEl){tipEl.remove();tipEl=null;}}
 
-function toast(msg, dur=2500) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), dur);
-}
+function subUsage(sid){const r=[];S.projects.forEach(p=>(p.stages||[]).filter(s=>s.subId===sid).forEach(s=>r.push({proj:p.name,stage:s.name,status:s.status})));return r;}
 
-function subUsage(subId) {
-  const res = [];
-  state.projects.forEach(p => p.stages.filter(s=>s.subId===subId).forEach(s => res.push({proj:p.name,stage:s.name,status:s.status})));
-  return res;
-}
-
-function detectConflicts() {
-  const cs = [];
-  state.subs.forEach(sub => {
-    const byWeek = {};
-    state.projects.forEach((p,pi) => p.stages.filter(s=>s.subId===sub.id).forEach(s => {
-      for(let w=s.start;w<s.start+s.dur;w++){if(!byWeek[w])byWeek[w]=[];byWeek[w].push({proj:p,pi});}
-    }));
-    Object.entries(byWeek).forEach(([w,entries]) => {
-      const uP=[...new Set(entries.map(e=>e.proj.id))];
-      if(uP.length>1) cs.push({sub:sub.name,week:+w,projs:uP.map(id=>state.projects.find(p=>p.id===id).short||state.projects.find(p=>p.id===id).name).join(' + ')});
-    });
+function conflicts(){
+  const cs=[];
+  S.subs.forEach(sub=>{
+    const bw={};
+    S.projects.forEach((p,pi)=>(p.stages||[]).filter(s=>s.subId===sub.id).forEach(s=>{for(let w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,pi});}}));
+    Object.entries(bw).forEach(([w,e])=>{const u=[...new Set(e.map(x=>x.proj.id))];if(u.length>1)cs.push({sub:sub.name,week:+w,projs:u.map(id=>S.projects.find(p=>p.id===id).short||'?').join(' + ')});});
   });
   return cs;
 }
+function wsl(w){const ids=new Set();S.projects.forEach(p=>(p.stages||[]).filter(s=>w>=s.start&&w<s.start+s.dur).forEach(s=>{if(s.subId)ids.add(s.subId);}));return ids.size;}
+function wpo(w){return S.projects.filter(p=>(p.stages||[]).some(s=>w>=s.start&&w<s.start+s.dur)).length;}
 
-function getWeekSubLoad(w) {
-  const ids = new Set();
-  state.projects.forEach(p => p.stages.filter(s=>w>=s.start&&w<s.start+s.dur).forEach(s=>{if(s.subId)ids.add(s.subId);}));
-  return ids.size;
-}
-function getProjOverlap(w) {
-  return state.projects.filter(p=>p.stages.some(s=>w>=s.start&&w<s.start+s.dur)).length;
-}
-
-function showTip(el, html) {
-  if(tipEl) tipEl.remove();
-  tipEl = document.createElement('div'); tipEl.className='tip'; tipEl.innerHTML=html;
-  el.parentElement.appendChild(tipEl);
-}
-function hideTip(){if(tipEl){tipEl.remove();tipEl=null;}}
-
-/* ══════════════════════════════
-   RENDER: LOGIN
-══════════════════════════════ */
-function renderLogin() {
-  return `<div class="login-wrap">
-    <div class="login-box">
-      <div class="login-title">Harmonogramy budowlane</div>
-      <div class="login-sub">Zaloguj się hasłem zespołu aby kontynuować.</div>
-      <div class="frow"><label>Hasło zespołu</label><input type="password" id="pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <div id="login-err" style="font-size:12px;color:var(--tx-danger);margin-bottom:10px;display:none">Nieprawidłowe hasło.</div>
-      <button class="btn btn-primary" style="width:100%" onclick="doLogin()">Zaloguj się</button>
-    </div>
-  </div>`;
+async function api(m,u,b){
+  try{
+    const r=await fetch(u,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});
+    if(r.status===401){S.auth=false;render();return null;}
+    return await r.json();
+  }catch(e){toast('Błąd połączenia');return null;}
 }
 
-async function doLogin() {
-  const pw = val('pw');
-  const r = await api('POST', '/api/login', { password: pw });
-  if (r && r.ok) {
-    state.authenticated = true;
-    state.loading = true;
-    render();
-    await loadData();
-  } else {
-    document.getElementById('login-err').style.display = 'block';
-  }
-}
-
-async function doLogout() {
-  await api('POST', '/api/logout');
-  state.authenticated = false;
-  state.projects = []; state.subs = [];
+async function loadData(){
+  const [pr,sb]=await Promise.all([api('GET','/api/projects'),api('GET','/api/subcontractors')]);
+  if(pr)S.projects=pr;
+  if(sb)S.subs=sb;
+  if(S.projects.length&&!S.selP)S.selP=S.projects[0].id;
+  S.loading=false;
   render();
 }
 
-/* ══════════════════════════════
-   RENDER: TOPBAR
-══════════════════════════════ */
-function renderTopbar() {
-  const tabs = [
-    {id:'projects',lbl:'Projekty'},{id:'gantt',lbl:'Harmonogram'},
-    {id:'subs',lbl:'Podwykonawcy'},{id:'dash-proj',lbl:'Dashboard projektów'},
-    {id:'dash-sub',lbl:'Dashboard podwykonawców'},
-  ];
-  return `<div class="topbar">
+// ── RENDER LOGIN ──
+function rLogin(){
+  return`<div class="login-wrap"><div class="login-box">
+    <div style="font-size:18px;font-weight:500;margin-bottom:6px">Harmonogramy budowlane</div>
+    <div style="font-size:13px;color:var(--tx2);margin-bottom:1.5rem">Zaloguj się hasłem zespołu</div>
+    <div class="frow"><label>Hasło zespołu</label><input type="password" id="pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div id="lerr" style="font-size:12px;color:var(--txd);margin-bottom:10px;display:none">Nieprawidłowe hasło.</div>
+    <button class="btn btnp" style="width:100%" onclick="doLogin()">Zaloguj się</button>
+  </div></div>`;
+}
+async function doLogin(){
+  const r=await api('POST','/api/login',{password:V('pw')});
+  if(r&&r.ok){S.auth=true;S.loading=true;render();await loadData();}
+  else{const e=document.getElementById('lerr');if(e)e.style.display='block';}
+}
+async function doLogout(){await api('POST','/api/logout');S.auth=false;S.projects=[];S.subs=[];render();}
+
+// ── TOPBAR ──
+function rTop(){
+  const tabs=[{id:'projects',l:'Projekty'},{id:'gantt',l:'Harmonogram'},{id:'subs',l:'Podwykonawcy'},{id:'dp',l:'Dashboard projektów'},{id:'ds',l:'Dashboard podwykonawców'}];
+  return`<div class="topbar">
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <span class="app-title">Harmonogramy budowlane</span>
-      <div class="tab-bar">${tabs.map(t=>`<button class="tab ${state.view===t.id?'active':''}" onclick="setView('${t.id}')">${t.lbl}</button>`).join('')}</div>
+      <span style="font-size:15px;font-weight:500">Harmonogramy budowlane</span>
+      <div class="tab-bar">${tabs.map(t=>`<button class="tab ${S.view===t.id?'on':''}" onclick="sv('${t.id}')">${t.l}</button>`).join('')}</div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <button class="btn btn-primary" onclick="openModal(state.view==='subs'?'addsub':'newproj')">+ ${state.view==='subs'?'Nowy podwykonawca':'Nowy projekt'}</button>
-      <button class="btn btn-sm" onclick="doLogout()">Wyloguj</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn btnp" onclick="om(S.view==='subs'?'as':'np')">+ ${S.view==='subs'?'Nowy podwykonawca':'Nowy projekt'}</button>
+      <button class="btn" style="font-size:12px;padding:4px 10px" onclick="doLogout()">Wyloguj</button>
     </div>
   </div>`;
 }
 
-/* ══════════════════════════════
-   RENDER: PROJECTS
-══════════════════════════════ */
-function renderProjects() {
-  const del = state.projects.reduce((a,p)=>a+p.stages.filter(s=>s.status==='delayed').length,0);
-  const avg = state.projects.length ? Math.round(state.projects.reduce((a,p)=>a+calcProgress(p),0)/state.projects.length) : 0;
-  const actS = state.subs.filter(s=>s.active).length;
-  const rows = state.projects.map(p => {
-    const isDel = p.stages.some(s=>s.status==='delayed');
-    const prog = calcProgress(p);
-    const col = isDel?'#E24B4A':prog>=80?'#639922':'#378ADD';
-    const st = isDel?'delayed':prog===100?'done':prog>0?'inprogress':'notstarted';
-    return `<div class="card card-hover ${p.id===state.selProjId?'sel':''}" onclick="selectProj(${p.id})">
+// ── PROJECTS ──
+function rProjects(){
+  const del=S.projects.reduce((a,p)=>a+(p.stages||[]).filter(s=>s.status==='delayed').length,0);
+  const avg=S.projects.length?Math.round(S.projects.reduce((a,p)=>a+CP(p),0)/S.projects.length):0;
+  const actS=S.subs.filter(s=>s.active).length;
+  const rows=S.projects.map(p=>{
+    const pr=CP(p);
+    const del2=(p.stages||[]).some(s=>s.status==='delayed');
+    const col=del2?'#E24B4A':pr>=80?'#639922':'#378ADD';
+    const st=del2?'delayed':pr===100?'done':pr>0?'inprogress':'notstarted';
+    return`<div class="card cp ${p.id===S.selP?'sel':''}" onclick="selP(${p.id})">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <span style="font-size:14px;font-weight:500;color:var(--tx1)">${p.name}</span>${badge(st)}
+        <span style="font-size:14px;font-weight:500">${p.name}</span>${bdg(st)}
       </div>
-      <div style="font-size:12px;color:var(--tx2);margin-bottom:8px">${p.location} · ${p.client} · ${p.weeks} tyg. · ${p.stages.length} etapów</div>
+      <div style="font-size:12px;color:var(--tx2);margin-bottom:8px">${p.location} · ${p.client} · ${p.weeks} tyg. · ${(p.stages||[]).length} etapów</div>
       <div style="display:flex;align-items:center;gap:10px">
-        <div class="pbar" style="flex:1"><div class="pfill" style="width:${prog}%;background:${col}"></div></div>
-        <span style="font-size:12px;color:var(--tx2);min-width:30px;text-align:right">${prog}%</span>
+        <div class="pbar" style="flex:1"><div class="pfill" style="width:${pr}%;background:${col}"></div></div>
+        <span style="font-size:12px;color:var(--tx2)">${pr}%</span>
       </div>
     </div>`;
   }).join('');
-  return `<div class="stats">
-    <div class="stat"><div class="sl">Projekty</div><div class="sv">${state.projects.length}</div></div>
+  return`<div class="stats">
+    <div class="stat"><div class="sl">Projekty</div><div class="sv">${S.projects.length}</div></div>
     <div class="stat"><div class="sl">Postęp średni</div><div class="sv">${avg}%</div></div>
-    <div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:${del?'#E24B4A':'inherit'}">${del}</div><div class="ss">etapów</div></div>
+    <div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:${del?'#E24B4A':''}">${del}</div><div class="ss">etapów</div></div>
     <div class="stat"><div class="sl">Podwykonawcy</div><div class="sv">${actS}</div><div class="ss">aktywnych</div></div>
   </div><div class="slbl">Projekty</div>${rows}`;
 }
 
-/* ══════════════════════════════
-   RENDER: GANTT
-══════════════════════════════ */
-function renderGantt() {
-  const p = getProj(state.selProjId); if(!p) return '<div class="loading">Wybierz projekt</div>';
-  const ws = Array.from({length:p.weeks},(_,i)=>i+1);
-  const wCols = ws.map(w=>`<th style="min-width:26px;width:26px;text-align:center;font-size:10px">T${w}</th>`).join('');
-  const STATUS_NEXT = {
-    notstarted:{next:'planned',lbl:'→ Planowany'},
-    planned:{next:'inprogress',lbl:'→ Rozpocznij'},
-    inprogress:{next:'done',lbl:'→ Zakończ'},
-    done:{next:'notstarted',lbl:'↺ Cofnij'},
-    delayed:{next:'inprogress',lbl:'→ Wznów'},
-  };
-  const rows = p.stages.map(s => {
-    const sub = getSub(s.subId);
-    const col = STAT_HEX[s.status];
-    const cells = ws.map(w => {
+// ── GANTT ──
+function rGantt(){
+  const p=GP(S.selP);if(!p)return'<div class="spin">Wybierz projekt</div>';
+  const ws=Array.from({length:p.weeks},(_,i)=>i+1);
+  const wc=ws.map(w=>`<th style="min-width:26px;width:26px;text-align:center;font-size:10px">T${w}</th>`).join('');
+  const rows=(p.stages||[]).map(s=>{
+    const sub=GS(s.subId);
+    const col=SH[s.status];
+    const cells=ws.map(w=>{
       if(w<s.start||w>=s.start+s.dur)return'<td></td>';
-      const r1=w===s.start?'3px':'0';const r2=w===s.start+s.dur-1?'3px':'0';
+      const r1=w===s.start?'3px':'0';
+      const r2=w===s.start+s.dur-1?'3px':'0';
       return`<td style="padding:3px 1px"><div style="height:13px;background:${col};opacity:${s.status==='done'?1:s.status==='inprogress'?.75:.35};border-radius:${r1} ${r2} ${r2} ${r1}"></div></td>`;
     }).join('');
-    const sn = sub
-      ? `<span style="font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline dotted" onclick="goSub(${sub.id})">${sub.name}</span>`
-      : `<span style="font-size:11px;color:var(--tx3)">— brak —</span>`;
-    const nx = STATUS_NEXT[s.status];
-    const statusBtn = `<button onclick="quickStatus(${s.id},'${nx.next}')" style="font-size:11px;padding:2px 8px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);cursor:pointer;white-space:nowrap">${nx.lbl}</button>`;
-    const editBtn = `<button onclick="openModal('editstage',null,${s.id})" style="font-size:11px;padding:2px 8px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);cursor:pointer">Edytuj</button>`;
-    const delBtn = `<button onclick="deleteStage(${s.id})" style="font-size:11px;padding:2px 6px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx-danger);cursor:pointer">✕</button>`;
+    const sn=sub?`<span style="font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline dotted" onclick="goSub(${sub.id})">${sub.name}</span>`:`<span style="font-size:11px;color:var(--tx3)">— brak —</span>`;
+    const nx=SNEXT[s.status];
     return`<tr>
-      <td style="font-size:13px;color:var(--tx1);min-width:140px;max-width:160px">${s.name}<br>${sn}</td>
-      <td style="padding:4px 5px;white-space:nowrap">${badge(s.status)}</td>
-      <td style="padding:3px 6px;white-space:nowrap"><div style="display:flex;gap:4px">${statusBtn}${editBtn}${delBtn}</div></td>
+      <td style="font-size:13px;min-width:130px;max-width:150px">${s.name}<br>${sn}</td>
+      <td style="padding:4px 5px">${bdg(s.status)}</td>
+      <td style="padding:3px 5px;white-space:nowrap">
+        <button class="abtn" onclick="qStatus(${s.id},'${nx.n}')">${nx.l}</button>
+        <button class="abtn" onclick="om('es',null,${s.id})" style="margin-left:3px">Edytuj</button>
+        <button class="abtn red" onclick="delStage(${s.id})" style="margin-left:3px">✕</button>
+      </td>
       ${cells}
     </tr>`;
   }).join('');
-  const isDel = p.stages.some(s=>s.status==='delayed');
-  const done = p.stages.filter(s=>s.status==='done').length;
-  return `<div class="card">
+  const isDel=(p.stages||[]).some(s=>s.status==='delayed');
+  const done=(p.stages||[]).filter(s=>s.status==='done').length;
+  return`<div class="card">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;flex-wrap:wrap;gap:8px">
-      <div><div style="font-size:15px;font-weight:500;color:var(--tx1)">${p.name}</div>
+      <div><div style="font-size:15px;font-weight:500">${p.name}</div>
       <div style="font-size:12px;color:var(--tx2);margin-top:3px">${p.location} · ${p.client}</div></div>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        ${badge(isDel?'delayed':'inprogress')}
-        <button class="btn" onclick="openModal('editproj')">Edytuj projekt</button>
-        <button class="btn" style="color:var(--tx-danger)" onclick="deleteProj(${p.id})">Usuń</button>
+        ${bdg(isDel?'delayed':'inprogress')}
+        <button class="btn" onclick="om('ep')">Edytuj projekt</button>
+        <button class="btn" style="color:var(--txd)" onclick="delProj(${p.id})">Usuń</button>
       </div>
     </div>
     <div class="stats" style="margin-bottom:13px">
-      <div class="stat"><div class="sl">Postęp</div><div class="sv">${calcProgress(p)}%</div></div>
-      <div class="stat"><div class="sl">Etapów</div><div class="sv">${p.stages.length}</div></div>
+      <div class="stat"><div class="sl">Postęp</div><div class="sv">${CP(p)}%</div></div>
+      <div class="stat"><div class="sl">Etapów</div><div class="sv">${(p.stages||[]).length}</div></div>
       <div class="stat"><div class="sl">Zakończone</div><div class="sv">${done}</div></div>
       <div class="stat"><div class="sl">Tygodnie</div><div class="sv">${p.weeks}</div></div>
     </div>
     <div class="slbl">Harmonogram Gantta</div>
-    <div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Kliknij strzałkę aby zmienić status etapu. Kliknij "Edytuj" aby zmienić podwykonawcę lub terminy.</div>
-    <div class="gantt-wrap"><table class="gtbl">
-      <thead><tr>
-        <th style="min-width:140px">Etap / Podwykonawca</th>
-        <th style="min-width:80px">Status</th>
-        <th style="min-width:200px">Akcje</th>
-        ${wCols}
-      </tr></thead>
+    <div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Kliknij strzałkę aby zmienić status. "Edytuj" aby zmienić podwykonawcę lub terminy.</div>
+    <div class="gwrap"><table class="gtbl">
+      <thead><tr><th style="min-width:130px">Etap</th><th style="min-width:80px">Status</th><th style="min-width:190px">Akcje</th>${wc}</tr></thead>
       <tbody>${rows}</tbody>
     </table></div>
-    <div class="actions"><button class="btn" onclick="openModal('addstage')">+ Dodaj etap</button></div>
+    <div class="act"><button class="btn" onclick="om('ns')">+ Dodaj etap</button></div>
   </div>`;
 }
 
-/* ══════════════════════════════
-   RENDER: SUBS
-══════════════════════════════ */
-function renderSubsList() {
-  const q = state.subSearch.toLowerCase();
-  let list = state.subs.filter(s=>!q||s.name.toLowerCase().includes(q)||s.specs.some(sp=>sp.toLowerCase().includes(q)));
-  if(state.subFilter==='active')   list=list.filter(s=>s.active);
-  if(state.subFilter==='inactive') list=list.filter(s=>!s.active);
-  return list.map(s => {
-    const u = subUsage(s.id);
-    return `<div class="card card-hover ${s.id===state.selSubId?'sel':''}" onclick="selSub(${s.id})">
+// ── SUBS VIEW ──
+function rSubsList(){
+  const q=S.ss.toLowerCase();
+  let list=S.subs.filter(s=>!q||s.name.toLowerCase().includes(q)||(s.specs||[]).some(sp=>sp.toLowerCase().includes(q)));
+  if(S.sf==='active')list=list.filter(s=>s.active);
+  if(S.sf==='inactive')list=list.filter(s=>!s.active);
+  return list.map(s=>{
+    const u=subUsage(s.id);
+    return`<div class="card cp ${s.id===S.selS?'sel':''}" onclick="selSub(${s.id})">
       <div style="display:flex;align-items:center;gap:10px">
-        <div class="ava ${avaCls(s.id)}" style="width:36px;height:36px;font-size:12px">${ini(s.name)}</div>
+        <div class="ava ${acls(s.id)}" style="width:36px;height:36px;font-size:12px">${ini(s.name)}</div>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <span style="font-size:14px;font-weight:500;color:var(--tx1)">${s.name}</span>
-            <span class="badge ${s.active?'g-green':'g-gray'}">${s.active?'Aktywny':'Nieaktywny'}</span>
-            ${u.length?`<span class="badge g-blue">${u.length} etap${u.length>1?'ów':''}</span>`:''}
+            <span style="font-size:14px;font-weight:500">${s.name}</span>
+            <span class="badge ${s.active?'gg':'gy'}">${s.active?'Aktywny':'Nieaktywny'}</span>
+            ${u.length?`<span class="badge gb">${u.length} etap${u.length>1?'ów':''}</span>`:''}
           </div>
           <div style="font-size:12px;color:var(--tx2);margin-top:2px">${s.contact} · ${s.phone}</div>
-          <div class="chips">${s.specs.map(sp=>`<span class="chip">${sp}</span>`).join('')}</div>
+          <div class="chips">${(s.specs||[]).map(sp=>`<span class="chip">${sp}</span>`).join('')}</div>
         </div>
-        <button class="btn btn-sm" onclick="event.stopPropagation();openModal('editsub',${s.id})">Edytuj</button>
+        <button class="btn" style="font-size:12px;padding:4px 10px;flex-shrink:0" onclick="event.stopPropagation();om('es2',${s.id})">Edytuj</button>
       </div>
     </div>`;
-  }).join('') || '<div style="color:var(--tx2);font-size:13px;padding:12px 0">Brak wyników</div>';
+  }).join('')||'<div style="color:var(--tx2);font-size:13px;padding:12px 0">Brak wyników</div>';
 }
-
-function renderSubDetail() {
-  if(!state.selSubId) return `<div style="color:var(--tx2);font-size:13px;padding:24px 0;text-align:center">Wybierz podwykonawcę z listy</div>`;
-  const s = getSub(state.selSubId); if(!s) return '';
-  const u = subUsage(s.id);
-  return `<div class="card">
+function rSubDetail(){
+  if(!S.selS)return`<div style="color:var(--tx2);font-size:13px;padding:24px 0;text-align:center">Wybierz podwykonawcę z listy</div>`;
+  const s=GS(S.selS);if(!s)return'';
+  const u=subUsage(s.id);
+  return`<div class="card">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-      <div class="ava ${avaCls(s.id)}" style="width:44px;height:44px;font-size:15px">${ini(s.name)}</div>
-      <div><div style="font-size:15px;font-weight:500;color:var(--tx1)">${s.name}</div><div style="font-size:12px;color:var(--tx2)">${s.contact}</div></div>
-      <span class="badge ${s.active?'g-green':'g-gray'}" style="margin-left:auto">${s.active?'Aktywny':'Nieaktywny'}</span>
+      <div class="ava ${acls(s.id)}" style="width:44px;height:44px;font-size:15px">${ini(s.name)}</div>
+      <div><div style="font-size:15px;font-weight:500">${s.name}</div><div style="font-size:12px;color:var(--tx2)">${s.contact}</div></div>
+      <span class="badge ${s.active?'gg':'gy'}" style="margin-left:auto">${s.active?'Aktywny':'Nieaktywny'}</span>
     </div>
     <div style="border-top:0.5px solid var(--bd3);padding-top:12px;margin-bottom:12px">
       <table style="width:100%;font-size:13px">
         <tr><td style="color:var(--tx2);padding:4px 0;width:80px">Telefon</td><td>${s.phone}</td></tr>
-        <tr><td style="color:var(--tx2);padding:4px 0">E-mail</td><td style="color:var(--tx-info)">${s.email}</td></tr>
+        <tr><td style="color:var(--tx2);padding:4px 0">E-mail</td><td style="color:var(--txi)">${s.email}</td></tr>
         ${s.notes?`<tr><td style="color:var(--tx2);padding:4px 0;vertical-align:top">Uwagi</td><td style="color:var(--tx2);font-size:12px">${s.notes}</td></tr>`:''}
       </table>
     </div>
     <div class="slbl" style="margin-bottom:7px">Specjalności</div>
-    <div class="chips" style="margin-bottom:13px">${s.specs.map(sp=>`<span class="badge ${specCls(sp)}">${sp}</span>`).join('')}</div>
+    <div class="chips" style="margin-bottom:13px">${(s.specs||[]).map(sp=>`<span class="badge ${scls(sp)}">${sp}</span>`).join('')}</div>
     <div class="slbl" style="margin-bottom:7px">Przypisane etapy (${u.length})</div>
-    ${u.length ? u.map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 10px;background:var(--bg2);border-radius:var(--r-md);margin-bottom:4px"><div><span>${x.stage}</span><span style="color:var(--tx2);margin-left:6px;font-size:12px">${x.proj}</span></div>${badge(x.status)}</div>`).join('') : '<div style="font-size:13px;color:var(--tx2)">Brak przypisanych etapów</div>'}
-    <div class="actions">
-      <button class="btn" onclick="openModal('editsub',${s.id})">Edytuj dane</button>
-      <button class="btn" style="color:var(--tx-danger)" onclick="deleteSub(${s.id})">Usuń</button>
+    ${u.length?u.map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 10px;background:var(--bg2);border-radius:var(--rmd);margin-bottom:4px"><div><span>${x.stage}</span><span style="color:var(--tx2);margin-left:6px;font-size:12px">${x.proj}</span></div>${bdg(x.status)}</div>`).join(''):`<div style="font-size:13px;color:var(--tx2)">Brak przypisanych etapów</div>`}
+    <div class="act">
+      <button class="btn" onclick="om('es2',${s.id})">Edytuj dane</button>
+      <button class="btn" style="color:var(--txd)" onclick="delSub(${s.id})">Usuń</button>
     </div>
   </div>`;
 }
-
-function renderSubsView() {
-  return `<div class="split">
+function rSubs(){
+  return`<div class="split">
     <div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
-        <div class="slbl" style="margin:0">Podwykonawcy (${state.subs.length})</div>
-        <button class="btn btn-primary" onclick="openModal('addsub')">+ Dodaj</button>
+        <div class="slbl" style="margin:0">Podwykonawcy (${S.subs.length})</div>
+        <button class="btn btnp" onclick="om('as')">+ Dodaj</button>
       </div>
-      <input placeholder="Szukaj…" value="${state.subSearch}" oninput="state.subSearch=this.value;rerenderSubsList()" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--r-md);background:var(--bg2);color:var(--tx1);margin-bottom:9px">
+      <input placeholder="Szukaj…" value="${S.ss}" oninput="S.ss=this.value;rerSubs()" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1);margin-bottom:9px">
       <div style="display:flex;gap:6px;margin-bottom:10px">
-        <button class="fbtn ${state.subFilter==='all'?'active':''}" onclick="state.subFilter='all';rerenderSubsList()">Wszyscy</button>
-        <button class="fbtn ${state.subFilter==='active'?'active':''}" onclick="state.subFilter='active';rerenderSubsList()">Aktywni</button>
-        <button class="fbtn ${state.subFilter==='inactive'?'active':''}" onclick="state.subFilter='inactive';rerenderSubsList()">Nieaktywni</button>
+        <button class="fbtn ${S.sf==='all'?'on':''}" onclick="S.sf='all';rerSubs()">Wszyscy</button>
+        <button class="fbtn ${S.sf==='active'?'on':''}" onclick="S.sf='active';rerSubs()">Aktywni</button>
+        <button class="fbtn ${S.sf==='inactive'?'on':''}" onclick="S.sf='inactive';rerSubs()">Nieaktywni</button>
       </div>
-      <div id="subs-list">${renderSubsList()}</div>
+      <div id="sl">${rSubsList()}</div>
     </div>
-    <div id="sub-detail">${renderSubDetail()}</div>
+    <div id="sd">${rSubDetail()}</div>
   </div>`;
 }
+function rerSubs(){const e=document.getElementById('sl');if(e)e.innerHTML=rSubsList();const d=document.getElementById('sd');if(d)d.innerHTML=rSubDetail();}
 
-/* ══════════════════════════════
-   RENDER: DASHBOARD PROJEKTY
-══════════════════════════════ */
-function renderDashProj() {
-  const W = weeks();
-  const del = state.projects.reduce((a,p)=>a+p.stages.filter(s=>s.status==='delayed').length,0);
-  const avg = state.projects.length ? Math.round(state.projects.reduce((a,p)=>a+calcProgress(p),0)/state.projects.length) : 0;
-  const wHead = W.map(w=>{const n=getProjOverlap(w);return`<div class="wc ${n>=3?'ov':n>=2?'hi':''}">T${w}</div>`;}).join('');
-  const projRows = state.projects.map((p,pi)=>{
-    const col = PROJ_HEX[pi%PROJ_HEX.length];
-    const cells = W.map(w=>{
-      const act = p.stages.filter(s=>w>=s.start&&w<s.start+s.dur);
+// ── DASH PROJ ──
+function rDP(){
+  const W=WS();
+  const del=S.projects.reduce((a,p)=>a+(p.stages||[]).filter(s=>s.status==='delayed').length,0);
+  const avg=S.projects.length?Math.round(S.projects.reduce((a,p)=>a+CP(p),0)/S.projects.length):0;
+  const wh=W.map(w=>{const n=wpo(w);return`<div class="wc ${n>=3?'ov':n>=2?'hi':''}"  >T${w}</div>`;}).join('');
+  const pr=S.projects.map((p,pi)=>{
+    const col=PH[pi%PH.length];
+    const cells=W.map(w=>{
+      const act=(p.stages||[]).filter(s=>w>=s.start&&w<s.start+s.dur);
       if(!act.length)return`<div class="bc"></div>`;
-      const isDel=act.some(s=>s.status==='delayed');
-      const c=isDel?'#E24B4A':col;const op=act[0].status==='done'?1:act[0].status==='inprogress'?.8:.4;
-      return`<div class="bc"><div class="bfill" style="background:${c};opacity:${op}" onmouseenter="showTip(this,'T${w}: ${act.map(s=>s.name).join(', ')}')" onmouseleave="hideTip()"></div></div>`;
+      const c=act.some(s=>s.status==='delayed')?'#E24B4A':col;
+      const op=act[0].status==='done'?1:act[0].status==='inprogress'?.8:.4;
+      return`<div class="bc"><div class="bf" style="background:${c};opacity:${op}"></div></div>`;
     }).join('');
-    return`<div class="bar-row"><div class="row-lbl" style="width:160px"><div style="font-size:13px;font-weight:500;color:var(--tx1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px">${p.name}</div><div style="font-size:10px;color:var(--tx2)">${calcProgress(p)}% · ${p.weeks} tyg.</div></div><div class="bar-cells">${cells}</div></div>`;
+    return`<div class="brw"><div class="rlbl" style="width:160px"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px">${p.name}</div><div style="font-size:10px;color:var(--tx2)">${CP(p)}% · ${p.weeks} tyg.</div></div><div class="bcel">${cells}</div></div>`;
   }).join('');
-  const overRow = W.map(w=>{const n=getProjOverlap(w);if(!n)return`<div class="div-c"></div>`;const c=n>=3?'#E24B4A':n===2?'#BA7517':'#378ADD';const op=n===1?.25:n===2?.55:.85;return`<div class="div-c"><div class="div-fill" style="background:${c};opacity:${op}"></div></div>`;}).join('');
-  return `<div class="stats">
-    <div class="stat"><div class="sl">Projekty</div><div class="sv">${state.projects.length}</div></div>
+  const ov=W.map(w=>{const n=wpo(w);if(!n)return`<div class="dc"></div>`;const c=n>=3?'#E24B4A':n===2?'#BA7517':'#378ADD';const op=n===1?.25:n===2?.55:.85;return`<div class="dc"><div class="df" style="background:${c};opacity:${op}"></div></div>`;}).join('');
+  return`<div class="stats">
+    <div class="stat"><div class="sl">Projekty</div><div class="sv">${S.projects.length}</div></div>
     <div class="stat"><div class="sl">Postęp średni</div><div class="sv">${avg}%</div></div>
-    <div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:${del?'#E24B4A':'inherit'}">${del}</div></div>
-    <div class="stat"><div class="sl">Etapów łącznie</div><div class="sv">${state.projects.reduce((a,p)=>a+p.stages.length,0)}</div></div>
+    <div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:${del?'#E24B4A':''}">${del}</div></div>
+    <div class="stat"><div class="sl">Etapów łącznie</div><div class="sv">${S.projects.reduce((a,p)=>a+(p.stages||[]).length,0)}</div></div>
   </div>
   <div class="card" style="margin-bottom:1.25rem">
     <div class="slbl">Wszystkie projekty — oś tygodni</div>
-    <div class="legend">${state.projects.map((p,i)=>`<span><span class="lsq" style="background:${PROJ_HEX[i]}"></span>${p.short||p.name}</span>`).join('')}<span><span class="lsq" style="background:#E24B4A"></span>opóźniony</span></div>
-    <div class="tl-wrap"><div class="tl-inner">
-      <div class="wh-row"><div class="row-lbl" style="width:160px"></div><div class="row-cells">${wHead}</div></div>
-      ${projRows}
-      <div class="div-row" style="margin-top:10px"><div class="row-lbl" style="width:160px;font-size:11px;font-weight:500;color:var(--tx2)">Nakładanie projektów</div><div class="div-cells">${overRow}</div></div>
+    <div class="leg">${S.projects.map((p,i)=>`<span><span class="lsq" style="background:${PH[i]}"></span>${p.short||p.name}</span>`).join('')}</div>
+    <div class="tlw"><div class="tli">
+      <div class="whr"><div class="rlbl" style="width:160px"></div><div class="rcel">${wh}</div></div>
+      ${pr}
+      <div class="dvr" style="margin-top:10px"><div class="rlbl" style="width:160px;font-size:11px;font-weight:500;color:var(--tx2)">Nakładanie projektów</div><div class="dcel">${ov}</div></div>
     </div></div>
   </div>
   <div class="card">
     <div class="slbl">Obciążenie tygodniowe — etapów</div>
-    <div style="position:relative;width:100%;height:170px"><canvas id="chartProjLoad" role="img" aria-label="Obciążenie tygodniowe projektów"></canvas></div>
+    <div style="position:relative;width:100%;height:170px"><canvas id="cpl" role="img" aria-label="Obciążenie tygodniowe"></canvas></div>
   </div>`;
 }
-
-function initChartProj() {
-  const W = weeks();
-  const loads = W.map(w=>state.projects.reduce((a,p)=>a+p.stages.filter(s=>w>=s.start&&w<s.start+s.dur).length,0));
-  const gc = matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
-  if(chartProjInst) chartProjInst.destroy();
-  const el = document.getElementById('chartProjLoad'); if(!el)return;
-  chartProjInst = new Chart(el,{type:'bar',data:{labels:W.map(w=>`T${w}`),datasets:[{data:loads,backgroundColor:W.map(w=>{const n=getProjOverlap(w);return n>=3?'rgba(226,75,74,.65)':n>=2?'rgba(186,117,23,.6)':'rgba(55,138,221,.5)';}),borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>`Tydzień ${c[0].label}`,label:c=>`Etapów: ${c.raw}`,afterLabel:c=>`Projektów jednocześnie: ${getProjOverlap(c.dataIndex+1)}`}}},scales:{x:{ticks:{color:'#888780',font:{size:10},autoSkip:true,maxTicksLimit:12},grid:{color:gc}},y:{beginAtZero:true,ticks:{color:'#888780',stepSize:1},grid:{color:gc}}}}});
+function initCP(){
+  const W=WS();
+  const loads=W.map(w=>S.projects.reduce((a,p)=>a+(p.stages||[]).filter(s=>w>=s.start&&w<s.start+s.dur).length,0));
+  const gc=matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
+  if(cpi)cpi.destroy();
+  const el=document.getElementById('cpl');if(!el)return;
+  cpi=new Chart(el,{type:'bar',data:{labels:W.map(w=>`T${w}`),datasets:[{data:loads,backgroundColor:W.map(w=>{const n=wpo(w);return n>=3?'rgba(226,75,74,.65)':n>=2?'rgba(186,117,23,.6)':'rgba(55,138,221,.5)';}),borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780',font:{size:10},autoSkip:true,maxTicksLimit:12},grid:{color:gc}},y:{beginAtZero:true,ticks:{color:'#888780',stepSize:1},grid:{color:gc}}}}});
 }
 
-/* ══════════════════════════════
-   RENDER: DASHBOARD PODWYKONAWCY
-══════════════════════════════ */
-function renderDashSub() {
-  const W = weeks();
-  const cs = detectConflicts();
-  const actSubs = state.subs.filter(s=>state.projects.some(p=>p.stages.some(st=>st.subId===s.id)));
-  const uConf = new Set(cs.map(c=>c.sub)).size;
-  const peak = W.reduce((best,w)=>getWeekSubLoad(w)>getWeekSubLoad(best)?w:best,1);
-  const alertHtml = cs.length ? `<div class="alert-danger">
-    <div style="font-size:13px;font-weight:500;color:var(--tx-danger);margin-bottom:6px">Wykryte konflikty — ${cs.length} tygodnie z nakładającymi się zleceniami</div>
-    ${Object.entries(cs.reduce((g,c)=>{if(!g[c.sub])g[c.sub]=[];g[c.sub].push(c);return g;},{})).map(([sub,items])=>`<div style="font-size:12px;color:var(--tx-danger);margin-bottom:2px;padding-left:8px">· ${sub}: ${items.map(i=>`T${i.week} (${i.projs})`).join(', ')}</div>`).join('')}
-  </div>` : '';
-
-  const wHead = W.map(w=>{const n=getWeekSubLoad(w);return`<div class="wc ${n>=4?'ov':n>=3?'hi':''}">T${w}</div>`;}).join('');
-  const subRows = actSubs.map(sub=>{
-    const byWeek={};
-    state.projects.forEach((p,pi)=>p.stages.filter(s=>s.subId===sub.id).forEach(s=>{for(let w=s.start;w<s.start+s.dur;w++){if(!byWeek[w])byWeek[w]=[];byWeek[w].push({proj:p,stage:s,pi});}}));
-    const totalW=Object.keys(byWeek).length;
-    const hasConf=Object.entries(byWeek).some(([w,e])=>new Set(e.map(x=>x.proj.id)).size>1);
-    const sb=hasConf?`<span class="badge g-red" style="font-size:10px">konflikt</span>`:totalW?`<span class="badge g-green" style="font-size:10px">${totalW} tyg.</span>`:'';
+// ── DASH SUBS ──
+function rDS(){
+  const W=WS();
+  const cs=conflicts();
+  const actS=S.subs.filter(s=>S.projects.some(p=>(p.stages||[]).some(st=>st.subId===s.id)));
+  const uC=new Set(cs.map(c=>c.sub)).size;
+  const peak=W.reduce((b,w)=>wsl(w)>wsl(b)?w:b,1);
+  const alr=cs.length?`<div class="alr">
+    <div style="font-size:13px;font-weight:500;color:var(--txd);margin-bottom:6px">Wykryte konflikty — ${cs.length} tygodni</div>
+    ${Object.entries(cs.reduce((g,c)=>{if(!g[c.sub])g[c.sub]=[];g[c.sub].push(c);return g;},{})).map(([sub,items])=>`<div style="font-size:12px;color:var(--txd);margin-bottom:2px;padding-left:8px">· ${sub}: ${items.map(i=>`T${i.week} (${i.projs})`).join(', ')}</div>`).join('')}
+  </div>`:'';
+  const wh=W.map(w=>{const n=wsl(w);return`<div class="wc ${n>=4?'ov':n>=3?'hi':''}"  >T${w}</div>`;}).join('');
+  const srows=actS.map(sub=>{
+    const bw={};
+    S.projects.forEach((p,pi)=>(p.stages||[]).filter(s=>s.subId===sub.id).forEach(s=>{for(let w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,stage:s,pi});}}));
+    const tw=Object.keys(bw).length;
+    const hc=Object.entries(bw).some(([w,e])=>new Set(e.map(x=>x.proj.id)).size>1);
+    const sb=hc?`<span class="badge gr" style="font-size:10px">konflikt</span>`:tw?`<span class="badge gg" style="font-size:10px">${tw} tyg.</span>`:'';
     const cells=W.map(w=>{
-      const entries=byWeek[w];if(!entries||!entries.length)return`<div class="bc"></div>`;
+      const entries=bw[w];if(!entries||!entries.length)return`<div class="bc"></div>`;
       const uP=[...new Set(entries.map(e=>e.proj.id))];const isC=uP.length>1;
-      const pi=entries[0].pi;const col=isC?'#E24B4A':PROJ_HEX[pi%PROJ_HEX.length];
+      const pi=entries[0].pi;const col=isC?'#E24B4A':PH[pi%PH.length];
       const op=entries[0].stage.status==='done'?1:entries[0].stage.status==='inprogress'?.8:.45;
-      return`<div class="bc"><div class="bfill" style="background:${col};opacity:${op}" onmouseenter="showTip(this,'<b>T${w}</b><br>${entries.map(e=>e.stage.name+' · '+(e.proj.short||e.proj.name)).join('<br>')}')" onmouseleave="hideTip()"></div>${isC?'<div class="cmark"></div>':''}</div>`;
+      return`<div class="bc"><div class="bf" style="background:${col};opacity:${op}"></div>${isC?'<div class="cm"></div>':''}</div>`;
     }).join('');
-    return`<div class="bar-row"><div class="row-lbl" style="width:170px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:13px;font-weight:500;color:var(--tx1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:128px">${sub.name}</span>${sb}</div><div style="font-size:10px;color:var(--tx2)">${totalW} tyg. pracy</div></div><div class="bar-cells">${cells}</div></div>`;
+    return`<div class="brw"><div class="rlbl" style="width:170px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:125px">${sub.name}</span>${sb}</div><div style="font-size:10px;color:var(--tx2)">${tw} tyg. pracy</div></div><div class="bcel">${cells}</div></div>`;
   }).join('');
-  const loadRow = W.map(w=>{const n=getWeekSubLoad(w);if(!n)return`<div class="div-c"></div>`;const mx=Math.max(...W.map(ww=>getWeekSubLoad(ww)));const col=n>=4?'#E24B4A':n>=3?'#BA7517':'#378ADD';return`<div class="div-c"><div class="div-fill" style="background:${col};opacity:.5;top:${20-Math.round((n/mx)*16)}px"></div></div>`;}).join('');
-
-  return `<div class="stats">
-    <div class="stat"><div class="sl">Aktywni podwykonawcy</div><div class="sv">${actSubs.length}</div></div>
-    <div class="stat"><div class="sl">Konflikty</div><div class="sv" style="color:${cs.length?'#E24B4A':'inherit'}">${cs.length}</div><div class="ss">tygodni</div></div>
-    <div class="stat"><div class="sl">Z konfliktami</div><div class="sv" style="color:${uConf?'#BA7517':'inherit'}">${uConf}</div><div class="ss">podwykonawców</div></div>
-    <div class="stat"><div class="sl">Szczyt obciążenia</div><div class="sv">T${peak}</div><div class="ss">${getWeekSubLoad(peak)} ekip</div></div>
+  const lr=W.map(w=>{const n=wsl(w);if(!n)return`<div class="dc"></div>`;const mx=Math.max(...W.map(ww=>wsl(ww)));const col=n>=4?'#E24B4A':n>=3?'#BA7517':'#378ADD';return`<div class="dc"><div class="df" style="background:${col};opacity:.5;top:${20-Math.round((n/mx)*16)}px"></div></div>`;}).join('');
+  return`<div class="stats">
+    <div class="stat"><div class="sl">Aktywni podwykonawcy</div><div class="sv">${actS.length}</div></div>
+    <div class="stat"><div class="sl">Konflikty</div><div class="sv" style="color:${cs.length?'#E24B4A':''}">${cs.length}</div></div>
+    <div class="stat"><div class="sl">Z konfliktami</div><div class="sv" style="color:${uC?'#BA7517':''}">${uC}</div></div>
+    <div class="stat"><div class="sl">Szczyt obciążenia</div><div class="sv">T${peak}</div><div class="ss">${wsl(peak)} ekip</div></div>
   </div>
-  ${alertHtml}
+  ${alr}
   <div class="card" style="margin-bottom:1.25rem">
-    <div class="slbl">Harmonogram podwykonawców — tygodniowy</div>
-    <div style="display:flex;gap:6px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
-      <span style="font-size:12px;color:var(--tx2)">Pokaż:</span>
-      <button class="fbtn ${state.dashSubFilter==='all'?'active':''}" onclick="state.dashSubFilter='all';render()">Wszyscy</button>
-      <button class="fbtn ${state.dashSubFilter==='conflict'?'active':''}" onclick="state.dashSubFilter='conflict';render()">Tylko konflikty</button>
-    </div>
-    <div class="legend">${state.projects.map((p,i)=>`<span><span class="lsq" style="background:${PROJ_HEX[i]}"></span>${p.short||p.name}</span>`).join('')}<span><span class="lsq" style="background:#E24B4A"></span>konflikt</span></div>
-    <div class="tl-wrap"><div class="tl-inner">
-      <div class="wh-row"><div class="row-lbl" style="width:170px"></div><div class="row-cells">${wHead}</div></div>
-      ${state.dashSubFilter==='conflict'?subRows.split('</div>').filter((_,i,a)=>i<a.length-1).map((r,i)=>{const sub=actSubs[i];if(!sub)return'';const hasC=detectConflicts().some(c=>c.sub===sub.name);return hasC?r+'</div>':'';}).join(''):subRows}
-      <div class="div-row" style="margin-top:10px"><div class="row-lbl" style="width:170px;font-size:11px;font-weight:500;color:var(--tx2)">Obciążenie łączne</div><div class="div-cells">${loadRow}</div></div>
+    <div class="slbl">Harmonogram podwykonawców</div>
+    <div class="leg">${S.projects.map((p,i)=>`<span><span class="lsq" style="background:${PH[i]}"></span>${p.short||p.name}</span>`).join('')}<span><span class="lsq" style="background:#E24B4A"></span>konflikt</span></div>
+    <div class="tlw"><div class="tli">
+      <div class="whr"><div class="rlbl" style="width:170px"></div><div class="rcel">${wh}</div></div>
+      ${srows}
+      <div class="dvr" style="margin-top:10px"><div class="rlbl" style="width:170px;font-size:11px;font-weight:500;color:var(--tx2)">Obciążenie łączne</div><div class="dcel">${lr}</div></div>
     </div></div>
   </div>
   <div class="card">
     <div class="slbl">Liczba aktywnych podwykonawców w tygodniu</div>
-    <div style="position:relative;width:100%;height:160px"><canvas id="chartSubLoad" role="img" aria-label="Podwykonawcy tygodniowo"></canvas></div>
+    <div style="position:relative;width:100%;height:160px"><canvas id="csl" role="img" aria-label="Podwykonawcy tygodniowo"></canvas></div>
   </div>`;
 }
-
-function initChartSub() {
-  const W = weeks();
-  const loads = W.map(w=>getWeekSubLoad(w));
-  const gc = matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
-  if(chartSubInst) chartSubInst.destroy();
-  const el = document.getElementById('chartSubLoad'); if(!el)return;
-  chartSubInst = new Chart(el,{type:'bar',data:{labels:W.map(w=>`T${w}`),datasets:[{data:loads,backgroundColor:loads.map(n=>n>=4?'rgba(226,75,74,.65)':n>=3?'rgba(186,117,23,.6)':'rgba(55,138,221,.5)'),borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>`Tydzień ${c[0].label}`,label:c=>`Podwykonawców: ${c.raw}`}}},scales:{x:{ticks:{color:'#888780',font:{size:10},autoSkip:true,maxTicksLimit:12},grid:{color:gc}},y:{beginAtZero:true,ticks:{color:'#888780',stepSize:1},grid:{color:gc}}}}});
+function initCS(){
+  const W=WS();
+  const loads=W.map(w=>wsl(w));
+  const gc=matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
+  if(csi)csi.destroy();
+  const el=document.getElementById('csl');if(!el)return;
+  csi=new Chart(el,{type:'bar',data:{labels:W.map(w=>`T${w}`),datasets:[{data:loads,backgroundColor:loads.map(n=>n>=4?'rgba(226,75,74,.65)':n>=3?'rgba(186,117,23,.6)':'rgba(55,138,221,.5)'),borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780',font:{size:10},autoSkip:true,maxTicksLimit:12},grid:{color:gc}},y:{beginAtZero:true,ticks:{color:'#888780',stepSize:1},grid:{color:gc}}}}});
 }
 
-/* ══════════════════════════════
-   RENDER: MODAL
-══════════════════════════════ */
-function renderModal() {
-  if(!state.modal) return '';
-  const m = state.modal;
-  let inner = '';
-  if(m.type==='newproj'||m.type==='editproj') {
-    const p = m.type==='editproj' ? getProj(state.selProjId) : {};
-    inner = `<div class="mtitle">${m.type==='editproj'?'Edytuj projekt':'Nowy plac budowy'}</div>
-      <div class="frow"><label>Nazwa projektu</label><input id="m-name" value="${p.name||''}" placeholder="np. Osiedle Różana"></div>
-      <div class="two-col">
-        <div class="frow"><label>Miejscowość</label><input id="m-loc" value="${p.location||''}" placeholder="np. Żywiec"></div>
-        <div class="frow"><label>Tygodni</label><input id="m-weeks" type="number" value="${p.weeks||16}" min="4" max="60"></div>
+// ── MODAL ──
+function rModal(){
+  if(!S.modal)return'';
+  const m=S.modal;let inner='';
+  if(m.t==='np'||m.t==='ep'){
+    const p=m.t==='ep'?GP(S.selP):{};
+    inner=`<div class="mtit">${m.t==='ep'?'Edytuj projekt':'Nowy plac budowy'}</div>
+      <div class="frow"><label>Nazwa projektu</label><input id="mn" value="${p.name||''}" placeholder="np. Osiedle Różana"></div>
+      <div class="two">
+        <div class="frow"><label>Miejscowość</label><input id="ml" value="${p.location||''}" placeholder="np. Żywiec"></div>
+        <div class="frow"><label>Tygodni</label><input id="mw" type="number" value="${p.weeks||16}" min="4" max="60"></div>
       </div>
-      <div class="frow"><label>Klient</label><input id="m-client" value="${p.client||''}" placeholder="np. Jan Kowalski"></div>
-      <div class="mbtns"><button class="btn" onclick="closeModal()">Anuluj</button><button class="btn btn-primary" onclick="${m.type==='editproj'?'saveProj()':'addProj()'}">Zapisz</button></div>`;
-  } else if(m.type==='addstage') {
-    const p = getProj(state.selProjId);
-    const subOpts = state.subs.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-    inner = `<div class="mtitle">Nowy etap – ${p.name}</div>
-      <div class="frow"><label>Nazwa etapu</label><input id="s-name" placeholder="np. Tynki wewnętrzne"></div>
-      <div class="frow"><label>Podwykonawca</label><select id="s-sub"><option value="">— bez podwykonawcy —</option>${subOpts}</select></div>
-      <div class="two-col">
-        <div class="frow"><label>Tydzień start</label><input id="s-start" type="number" value="1" min="1" max="${p.weeks}"></div>
-        <div class="frow"><label>Czas trwania (tyg.)</label><input id="s-dur" type="number" value="2" min="1"></div>
+      <div class="frow"><label>Klient</label><input id="mc" value="${p.client||''}" placeholder="np. Jan Kowalski"></div>
+      <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="${m.t==='ep'?'saveP()':'addP()'}">Zapisz</button></div>`;
+  } else if(m.t==='ns'){
+    const p=GP(S.selP);
+    const so=S.subs.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+    inner=`<div class="mtit">Nowy etap – ${p.name}</div>
+      <div class="frow"><label>Nazwa etapu</label><input id="sn" placeholder="np. Tynki wewnętrzne"></div>
+      <div class="frow"><label>Podwykonawca</label><select id="su"><option value="">— bez podwykonawcy —</option>${so}</select></div>
+      <div class="two">
+        <div class="frow"><label>Tydzień start</label><input id="st" type="number" value="1" min="1" max="${p.weeks}"></div>
+        <div class="frow"><label>Czas trwania (tyg.)</label><input id="sd" type="number" value="2" min="1"></div>
       </div>
-      <div class="frow"><label>Status</label><select id="s-status">
+      <div class="frow"><label>Status</label><select id="ss2">
         <option value="notstarted">Nie rozpoczęty</option><option value="planned">Planowany</option>
         <option value="inprogress">W trakcie</option><option value="done">Zakończony</option><option value="delayed">Opóźniony</option>
       </select></div>
-      <div class="mbtns"><button class="btn" onclick="closeModal()">Anuluj</button><button class="btn btn-primary" onclick="addStage()">Dodaj etap</button></div>`;
-  } else if(m.type==='editstage') {
-    const p = getProj(state.selProjId);
-    const s = p.stages.find(st=>st.id===m.stageId);
-    if(!s) return '';
-    const subOpts = state.subs.map(sub=>`<option value="${sub.id}" ${sub.id===s.subId?'selected':''}>${sub.name}</option>`).join('');
-    const statOpts = ['notstarted','planned','inprogress','done','delayed'].map(v=>`<option value="${v}" ${v===s.status?'selected':''}>${STAT_LBL[v]}</option>`).join('');
-    inner = `<div class="mtitle">Edytuj etap</div>
-      <div class="frow"><label>Nazwa etapu</label><input id="es-name" value="${s.name}"></div>
-      <div class="frow"><label>Podwykonawca</label><select id="es-sub"><option value="">— bez podwykonawcy —</option>${subOpts}</select></div>
-      <div class="two-col">
-        <div class="frow"><label>Tydzień start</label><input id="es-start" type="number" value="${s.start}" min="1" max="${p.weeks}"></div>
-        <div class="frow"><label>Czas trwania (tyg.)</label><input id="es-dur" type="number" value="${s.dur}" min="1"></div>
+      <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="addStg()">Dodaj etap</button></div>`;
+  } else if(m.t==='es'){
+    const p=GP(S.selP);
+    const s=(p.stages||[]).find(x=>x.id===m.sid);
+    if(!s)return'';
+    const so=S.subs.map(sub=>`<option value="${sub.id}" ${sub.id===s.subId?'selected':''}>${sub.name}</option>`).join('');
+    const sto=['notstarted','planned','inprogress','done','delayed'].map(v=>`<option value="${v}" ${v===s.status?'selected':''}>${SL[v]}</option>`).join('');
+    inner=`<div class="mtit">Edytuj etap</div>
+      <div class="frow"><label>Nazwa etapu</label><input id="en" value="${s.name}"></div>
+      <div class="frow"><label>Podwykonawca</label><select id="eu"><option value="">— bez podwykonawcy —</option>${so}</select></div>
+      <div class="two">
+        <div class="frow"><label>Tydzień start</label><input id="et" type="number" value="${s.start}" min="1" max="${p.weeks}"></div>
+        <div class="frow"><label>Czas trwania (tyg.)</label><input id="ed" type="number" value="${s.dur}" min="1"></div>
       </div>
-      <div class="frow"><label>Status</label><select id="es-status">${statOpts}</select></div>
-      <div class="mbtns"><button class="btn" onclick="closeModal()">Anuluj</button><button class="btn btn-primary" onclick="saveStage(${s.id})">Zapisz zmiany</button></div>`;
-  } else if(m.type==='addsub'||m.type==='editsub') {
-    const s = m.type==='editsub' ? getSub(m.subId) : {};
-    inner = `<div class="mtitle">${m.type==='editsub'?'Edytuj podwykonawcę':'Nowy podwykonawca'}</div>
-      <div class="frow"><label>Firma</label><input id="sb-name" value="${s.name||''}" placeholder="np. Hydro Serwis"></div>
-      <div class="two-col">
-        <div class="frow"><label>Osoba kontaktowa</label><input id="sb-contact" value="${s.contact||''}" placeholder="Jan Kowalski"></div>
-        <div class="frow"><label>Telefon</label><input id="sb-phone" value="${s.phone||''}" placeholder="600 000 000"></div>
+      <div class="frow"><label>Status</label><select id="es3">${sto}</select></div>
+      <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="saveStg(${s.id})">Zapisz zmiany</button></div>`;
+  } else if(m.t==='as'||m.t==='es2'){
+    const s=m.t==='es2'?GS(m.sid):{};
+    inner=`<div class="mtit">${m.t==='es2'?'Edytuj podwykonawcę':'Nowy podwykonawca'}</div>
+      <div class="frow"><label>Firma</label><input id="bname" value="${s.name||''}" placeholder="np. Hydro Serwis"></div>
+      <div class="two">
+        <div class="frow"><label>Osoba kontaktowa</label><input id="bcont" value="${s.contact||''}" placeholder="Jan Kowalski"></div>
+        <div class="frow"><label>Telefon</label><input id="bph" value="${s.phone||''}" placeholder="600 000 000"></div>
       </div>
-      <div class="frow"><label>E-mail</label><input id="sb-email" value="${s.email||''}" placeholder="biuro@firma.pl"></div>
-      <div class="frow"><label>Specjalności (oddzielone przecinkiem)</label><input id="sb-specs" value="${(s.specs||[]).join(', ')}" placeholder="np. Instalacje wod-kan, CO"></div>
-      <div class="frow"><label>Uwagi</label><input id="sb-notes" value="${s.notes||''}" placeholder="np. Wymaga zaliczki 30%"></div>
-      <div class="frow"><label>Status</label><select id="sb-active">
+      <div class="frow"><label>E-mail</label><input id="bmail" value="${s.email||''}" placeholder="biuro@firma.pl"></div>
+      <div class="frow"><label>Specjalności (oddzielone przecinkiem)</label><input id="bspec" value="${(s.specs||[]).join(', ')}" placeholder="np. Instalacje wod-kan, CO"></div>
+      <div class="frow"><label>Uwagi</label><input id="bnot" value="${s.notes||''}" placeholder="np. Wymaga zaliczki 30%"></div>
+      <div class="frow"><label>Status</label><select id="bact">
         <option value="1" ${s.active!==false?'selected':''}>Aktywny</option>
         <option value="0" ${s.active===false?'selected':''}>Nieaktywny</option>
       </select></div>
-      <div class="mbtns"><button class="btn" onclick="closeModal()">Anuluj</button><button class="btn btn-primary" onclick="${m.type==='editsub'?'saveSub('+m.subId+')':'addSub()'}">Zapisz</button></div>`;
+      <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="${m.t==='es2'?'saveB('+m.sid+')':'addB()'}">Zapisz</button></div>`;
   }
-  return `<div class="modal-bg" onclick="bgClose(event)"><div class="modal" onclick="event.stopPropagation()">${inner}</div></div>`;
+  return`<div class="mbg" onclick="bgC(event)"><div class="mbox" onclick="event.stopPropagation()">${inner}</div></div>`;
 }
 
-/* ══════════════════════════════
-   MAIN RENDER
-══════════════════════════════ */
-function render() {
-  const root = document.getElementById('root');
-  if(!state.authenticated) { root.innerHTML = renderLogin(); return; }
-  if(state.loading) { root.innerHTML = `<div class="shell"><div class="loading">Ładowanie danych…</div></div>`; return; }
-
-  let content = '';
-  if(state.view==='projects')   content = renderProjects();
-  else if(state.view==='gantt') content = renderGantt();
-  else if(state.view==='subs')  content = renderSubsView();
-  else if(state.view==='dash-proj') content = renderDashProj();
-  else if(state.view==='dash-sub')  content = renderDashSub();
-
-  root.innerHTML = `<div class="shell">${renderTopbar()}${content}${renderModal()}</div>`;
-  if(state.view==='dash-proj') setTimeout(initChartProj, 50);
-  if(state.view==='dash-sub')  setTimeout(initChartSub, 50);
+// ── MAIN RENDER ──
+function render(){
+  const root=document.getElementById('root');
+  if(!S.auth){root.innerHTML=rLogin();return;}
+  if(S.loading){root.innerHTML=`<div class="shell"><div class="spin">Ładowanie danych…</div></div>`;return;}
+  let c='';
+  if(S.view==='projects')c=rProjects();
+  else if(S.view==='gantt')c=rGantt();
+  else if(S.view==='subs')c=rSubs();
+  else if(S.view==='dp')c=rDP();
+  else if(S.view==='ds')c=rDS();
+  root.innerHTML=`<div class="shell">${rTop()}${c}${rModal()}</div>`;
+  if(S.view==='dp')setTimeout(initCP,50);
+  if(S.view==='ds')setTimeout(initCS,50);
 }
 
-function rerenderSubsList() {
-  const el = document.getElementById('subs-list'); if(el) el.innerHTML = renderSubsList();
-  const det = document.getElementById('sub-detail'); if(det) det.innerHTML = renderSubDetail();
-}
+// ── NAVIGATION ──
+function sv(v){S.view=v;render();}
+function selP(id){S.selP=id;S.view='gantt';render();}
+function goSub(id){S.selS=id;S.view='subs';render();}
+function selSub(id){S.selS=id;const d=document.getElementById('sd');if(d)d.innerHTML=rSubDetail();else render();}
+function om(t,sid,stgid){S.modal={t,sid,stgid:stgid||null};render();}
+function cm(){S.modal=null;render();}
+function bgC(e){if(e.target.classList.contains('mbg'))cm();}
 
-/* ══════════════════════════════
-   ACTIONS
-══════════════════════════════ */
-function setView(v) { state.view=v; render(); }
-function selectProj(id) { state.selProjId=id; state.view='gantt'; render(); }
-function goSub(id) { state.selSubId=id; state.view='subs'; render(); }
-function selSub(id) {
-  state.selSubId=id;
-  const det=document.getElementById('sub-detail');
-  if(det) det.innerHTML=renderSubDetail(); else render();
+// ── ACTIONS ──
+async function addP(){
+  const name=V('mn');if(!name)return;
+  const r=await api('POST','/api/projects',{name,short:name.split(' ')[0],location:V('ml')||'—',client:V('mc')||'—',weeks:+V('mw')||16,progress:0});
+  if(r){toast('Projekt dodany');cm();await loadData();S.selP=r.id;S.view='gantt';render();}
 }
-function openModal(type, subId, stageId) { state.modal={type,subId,stageId}; render(); }
-function closeModal() { state.modal=null; render(); }
-function bgClose(e) { if(e.target.classList.contains('modal-bg')) closeModal(); }
-
-async function addProj() {
-  const name=val('m-name'); if(!name)return;
-  const r = await api('POST','/api/projects',{name,short:name.split(' ')[0],location:val('m-loc')||'—',client:val('m-client')||'—',weeks:+val('m-weeks')||16,progress:0});
-  if(r){toast('Projekt dodany');closeModal();await loadData();state.selProjId=r.id;state.view='gantt';render();}
+async function saveP(){
+  const p=GP(S.selP);if(!p)return;
+  await api('PUT',`/api/projects/${p.id}`,{name:V('mn')||p.name,short:(V('mn')||p.name).split(' ')[0],location:V('ml'),client:V('mc'),weeks:+V('mw')||p.weeks});
+  toast('Zapisano');cm();await loadData();render();
 }
-async function saveProj() {
-  const p=getProj(state.selProjId);if(!p)return;
-  await api('PUT',`/api/projects/${p.id}`,{name:val('m-name')||p.name,short:(val('m-name')||p.name).split(' ')[0],location:val('m-loc'),client:val('m-client'),weeks:+val('m-weeks')||p.weeks});
-  toast('Zapisano');closeModal();await loadData();render();
-}
-async function deleteProj(id) {
+async function delProj(id){
   if(!confirm('Usunąć projekt i wszystkie jego etapy?'))return;
   await api('DELETE',`/api/projects/${id}`);
-  toast('Projekt usunięty');state.selProjId=state.projects[0]?.id||null;await loadData();state.view='projects';render();
+  toast('Projekt usunięty');S.selP=S.projects[0]?.id||null;await loadData();S.view='projects';render();
 }
-async function addStage() {
-  const p=getProj(state.selProjId);if(!p)return;
-  const name=val('s-name');if(!name)return;
-  await api('POST',`/api/projects/${p.id}/stages`,{name,subId:val('s-sub')?+val('s-sub'):null,start:+val('s-start')||1,dur:+val('s-dur')||2,status:val('s-status')||'planned'});
-  toast('Etap dodany');closeModal();await loadData();render();
+async function addStg(){
+  const p=GP(S.selP);if(!p)return;
+  const name=V('sn');if(!name)return;
+  await api('POST',`/api/projects/${p.id}/stages`,{name,subId:V('su')?+V('su'):null,start:+V('st')||1,dur:+V('sd')||2,status:V('ss2')||'planned'});
+  toast('Etap dodany');cm();await loadData();render();
 }
-async function addSub() {
-  const name=val('sb-name');if(!name)return;
-  await api('POST','/api/subcontractors',{name,contact:val('sb-contact'),phone:val('sb-phone'),email:val('sb-email'),specs:val('sb-specs').split(',').map(x=>x.trim()).filter(Boolean),notes:val('sb-notes'),active:val('sb-active')!=='0'});
-  toast('Podwykonawca dodany');closeModal();await loadData();render();
+async function saveStg(id){
+  const p=GP(S.selP);if(!p)return;
+  const s=(p.stages||[]).find(x=>x.id===id);if(!s)return;
+  const name=V('en');if(!name)return;
+  await api('PUT',`/api/stages/${id}`,{name,subId:V('eu')?+V('eu'):null,start:+V('et')||s.start,dur:+V('ed')||s.dur,status:V('es3')||s.status});
+  toast('Etap zaktualizowany');cm();await loadData();render();
 }
-async function saveSub(id) {
-  await api('PUT',`/api/subcontractors/${id}`,{name:val('sb-name'),contact:val('sb-contact'),phone:val('sb-phone'),email:val('sb-email'),specs:val('sb-specs').split(',').map(x=>x.trim()).filter(Boolean),notes:val('sb-notes'),active:val('sb-active')!=='0'});
-  toast('Zapisano');closeModal();await loadData();render();
+async function qStatus(id,ns){
+  const p=GP(S.selP);if(!p)return;
+  const s=(p.stages||[]).find(x=>x.id===id);if(!s)return;
+  await api('PUT',`/api/stages/${id}`,{...s,status:ns});
+  toast('Status zmieniony');await loadData();render();
 }
-async function deleteSub(id) {
+async function delStage(id){
+  if(!confirm('Usunąć ten etap?'))return;
+  await api('DELETE',`/api/stages/${id}`);
+  toast('Etap usunięty');await loadData();render();
+}
+async function addB(){
+  const name=V('bname');if(!name)return;
+  await api('POST','/api/subcontractors',{name,contact:V('bcont'),phone:V('bph'),email:V('bmail'),specs:V('bspec').split(',').map(x=>x.trim()).filter(Boolean),notes:V('bnot'),active:V('bact')!=='0'});
+  toast('Podwykonawca dodany');cm();await loadData();render();
+}
+async function saveB(id){
+  await api('PUT',`/api/subcontractors/${id}`,{name:V('bname'),contact:V('bcont'),phone:V('bph'),email:V('bmail'),specs:V('bspec').split(',').map(x=>x.trim()).filter(Boolean),notes:V('bnot'),active:V('bact')!=='0'});
+  toast('Zapisano');cm();await loadData();render();
+}
+async function delSub(id){
   if(!confirm('Usunąć podwykonawcę?'))return;
   await api('DELETE',`/api/subcontractors/${id}`);
-  toast('Usunięto');state.selSubId=null;await loadData();render();
+  toast('Usunięto');S.selS=null;await loadData();render();
 }
 
-async function quickStatus(stageId, newStatus) {
-  const p = getProj(state.selProjId); if(!p) return;
-  const s = p.stages.find(st=>st.id===stageId); if(!s) return;
-  await api('PUT',`/api/stages/${stageId}`,{...s, status:newStatus});
-  toast('Status zmieniony');
-  await loadData(); render();
-}
-
-async function saveStage(stageId) {
-  const p = getProj(state.selProjId); if(!p) return;
-  const s = p.stages.find(st=>st.id===stageId); if(!s) return;
-  const name = val('es-name'); if(!name) return;
-  const subId = val('es-sub') ? +val('es-sub') : null;
-  await api('PUT',`/api/stages/${stageId}`,{
-    name, subId, start:+val('es-start')||s.start,
-    dur:+val('es-dur')||s.dur, status:val('es-status')||s.status
-  });
-  toast('Etap zaktualizowany'); closeModal(); await loadData(); render();
-}
-
-async function deleteStage(stageId) {
-  if(!confirm('Usunąć ten etap?')) return;
-  await api('DELETE',`/api/stages/${stageId}`);
-  toast('Etap usunięty'); await loadData(); render();
-}
-
-/* ══════════════════════════════
-   INIT
-══════════════════════════════ */
+// ── INIT ──
 (async()=>{
-  try {
-    state.loading = false;
-    render(); // najpierw pokaż ekran logowania
-    const me = await api('GET','/api/me');
-    if(me && me.authenticated){
-      state.authenticated=true;
-      state.loading=true;
-      render();
-      await loadData();
+  try{
+    const me=await api('GET','/api/me');
+    if(me&&me.authenticated){
+      S.auth=true;S.loading=true;render();await loadData();
     } else {
-      state.authenticated=false;
-      state.loading=false;
-      render();
+      S.auth=false;S.loading=false;render();
     }
-  } catch(e) {
-    state.authenticated=false;
-    state.loading=false;
-    render();
+  } catch(e){
+    S.auth=false;S.loading=false;render();
   }
 })();
 </script>
