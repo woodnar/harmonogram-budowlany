@@ -471,7 +471,7 @@ function rModal(){
       <div class="mbtns"><button class="btn" onclick="cm()">Anuluj</button><button class="btn btnp" onclick="addStg()">Dodaj etap</button></div>`;
   } else if(m.t==='es'){
     const p=GP(S.selP);
-    const s=(p.stages||[]).find(x=>x.id===m.sid);
+    const s=(p.stages||[]).find(x=>x.id===m.stgid);
     if(!s)return'';
     const so=S.subs.map(sub=>`<option value="${sub.id}" ${sub.id===s.subId?'selected':''}>${sub.name}</option>`).join('');
     const sto=['notstarted','planned','inprogress','done','delayed'].map(v=>`<option value="${v}" ${v===s.status?'selected':''}>${SL[v]}</option>`).join('');
@@ -585,8 +585,22 @@ async function delSub(id){
 }
 
 // ── EXPORT ──
-function exportXls(projId){window.open('/api/export/'+projId,'_blank');}
-function exportAll(){window.open('/api/export-all','_blank');}
+function exportXls(projId){
+  const a=document.createElement('a');
+  a.href='/api/export/'+projId;
+  a.download='harmonogram.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+function exportAll(){
+  const a=document.createElement('a');
+  a.href='/api/export-all';
+  a.download='harmonogram_wszystkie.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 
 // ── INIT ──
 (async()=>{
