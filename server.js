@@ -157,7 +157,7 @@ app.get('/api/export/:projectId',auth,(req,res)=>{
       return[s.name,sub?sub.name:'—',s.start,s.dur,s.start+s.dur-1,SL[s.status]||s.status];
     })
   ];
-  const csv='\uFEFF'+rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\r\n');
+  const csv='\uFEFF'+rows.map(r=>r.length===0?'':r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\r\n');
   const filename=`harmonogram_${p.name.replace(/[^a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g,'_')}.csv`;
   res.setHeader('Content-Type','text/csv;charset=utf-8');
   res.setHeader('Content-Disposition',`attachment; filename="${filename}"`);
@@ -177,7 +177,7 @@ app.get('/api/export-all',auth,(req,res)=>{
       rows.push([p.name,p.location||'',p.client||'',s.name,sub?sub.name:'—',s.start,s.dur,s.start+s.dur-1,SL[s.status]||s.status]);
     });
   });
-  const csv='\uFEFF'+rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\r\n');
+  const csv='\uFEFF'+rows.map(r=>r.length===0?'':r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\r\n');
   res.setHeader('Content-Type','text/csv;charset=utf-8');
   res.setHeader('Content-Disposition','attachment; filename="harmonogram_wszystkie_projekty.csv"');
   res.send(csv);
