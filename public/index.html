@@ -172,6 +172,7 @@ function rTop(){
     </div>
     <div style="display:flex;gap:8px">
       <button class="btn btnp" onclick="om(S.view==='subs'?'as':'np')">+ ${S.view==='subs'?'Nowy podwykonawca':'Nowy projekt'}</button>
+      <button class="btn" style="font-size:12px;padding:4px 10px" onclick="exportAll()">Pobierz wszystko (Excel)</button>
       <button class="btn" style="font-size:12px;padding:4px 10px" onclick="doLogout()">Wyloguj</button>
     </div>
   </div>`;
@@ -242,6 +243,7 @@ function rGantt(){
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
         ${bdg(isDel?'delayed':'inprogress')}
         <button class="btn" onclick="om('ep')">Edytuj projekt</button>
+        <button class="btn" onclick="exportXls(${p.id})">Pobierz Excel</button>
         <button class="btn" style="color:var(--txd)" onclick="delProj(${p.id})">Usuń</button>
       </div>
     </div>
@@ -456,7 +458,7 @@ function rModal(){
     const p=GP(S.selP);
     const so=S.subs.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
     inner=`<div class="mtit">Nowy etap – ${p.name}</div>
-      <div class="frow"><label>Nazwa etapu</label><input id="sn" placeholder="np. Tynki wewnętrzne"></div>
+      <div class="frow"><label>Nazwa etapu</label><input id="sn" placeholder="np. Tynki wewnętrzne" list="dstages"><datalist id="dstages"><option value="PAB"><option value="PT Konstrukcja + płyta"><option value="PT Warsztatowo-montażowy"><option value="PT Instalacje sanitarne"><option value="PT Instalacje elektryczne"><option value="Płyta fundamentowa"><option value="Wiązary – projekt"><option value="Prefabrykacja"><option value="Montaż konstrukcji"><option value="Montaż pokrycia"><option value="Montaż okien"><option value="Wylewki"><option value="Montaż instalacji sanitarnych"><option value="Montaż instalacji elektrycznych"><option value="Sufity"><option value="Elewacja + drzwi + parapety"><option value="Protokół końcowy"></datalist></div>
       <div class="frow"><label>Podwykonawca</label><select id="su"><option value="">— bez podwykonawcy —</option>${so}</select></div>
       <div class="two">
         <div class="frow"><label>Tydzień start</label><input id="st" type="number" value="1" min="1" max="${p.weeks}"></div>
@@ -581,6 +583,10 @@ async function delSub(id){
   await api('DELETE',`/api/subcontractors/${id}`);
   toast('Usunięto');S.selS=null;await loadData();render();
 }
+
+// ── EXPORT ──
+function exportXls(projId){window.open('/api/export/'+projId,'_blank');}
+function exportAll(){window.open('/api/export-all','_blank');}
 
 // ── INIT ──
 (async()=>{
