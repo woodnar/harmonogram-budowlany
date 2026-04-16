@@ -201,7 +201,9 @@ function rProjects(){
     return '<div class="card cp '+(p.id===S.selP?'sel':'')+'" onclick="selP('+p.id+')">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'+
       '<span style="font-size:14px;font-weight:500">'+p.name+'</span>'+bdg(st)+'</div>'+
-      '<div style="font-size:12px;color:var(--tx2);margin-bottom:8px">'+p.location+' · '+p.client+' · '+p.weeks+' tyg. · '+(p.stages||[]).length+' etapów</div>'+
+      '<div style="font-size:12px;color:var(--tx2);margin-bottom:6px">'+p.location+' · '+p.client+' · '+p.weeks+' tyg. · '+(p.stages||[]).length+' etapów</div>'+
+    (p.phone||p.email?'<div style="font-size:12px;color:var(--tx2);margin-bottom:6px">'+(p.phone?'<a href="tel:'+p.phone+'" style="color:var(--txi)" onclick="event.stopPropagation()">'+p.phone+'</a>':'')+' '+(p.email?'<a href="mailto:'+p.email+'" style="color:var(--txi)" onclick="event.stopPropagation()">'+p.email+'</a>':'')+'</div>':'')+
+    (p.notes?'<div style="font-size:11px;color:var(--tx3);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.notes+'</div>':'')+
       '<div style="display:flex;align-items:center;gap:10px">'+
       '<div class="pbar" style="flex:1"><div class="pfill" style="width:'+pr+'%;background:'+col+'"></div></div>'+
       '<span style="font-size:12px;color:var(--tx2)">'+pr+'%</span></div></div>';
@@ -242,7 +244,9 @@ function rGantt(){
   return '<div class="card">'+
     '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;flex-wrap:wrap;gap:8px">'+
     '<div><div style="font-size:15px;font-weight:500">'+p.name+'</div>'+
-    '<div style="font-size:12px;color:var(--tx2);margin-top:3px">'+p.location+' · '+p.client+'</div></div>'+
+    '<div style="font-size:12px;color:var(--tx2);margin-top:3px">'+p.location+' · '+p.client+(p.phone?' · <a href="tel:'+p.phone+'" style="color:var(--txi)">'+p.phone+'</a>':'')+
+    (p.email?' · <a href="mailto:'+p.email+'" style="color:var(--txi)">'+p.email+'</a>':'')+'</div>'+
+    (p.notes?'<div style="font-size:12px;color:var(--tx2);margin-top:4px;padding:7px 10px;background:var(--bg2);border-radius:var(--rmd);white-space:pre-wrap">'+p.notes+'</div>':'')+'</div>'+
     '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+
     bdg(isDel?'delayed':'inprogress')+
     ' <button class="btn" onclick="om(\'ep\')">Edytuj projekt</button>'+
@@ -428,7 +432,13 @@ function rModal(){
       '<div class="fr"><label>Miejscowość</label><input id="ml" value="'+(p.location||'')+'" placeholder="np. Żywiec"></div>'+
       '<div class="fr"><label>Tygodni</label><input id="mw" type="number" value="'+(p.weeks||16)+'" min="4" max="60"></div>'+
       '</div>'+
-      '<div class="fr"><label>Klient</label><input id="mc" value="'+(p.client||'')+'" placeholder="np. Jan Kowalski"></div>'+
+      '<div class="fr"><label>Klient / Inwestor</label><input id="mc" value="'+(p.client||'')+'" placeholder="np. Jan Kowalski"></div>'+
+      '<div class="two">'+
+      '<div class="fr"><label>Telefon inwestora</label><input id="mph" value="'+(p.phone||'')+'" placeholder="600 000 000"></div>'+
+      '<div class="fr"><label>E-mail inwestora</label><input id="mem" value="'+(p.email||'')+'" placeholder="jan@firma.pl"></div>'+
+      '</div>'+
+      '<div class="fr"><label>Notatki do projektu</label></div>'+
+      '<textarea id="mnt" rows="3" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1);resize:vertical;margin-bottom:11px" placeholder="Uwagi, ustalenia, ważne informacje…">'+(p.notes||'')+'</textarea>'+
       '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="'+(m.t==='ep'?'saveP()':'addP()')+'">Zapisz</button></div>';
   } else if(m.t==='ns'){
     var p2=GP(S.selP);if(!p2)return '';
@@ -506,13 +516,13 @@ function bgC(e){if(e.target.className==='mbg')cm();}
 
 function addP(){
   var name=V('mn');if(!name)return;
-  api('POST','/api/projects',{name:name,short:name.split(' ')[0],location:V('ml')||'—',client:V('mc')||'—',weeks:+V('mw')||16,progress:0}).then(function(r){
+  api('POST','/api/projects',{name:name,short:name.split(' ')[0],location:V('ml')||'—',client:V('mc')||'—',phone:V('mph'),email:V('mem'),notes:V('mnt'),weeks:+V('mw')||16,progress:0}).then(function(r){
     if(r){toast('Projekt dodany');cm();loadData().then(function(){S.selP=r.id;S.view='gantt';render();});}
   });
 }
 function saveP(){
   var p=GP(S.selP);if(!p)return;
-  api('PUT','/api/projects/'+p.id,{name:V('mn')||p.name,short:(V('mn')||p.name).split(' ')[0],location:V('ml'),client:V('mc'),weeks:+V('mw')||p.weeks}).then(function(){
+  api('PUT','/api/projects/'+p.id,{name:V('mn')||p.name,short:(V('mn')||p.name).split(' ')[0],location:V('ml'),client:V('mc'),phone:V('mph'),email:V('mem'),notes:V('mnt'),weeks:+V('mw')||p.weeks}).then(function(){
     toast('Zapisano');cm();loadData();
   });
 }
