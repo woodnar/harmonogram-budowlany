@@ -13,7 +13,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .shell{max-width:1140px;margin:0 auto;padding:1.5rem 1rem}
 .lw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
 .lb{background:var(--bg1);border:0.5px solid var(--bd3);border-radius:var(--rlg);padding:2rem;width:100%;max-width:360px}
-.tb{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem}
+.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem}
 .tabs{display:flex;gap:3px;background:var(--bg2);border-radius:var(--rmd);padding:3px;flex-wrap:wrap}
 .tab{font-size:13px;padding:5px 11px;border-radius:6px;border:none;background:transparent;color:var(--tx2);cursor:pointer}
 .tab.on{background:var(--bg1);color:var(--tx1);font-weight:500;border:0.5px solid var(--bd3)}
@@ -34,14 +34,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .chip{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--bg2);color:var(--tx2);border:0.5px solid var(--bd3)}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
 .gw{overflow-x:auto;margin-top:10px}
-.gt2{min-width:580px;width:100%;border-collapse:collapse}
-.gt2 th{font-size:11px;color:var(--tx2);font-weight:500;text-align:left;padding:4px 5px 7px;border-bottom:0.5px solid var(--bd3)}
-.gt2 td{padding:4px 5px;vertical-align:middle;border-bottom:0.5px solid var(--bd3)}
+.gtbl{min-width:600px;width:100%;border-collapse:collapse}
+.gtbl th{font-size:11px;color:var(--tx2);font-weight:500;text-align:left;padding:4px 5px 7px;border-bottom:0.5px solid var(--bd3)}
+.gtbl td{padding:4px 5px;vertical-align:middle;border-bottom:0.5px solid var(--bd3)}
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:flex-start;justify-content:center;padding-top:60px;z-index:100}
 .mbox{background:var(--bg1);border:0.5px solid var(--bd2);border-radius:var(--rlg);padding:20px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
-.mt{font-size:15px;font-weight:500;margin-bottom:13px}
+.mt2{font-size:15px;font-weight:500;margin-bottom:13px}
 .fr{margin-bottom:11px}.fr label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px}
-.fr input,.fr select{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1)}
+.fr input,.fr select,.fr textarea{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1)}
+.fr textarea{resize:vertical}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .mbs{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:14px}
@@ -68,6 +69,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .spin{display:flex;align-items:center;justify-content:center;height:200px;color:var(--tx2);font-size:14px}
 .abtn{font-size:11px;padding:2px 8px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);cursor:pointer;white-space:nowrap}
 .abtn.rd{color:var(--txd)}
+.note-pill{font-size:11px;color:var(--txw);font-style:italic;display:block;margin-top:2px}
 @media(max-width:640px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}.tab{padding:4px 8px;font-size:12px}}
 </style>
 </head>
@@ -75,40 +77,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div id="root"></div>
 <div class="toast" id="toast"></div>
 <script>
-const PH=['#378ADD','#1D9E75','#D85A30','#7F77DD','#BA7517'];
-const SHX={done:'#639922',inprogress:'#378ADD',planned:'#B4B2A9',delayed:'#E24B4A',notstarted:'#D3D1C7'};
-const SLX={done:'Zakończony',inprogress:'W trakcie',planned:'Planowany',delayed:'Opóźniony',notstarted:'Nie rozpoczęty'};
-const SCX={done:'gg',inprogress:'gb',planned:'gy',delayed:'gr',notstarted:'gy'};
-const ACX=['gb','gt','gp','gc','ga','gg'];
-const SNXT={notstarted:{n:'planned',l:'→ Planowany'},planned:{n:'inprogress',l:'→ Rozpocznij'},inprogress:{n:'done',l:'→ Zakończ'},done:{n:'notstarted',l:'↺ Cofnij'},delayed:{n:'inprogress',l:'→ Wznów'}};
-const DSTAGES=['PAB','PT Konstrukcja + płyta','PT Warsztatowo-montażowy','PT Instalacje sanitarne','PT Instalacje elektryczne','Płyta fundamentowa','Wiązary – projekt','Prefabrykacja','Montaż konstrukcji','Montaż pokrycia','Montaż okien','Wylewki','Montaż instalacji sanitarnych','Montaż instalacji elektrycznych','Sufity','Elewacja + drzwi + parapety','Protokół końcowy'];
+var PH=['#378ADD','#1D9E75','#D85A30','#7F77DD','#BA7517'];
+var SHX={done:'#639922',inprogress:'#378ADD',planned:'#B4B2A9',delayed:'#E24B4A',notstarted:'#D3D1C7'};
+var SLX={done:'Zakończony',inprogress:'W trakcie',planned:'Planowany',delayed:'Opóźniony',notstarted:'Nie rozpoczęty'};
+var SCX={done:'gg',inprogress:'gb',planned:'gy',delayed:'gr',notstarted:'gy'};
+var ACX=['gb','gt','gp','gc','ga','gg'];
+var SNXT={notstarted:{n:'planned',l:'Planowany'},planned:{n:'inprogress',l:'Rozpocznij'},inprogress:{n:'done',l:'Zakończ'},done:{n:'notstarted',l:'Cofnij'},delayed:{n:'inprogress',l:'Wznów'}};
+var DSTAGES=['PAB','PT Konstrukcja + plyta','PT Warsztatowo-montazowy','PT Instalacje sanitarne','PT Instalacje elektryczne','Plyta fundamentowa','Wiazary - projekt','Prefabrykacja','Montaz konstrukcji','Montaz pokrycia','Montaz okien','Wylewki','Montaz instalacji sanitarnych','Montaz instalacji elektrycznych','Sufity','Elewacja + drzwi + parapety','Protokol koncowy'];
 
 var S={auth:false,loading:false,view:'projects',projects:[],subs:[],selP:null,selS:null,modal:null,sf:'all',ss:''};
-var cpi=null,csi=null,tipEl=null;
+var cpi=null,csi=null;
 
-function GP(id){return S.projects.find(function(p){return p.id===id;});}
-function GS(id){return S.subs.find(function(s){return s.id===id;});}
-function ini(n){return n.split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase();}
+function GP(id){for(var i=0;i<S.projects.length;i++){if(S.projects[i].id===id)return S.projects[i];}return null;}
+function GS(id){for(var i=0;i<S.subs.length;i++){if(S.subs[i].id===id)return S.subs[i];}return null;}
+function ini(n){var p=n.split(' ').slice(0,2);return p.map(function(w){return w[0];}).join('').toUpperCase();}
 function acls(id){return ACX[id%ACX.length];}
 function V(id){var e=document.getElementById(id);return e?e.value.trim():'';}
 function bdg(s){return '<span class="badge '+SCX[s]+'">'+SLX[s]+'</span>';}
-function MW(){return Math.max.apply(null,S.projects.map(function(p){return p.weeks;}).concat([1]));}
-function WS(){return Array.from({length:MW()},function(_,i){return i+1;});}
-function CP(p){var st=p.stages||[];return st.length?Math.round(st.filter(function(s){return s.status==='done';}).length/st.length*100):0;}
+function MW(){var m=1;S.projects.forEach(function(p){if(p.weeks>m)m=p.weeks;});return m;}
+function WS(){var a=[];for(var i=1;i<=MW();i++)a.push(i);return a;}
+function CP(p){var st=p.stages||[];if(!st.length)return 0;var d=0;st.forEach(function(s){if(s.status==='done')d++;});return Math.round(d/st.length*100);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function toast(msg,d){
-  d=d||2500;
-  var e=document.getElementById('toast');
-  e.textContent=msg;e.classList.add('show');
-  setTimeout(function(){e.classList.remove('show');},d);
-}
+function toast(msg){var e=document.getElementById('toast');e.textContent=msg;e.classList.add('show');setTimeout(function(){e.classList.remove('show');},2500);}
 
 function subUsage(sid){
   var r=[];
   S.projects.forEach(function(p){
-    (p.stages||[]).filter(function(s){return s.subId===sid;}).forEach(function(s){
-      r.push({proj:p.name,stage:s.name,status:s.status});
-    });
+    (p.stages||[]).forEach(function(s){if(s.subId===sid)r.push({proj:p.name,stage:s.name,status:s.status});});
   });
   return r;
 }
@@ -118,14 +114,18 @@ function getConflicts(){
   S.subs.forEach(function(sub){
     var bw={};
     S.projects.forEach(function(p,pi){
-      (p.stages||[]).filter(function(s){return s.subId===sub.id;}).forEach(function(s){
+      (p.stages||[]).forEach(function(s){
+        if(s.subId!==sub.id)return;
         for(var w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,pi:pi});}
       });
     });
     Object.keys(bw).forEach(function(w){
-      var e=bw[w];
-      var u=e.map(function(x){return x.proj.id;}).filter(function(v,i,a){return a.indexOf(v)===i;});
-      if(u.length>1)cs.push({sub:sub.name,week:+w,projs:u.map(function(id){var px=S.projects.find(function(p){return p.id===id;});return px?px.short||px.name:'?';}).join(' + ')});
+      var e=bw[w];var ids=[];
+      e.forEach(function(x){if(ids.indexOf(x.proj.id)<0)ids.push(x.proj.id);});
+      if(ids.length>1){
+        var names=ids.map(function(id){var px=GP(id);return px?px.short||px.name:'?';});
+        cs.push({sub:sub.name,week:+w,projs:names.join(' + ')});
+      }
     });
   });
   return cs;
@@ -134,39 +134,44 @@ function getConflicts(){
 function wsl(w){
   var ids={};
   S.projects.forEach(function(p){
-    (p.stages||[]).filter(function(s){return w>=s.start&&w<s.start+s.dur;}).forEach(function(s){if(s.subId)ids[s.subId]=true;});
+    (p.stages||[]).forEach(function(s){if(w>=s.start&&w<s.start+s.dur&&s.subId)ids[s.subId]=true;});
   });
   return Object.keys(ids).length;
 }
-function wpo(w){return S.projects.filter(function(p){return(p.stages||[]).some(function(s){return w>=s.start&&w<s.start+s.dur;});}).length;}
+function wpo(w){
+  var n=0;
+  S.projects.forEach(function(p){
+    var has=false;
+    (p.stages||[]).forEach(function(s){if(w>=s.start&&w<s.start+s.dur)has=true;});
+    if(has)n++;
+  });
+  return n;
+}
 
 function api(m,u,b){
   return fetch(u,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined}).then(function(r){
     if(r.status===401){S.auth=false;render();return null;}
     return r.json();
-  }).catch(function(){toast('Błąd połączenia');return null;});
+  }).catch(function(){toast('Blad polaczenia');return null;});
 }
-
 function loadData(){
   return Promise.all([api('GET','/api/projects'),api('GET','/api/subcontractors')]).then(function(res){
     if(res[0])S.projects=res[0];
     if(res[1])S.subs=res[1];
     if(S.projects.length&&!S.selP)S.selP=S.projects[0].id;
-    S.loading=false;
-    render();
+    S.loading=false;render();
   });
 }
 
 function rLogin(){
-  return '<div class="lw"><div class="lb">'+
-    '<div style="font-size:18px;font-weight:500;margin-bottom:6px">Harmonogramy budowlane</div>'+
-    '<div style="font-size:13px;color:var(--tx2);margin-bottom:1.5rem">Zaloguj się hasłem zespołu</div>'+
-    '<div class="fr"><label>Hasło zespołu</label><input type="password" id="pw" placeholder="••••••••" onkeydown="if(event.key===\'Enter\')doLogin()"></div>'+
-    '<div id="lerr" style="font-size:12px;color:var(--txd);margin-bottom:10px;display:none">Nieprawidłowe hasło.</div>'+
-    '<button class="btn bp" style="width:100%" onclick="doLogin()">Zaloguj się</button>'+
-  '</div></div>';
+  return '<div class="lw"><div class="lb">'
+    +'<div style="font-size:18px;font-weight:500;margin-bottom:6px">Harmonogramy budowlane</div>'
+    +'<div style="font-size:13px;color:var(--tx2);margin-bottom:1.5rem">Zaloguj sie haslem zespolu</div>'
+    +'<div class="fr"><label>Haslo zespolu</label><input type="password" id="pw" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" onkeydown="if(event.key===\'Enter\')doLogin()"></div>'
+    +'<div id="lerr" style="font-size:12px;color:var(--txd);margin-bottom:10px;display:none">Nieprawidlowe haslo.</div>'
+    +'<button class="btn bp" style="width:100%" onclick="doLogin()">Zaloguj sie</button>'
+    +'</div></div>';
 }
-
 function doLogin(){
   api('POST','/api/login',{password:V('pw')}).then(function(r){
     if(r&&r.ok){S.auth=true;S.loading=true;render();loadData();}
@@ -176,197 +181,230 @@ function doLogin(){
 function doLogout(){api('POST','/api/logout').then(function(){S.auth=false;S.projects=[];S.subs=[];render();});}
 
 function rTop(){
-  var tabs=[{id:'projects',l:'Projekty'},{id:'gantt',l:'Harmonogram'},{id:'subs',l:'Podwykonawcy'},{id:'dp',l:'Dashboard projektów'},{id:'ds',l:'Dashboard podwykonawców'}];
-  var t=tabs.map(function(x){return '<button class="tab '+(S.view===x.id?'on':'')+'" onclick="sv(\''+x.id+'\')">'+x.l+'</button>';}).join('');
-  return '<div class="tb">'+
-    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'+
-    '<span style="font-size:15px;font-weight:500">Harmonogramy budowlane</span>'+
-    '<div class="tabs">'+t+'</div></div>'+
-    '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
-    '<button class="btn bp" onclick="om(S.view===\'subs\'?\'as\':\'np\')">+ '+(S.view==='subs'?'Nowy podwykonawca':'Nowy projekt')+'</button>'+
-    '<button class="btn" style="font-size:12px;padding:4px 10px" onclick="exportAll()">Pobierz wszystko (Excel)</button>'+
-    '<button class="btn" style="font-size:12px;padding:4px 10px" onclick="doLogout()">Wyloguj</button>'+
-    '</div></div>';
+  var tabs=['projects:Projekty','gantt:Harmonogram','subs:Podwykonawcy','dp:Dashboard projektow','ds:Dashboard podwykonawcow'];
+  var t=tabs.map(function(x){var p=x.split(':');return '<button class="tab '+(S.view===p[0]?'on':'')+'" onclick="sv(\''+p[0]+'\')">'+p[1]+'</button>';}).join('');
+  var isSubs=S.view==='subs';
+  return '<div class="topbar">'
+    +'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'
+    +'<span style="font-size:15px;font-weight:500">Harmonogramy budowlane</span>'
+    +'<div class="tabs">'+t+'</div></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+    +'<button class="btn bp" onclick="om(\''+(isSubs?'as':'np')+'\')">+ '+(isSubs?'Nowy podwykonawca':'Nowy projekt')+'</button>'
+    +'<button class="btn" style="font-size:12px;padding:4px 10px" onclick="exportAll()">Pobierz Excel</button>'
+    +'<button class="btn" style="font-size:12px;padding:4px 10px" onclick="doLogout()">Wyloguj</button>'
+    +'</div></div>';
 }
 
 function rProjects(){
-  var del=S.projects.reduce(function(a,p){return a+(p.stages||[]).filter(function(s){return s.status==='delayed';}).length;},0);
+  var del=0;S.projects.forEach(function(p){(p.stages||[]).forEach(function(s){if(s.status==='delayed')del++;});});
   var avg=S.projects.length?Math.round(S.projects.reduce(function(a,p){return a+CP(p);},0)/S.projects.length):0;
   var actS=S.subs.filter(function(s){return s.active;}).length;
   var rows=S.projects.map(function(p){
     var pr=CP(p);
-    var isDel=(p.stages||[]).some(function(s){return s.status==='delayed';});
+    var isDel=false;(p.stages||[]).forEach(function(s){if(s.status==='delayed')isDel=true;});
     var col=isDel?'#E24B4A':pr>=80?'#639922':'#378ADD';
     var st=isDel?'delayed':pr===100?'done':pr>0?'inprogress':'notstarted';
-    return '<div class="card cp '+(p.id===S.selP?'sel':'')+'" onclick="selP('+p.id+')">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'+
-      '<span style="font-size:14px;font-weight:500">'+p.name+'</span>'+bdg(st)+'</div>'+
-      '<div style="font-size:12px;color:var(--tx2);margin-bottom:6px">'+p.location+' · '+p.client+' · '+p.weeks+' tyg. · '+(p.stages||[]).length+' etapów</div>'+
-    (p.phone||p.email?'<div style="font-size:12px;color:var(--tx2);margin-bottom:6px">'+(p.phone?'<a href="tel:'+p.phone+'" style="color:var(--txi)" onclick="event.stopPropagation()">'+p.phone+'</a>':'')+' '+(p.email?'<a href="mailto:'+p.email+'" style="color:var(--txi)" onclick="event.stopPropagation()">'+p.email+'</a>':'')+'</div>':'')+
-    (p.notes?'<div style="font-size:11px;color:var(--tx3);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.notes+'</div>':'')+
-      '<div style="display:flex;align-items:center;gap:10px">'+
-      '<div class="pbar" style="flex:1"><div class="pfill" style="width:'+pr+'%;background:'+col+'"></div></div>'+
-      '<span style="font-size:12px;color:var(--tx2)">'+pr+'%</span></div></div>';
+    return '<div class="card cp '+(p.id===S.selP?'sel':'')+'" onclick="selP('+p.id+')">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'
+      +'<span style="font-size:14px;font-weight:500">'+esc(p.name)+'</span>'+bdg(st)+'</div>'
+      +'<div style="font-size:12px;color:var(--tx2);margin-bottom:5px">'+esc(p.location)+' &middot; '+esc(p.client)+' &middot; '+p.weeks+' tyg. &middot; '+(p.stages||[]).length+' etapow</div>'
+      +(p.phone||p.email?'<div style="font-size:12px;margin-bottom:5px">'+(p.phone?'<a href="tel:'+esc(p.phone)+'" style="color:var(--txi)" onclick="event.stopPropagation()">'+esc(p.phone)+'</a> ':'')+' '+(p.email?'<a href="mailto:'+esc(p.email)+'" style="color:var(--txi)" onclick="event.stopPropagation()">'+esc(p.email)+'</a>':'')+'</div>':'')
+      +(p.notes?'<div style="font-size:11px;color:var(--tx3);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(p.notes)+'</div>':'')
+      +'<div style="display:flex;align-items:center;gap:10px">'
+      +'<div class="pbar" style="flex:1"><div class="pfill" style="width:'+pr+'%;background:'+col+'"></div></div>'
+      +'<span style="font-size:12px;color:var(--tx2)">'+pr+'%</span></div></div>';
   }).join('');
-  return '<div class="stats">'+
-    '<div class="stat"><div class="sl">Projekty</div><div class="sv">'+S.projects.length+'</div></div>'+
-    '<div class="stat"><div class="sl">Postęp średni</div><div class="sv">'+avg+'%</div></div>'+
-    '<div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:'+(del?'#E24B4A':'')+'">'+del+'</div><div class="ss">etapów</div></div>'+
-    '<div class="stat"><div class="sl">Podwykonawcy</div><div class="sv">'+actS+'</div><div class="ss">aktywnych</div></div>'+
-    '</div><div class="slbl">Projekty</div>'+rows;
+  return '<div class="stats">'
+    +'<div class="stat"><div class="sl">Projekty</div><div class="sv">'+S.projects.length+'</div></div>'
+    +'<div class="stat"><div class="sl">Postep sredni</div><div class="sv">'+avg+'%</div></div>'
+    +'<div class="stat"><div class="sl">Opoznienia</div><div class="sv" style="color:'+(del?'#E24B4A':'')+'">'+del+'</div><div class="ss">etapow</div></div>'
+    +'<div class="stat"><div class="sl">Podwykonawcy</div><div class="sv">'+actS+'</div><div class="ss">aktywnych</div></div>'
+    +'</div><div class="slbl">Projekty</div>'+rows;
 }
 
 function rGantt(){
   var p=GP(S.selP);if(!p)return '<div class="spin">Wybierz projekt</div>';
-  var ws=Array.from({length:p.weeks},function(_,i){return i+1;});
+  var ws=WS().slice(0,p.weeks);
   var wc=ws.map(function(w){return '<th style="min-width:26px;width:26px;text-align:center;font-size:10px">T'+w+'</th>';}).join('');
   var rows=(p.stages||[]).map(function(s){
     var sub=GS(s.subId);
     var col=SHX[s.status];
+    var op=s.status==='done'?1:s.status==='inprogress'?.75:.35;
     var cells=ws.map(function(w){
       if(w<s.start||w>=s.start+s.dur)return '<td></td>';
       var r1=w===s.start?'3px':'0';var r2=w===s.start+s.dur-1?'3px':'0';
-      return '<td style="padding:3px 1px"><div style="height:13px;background:'+col+';opacity:'+(s.status==='done'?1:s.status==='inprogress'?.75:.35)+';border-radius:'+r1+' '+r2+' '+r2+' '+r1+'"></div></td>';
+      return '<td style="padding:3px 1px"><div style="height:13px;background:'+col+';opacity:'+op+';border-radius:'+r1+' '+r2+' '+r2+' '+r1+'"></div></td>';
     }).join('');
-    var sn=sub?'<span style="font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline dotted" onclick="goSub('+sub.id+')">'+sub.name+'</span>':'<span style="font-size:11px;color:var(--tx3)">— brak —</span>';
+    var subName=sub?'<span style="font-size:11px;color:var(--tx2);cursor:pointer;text-decoration:underline dotted" onclick="goSub('+sub.id+')">'+esc(sub.name)+'</span>':'<span style="font-size:11px;color:var(--tx3)">brak</span>';
+    var noteHtml=s.notes?'<span class="note-pill">'+esc(s.notes)+'</span>':'';
     var nx=SNXT[s.status];
-    return '<tr>'+
-      '<td style="font-size:13px;min-width:130px;max-width:160px">'+s.name+'<br>'+sn+(s.notes?'<br><span style="font-size:11px;color:var(--txw);font-style:italic">'+s.notes+'</span>':'')+'</td>'+
-      '<td style="padding:4px 5px">'+bdg(s.status)+'</td>'+
-      '<td style="padding:3px 5px;white-space:nowrap">'+
-      '<button class="abtn" onclick="qSt('+s.id+',\''+nx.n+'\')">'+nx.l+'</button> '+
-      '<button class="abtn" onclick="om(\'es\',null,'+s.id+')">Edytuj</button> '+
-      '<button class="abtn rd" onclick="delStg('+s.id+')">✕</button>'+
-      '</td>'+cells+'</tr>';
+    return '<tr>'
+      +'<td style="font-size:13px;min-width:140px;max-width:160px">'+esc(s.name)+'<br>'+subName+noteHtml+'</td>'
+      +'<td style="padding:4px 5px">'+bdg(s.status)+'</td>'
+      +'<td style="padding:3px 5px;white-space:nowrap">'
+      +'<button class="abtn" onclick="qSt('+s.id+',\''+nx.n+'\')">'+nx.l+'</button> '
+      +'<button class="abtn" onclick="om(\'es\',null,'+s.id+')">Edytuj</button> '
+      +'<button class="abtn rd" onclick="delStg('+s.id+')">&#x2715;</button>'
+      +'</td>'+cells+'</tr>';
   }).join('');
-  var isDel=(p.stages||[]).some(function(s){return s.status==='delayed';});
-  var done=(p.stages||[]).filter(function(s){return s.status==='done';}).length;
-  return '<div class="card">'+
-    '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;flex-wrap:wrap;gap:8px">'+
-    '<div><div style="font-size:15px;font-weight:500">'+p.name+'</div>'+
-    '<div style="font-size:12px;color:var(--tx2);margin-top:3px">'+p.location+' · '+p.client+(p.phone?' · <a href="tel:'+p.phone+'" style="color:var(--txi)">'+p.phone+'</a>':'')+
-    (p.email?' · <a href="mailto:'+p.email+'" style="color:var(--txi)">'+p.email+'</a>':'')+'</div>'+
-    (p.notes?'<div style="font-size:12px;color:var(--tx2);margin-top:4px;padding:7px 10px;background:var(--bg2);border-radius:var(--rmd);white-space:pre-wrap">'+p.notes+'</div>':'')+'</div>'+
-    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+
-    bdg(isDel?'delayed':'inprogress')+
-    ' <button class="btn" onclick="om(\'ep\')">Edytuj projekt</button>'+
-    ' <button class="btn" onclick="exportXls('+p.id+')">Pobierz Excel</button>'+
-    ' <button class="btn" style="color:var(--txd)" onclick="delProj('+p.id+')">Usuń</button>'+
-    '</div></div>'+
-    '<div class="stats" style="margin-bottom:13px">'+
-    '<div class="stat"><div class="sl">Postęp</div><div class="sv">'+CP(p)+'%</div></div>'+
-    '<div class="stat"><div class="sl">Etapów</div><div class="sv">'+(p.stages||[]).length+'</div></div>'+
-    '<div class="stat"><div class="sl">Zakończone</div><div class="sv">'+done+'</div></div>'+
-    '<div class="stat"><div class="sl">Tygodnie</div><div class="sv">'+p.weeks+'</div></div>'+
-    '</div>'+
-    '<div class="slbl">Harmonogram Gantta</div>'+
-    '<div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Kliknij strzałkę aby zmienić status. "Edytuj" aby zmienić podwykonawcę lub terminy.</div>'+
-    '<div class="gw"><table class="gt2">'+
-    '<thead><tr><th style="min-width:130px">Etap</th><th style="min-width:80px">Status</th><th style="min-width:190px">Akcje</th>'+wc+'</tr></thead>'+
-    '<tbody>'+rows+'</tbody></table></div>'+
-    '<div class="act"><button class="btn" onclick="om(\'ns\')">+ Dodaj etap</button></div></div>';
+  var isDel=false;(p.stages||[]).forEach(function(s){if(s.status==='delayed')isDel=true;});
+  var done=0;(p.stages||[]).forEach(function(s){if(s.status==='done')done++;});
+  return '<div class="card">'
+    +'<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;flex-wrap:wrap;gap:8px">'
+    +'<div><div style="font-size:15px;font-weight:500">'+esc(p.name)+'</div>'
+    +'<div style="font-size:12px;color:var(--tx2);margin-top:3px">'+esc(p.location)+' &middot; '+esc(p.client)+(p.phone?' &middot; <a href="tel:'+esc(p.phone)+'" style="color:var(--txi)">'+esc(p.phone)+'</a>':'')+(p.email?' &middot; <a href="mailto:'+esc(p.email)+'" style="color:var(--txi)">'+esc(p.email)+'</a>':'')+'</div>'
+    +(p.notes?'<div style="font-size:12px;color:var(--tx2);margin-top:5px;padding:7px 10px;background:var(--bgw);border-radius:var(--rmd)">'+esc(p.notes)+'</div>':'')
+    +'</div>'
+    +'<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+bdg(isDel?'delayed':'inprogress')
+    +' <button class="btn" onclick="om(\'ep\')">Edytuj projekt</button>'
+    +' <button class="btn" onclick="exportXls('+p.id+')">Excel</button>'
+    +' <button class="btn" style="color:var(--txd)" onclick="delProj('+p.id+')">Usun</button>'
+    +'</div></div>'
+    +'<div class="stats" style="margin-bottom:13px">'
+    +'<div class="stat"><div class="sl">Postep</div><div class="sv">'+CP(p)+'%</div></div>'
+    +'<div class="stat"><div class="sl">Etapow</div><div class="sv">'+(p.stages||[]).length+'</div></div>'
+    +'<div class="stat"><div class="sl">Zakonczone</div><div class="sv">'+done+'</div></div>'
+    +'<div class="stat"><div class="sl">Tygodnie</div><div class="sv">'+p.weeks+'</div></div>'
+    +'</div>'
+    +'<div class="slbl">Harmonogram Gantta</div>'
+    +'<div class="gw"><table class="gtbl">'
+    +'<thead><tr><th style="min-width:140px">Etap</th><th style="min-width:80px">Status</th><th style="min-width:190px">Akcje</th>'+wc+'</tr></thead>'
+    +'<tbody>'+rows+'</tbody></table></div>'
+    +'<div class="act"><button class="btn" onclick="om(\'ns\')">+ Dodaj etap</button></div></div>';
 }
 
 function rSubsList(){
   var q=S.ss.toLowerCase();
-  var list=S.subs.filter(function(s){return !q||s.name.toLowerCase().indexOf(q)>=0||(s.specs||[]).some(function(sp){return sp.toLowerCase().indexOf(q)>=0;});});
-  if(S.sf==='active')list=list.filter(function(s){return s.active;});
-  if(S.sf==='inactive')list=list.filter(function(s){return !s.active;});
-  if(!list.length)return '<div style="color:var(--tx2);font-size:13px;padding:12px 0">Brak wyników</div>';
+  var list=S.subs.filter(function(s){
+    if(q){var ok=s.name.toLowerCase().indexOf(q)>=0;if(!ok)(s.specs||[]).forEach(function(sp){if(sp.toLowerCase().indexOf(q)>=0)ok=true;});if(!ok)return false;}
+    if(S.sf==='active'&&!s.active)return false;
+    if(S.sf==='inactive'&&s.active)return false;
+    return true;
+  });
+  if(!list.length)return '<div style="color:var(--tx2);font-size:13px;padding:12px 0">Brak wynikow</div>';
   return list.map(function(s){
     var u=subUsage(s.id);
-    return '<div class="card cp '+(s.id===S.selS?'sel':'')+'" onclick="selSub('+s.id+')">'+
-      '<div style="display:flex;align-items:center;gap:10px">'+
-      '<div class="ava '+acls(s.id)+'" style="width:36px;height:36px;font-size:12px">'+ini(s.name)+'</div>'+
-      '<div style="flex:1;min-width:0">'+
-      '<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">'+
-      '<span style="font-size:14px;font-weight:500">'+s.name+'</span>'+
-      '<span class="badge '+(s.active?'gg':'gy')+'">'+(s.active?'Aktywny':'Nieaktywny')+'</span>'+
-      (u.length?'<span class="badge gb">'+u.length+' etap'+(u.length>1?'ów':'')+'</span>':'')+
-      '</div>'+
-      '<div style="font-size:12px;color:var(--tx2);margin-top:2px">'+s.contact+' · '+s.phone+'</div>'+
-      '<div class="chips">'+(s.specs||[]).map(function(sp){return '<span class="chip">'+sp+'</span>';}).join('')+'</div>'+
-      '</div>'+
-      '<button class="btn" style="font-size:12px;padding:4px 10px;flex-shrink:0" onclick="event.stopPropagation();om(\'es2\','+s.id+')">Edytuj</button>'+
-      '</div></div>';
+    return '<div class="card cp '+(s.id===S.selS?'sel':'')+'" onclick="selSub('+s.id+')">'
+      +'<div style="display:flex;align-items:center;gap:10px">'
+      +'<div class="ava '+acls(s.id)+'" style="width:36px;height:36px;font-size:12px">'+ini(s.name)+'</div>'
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">'
+      +'<span style="font-size:14px;font-weight:500">'+esc(s.name)+'</span>'
+      +'<span class="badge '+(s.active?'gg':'gy')+'">'+(s.active?'Aktywny':'Nieaktywny')+'</span>'
+      +(u.length?'<span class="badge gb">'+u.length+' etap'+(u.length>1?'ow':'')+'</span>':'')
+      +'</div>'
+      +'<div style="font-size:12px;color:var(--tx2);margin-top:2px">'+esc(s.contact)+' &middot; '+esc(s.phone)+'</div>'
+      +'<div class="chips">'+(s.specs||[]).map(function(sp){return '<span class="chip">'+esc(sp)+'</span>';}).join('')+'</div>'
+      +'</div>'
+      +'<button class="btn" style="font-size:12px;padding:4px 10px;flex-shrink:0" onclick="event.stopPropagation();om(\'es2\','+s.id+')">Edytuj</button>'
+      +'</div></div>';
   }).join('');
 }
-
 function rSubDetail(){
-  if(!S.selS)return '<div style="color:var(--tx2);font-size:13px;padding:24px 0;text-align:center">Wybierz podwykonawcę z listy</div>';
+  if(!S.selS)return '<div style="color:var(--tx2);font-size:13px;padding:24px 0;text-align:center">Wybierz podwykonawce z listy</div>';
   var s=GS(S.selS);if(!s)return '';
   var u=subUsage(s.id);
-  return '<div class="card">'+
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">'+
-    '<div class="ava '+acls(s.id)+'" style="width:44px;height:44px;font-size:15px">'+ini(s.name)+'</div>'+
-    '<div><div style="font-size:15px;font-weight:500">'+s.name+'</div><div style="font-size:12px;color:var(--tx2)">'+s.contact+'</div></div>'+
-    '<span class="badge '+(s.active?'gg':'gy')+'" style="margin-left:auto">'+(s.active?'Aktywny':'Nieaktywny')+'</span></div>'+
-    '<div style="border-top:0.5px solid var(--bd3);padding-top:12px;margin-bottom:12px">'+
-    '<table style="width:100%;font-size:13px">'+
-    '<tr><td style="color:var(--tx2);padding:4px 0;width:80px">Telefon</td><td>'+s.phone+'</td></tr>'+
-    '<tr><td style="color:var(--tx2);padding:4px 0">E-mail</td><td style="color:var(--txi)">'+s.email+'</td></tr>'+
-    (s.notes?'<tr><td style="color:var(--tx2);padding:4px 0;vertical-align:top">Uwagi</td><td style="color:var(--tx2);font-size:12px">'+s.notes+'</td></tr>':'')+
-    '</table></div>'+
-    '<div class="slbl" style="margin-bottom:7px">Specjalności</div>'+
-    '<div class="chips" style="margin-bottom:13px">'+(s.specs||[]).map(function(sp){return '<span class="badge gy">'+sp+'</span>';}).join('')+'</div>'+
-    '<div class="slbl" style="margin-bottom:7px">Przypisane etapy ('+u.length+')</div>'+
-    (u.length?u.map(function(x){return '<div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 10px;background:var(--bg2);border-radius:var(--rmd);margin-bottom:4px"><div><span>'+x.stage+'</span><span style="color:var(--tx2);margin-left:6px;font-size:12px">'+x.proj+'</span></div>'+bdg(x.status)+'</div>';}).join(''):'<div style="font-size:13px;color:var(--tx2)">Brak przypisanych etapów</div>')+
-    '<div class="act"><button class="btn" onclick="om(\'es2\','+s.id+')">Edytuj dane</button> <button class="btn" style="color:var(--txd)" onclick="delSub('+s.id+')">Usuń</button></div></div>';
+  return '<div class="card">'
+    +'<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">'
+    +'<div class="ava '+acls(s.id)+'" style="width:44px;height:44px;font-size:15px">'+ini(s.name)+'</div>'
+    +'<div><div style="font-size:15px;font-weight:500">'+esc(s.name)+'</div><div style="font-size:12px;color:var(--tx2)">'+esc(s.contact)+'</div></div>'
+    +'<span class="badge '+(s.active?'gg':'gy')+'" style="margin-left:auto">'+(s.active?'Aktywny':'Nieaktywny')+'</span></div>'
+    +'<div style="border-top:0.5px solid var(--bd3);padding-top:12px;margin-bottom:12px">'
+    +'<table style="width:100%;font-size:13px">'
+    +'<tr><td style="color:var(--tx2);padding:4px 0;width:80px">Telefon</td><td>'+esc(s.phone)+'</td></tr>'
+    +'<tr><td style="color:var(--tx2);padding:4px 0">E-mail</td><td style="color:var(--txi)">'+esc(s.email)+'</td></tr>'
+    +(s.notes?'<tr><td style="color:var(--tx2);padding:4px 0;vertical-align:top">Uwagi</td><td style="color:var(--tx2);font-size:12px">'+esc(s.notes)+'</td></tr>':'')
+    +'</table></div>'
+    +'<div class="slbl" style="margin-bottom:7px">Specjalnosci</div>'
+    +'<div class="chips" style="margin-bottom:13px">'+(s.specs||[]).map(function(sp){return '<span class="badge gy">'+esc(sp)+'</span>';}).join('')+'</div>'
+    +'<div class="slbl" style="margin-bottom:7px">Przypisane etapy ('+u.length+')</div>'
+    +(u.length?u.map(function(x){return '<div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 10px;background:var(--bg2);border-radius:var(--rmd);margin-bottom:4px"><div><span>'+esc(x.stage)+'</span><span style="color:var(--tx2);margin-left:6px;font-size:12px">'+esc(x.proj)+'</span></div>'+bdg(x.status)+'</div>';}).join(''):'<div style="font-size:13px;color:var(--tx2)">Brak przypisanych etapow</div>')
+    +'<div class="act"><button class="btn" onclick="om(\'es2\','+s.id+')">Edytuj dane</button> <button class="btn" style="color:var(--txd)" onclick="delSub('+s.id+')">Usun</button></div></div>';
 }
-
 function rSubs(){
-  return '<div class="split">'+
-    '<div>'+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">'+
-    '<div class="slbl" style="margin:0">Podwykonawcy ('+S.subs.length+')</div>'+
-    '<button class="btn bp" onclick="om(\'as\')">+ Dodaj</button></div>'+
-    '<input placeholder="Szukaj…" value="'+S.ss+'" oninput="S.ss=this.value;rerS()" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1);margin-bottom:9px">'+
-    '<div style="display:flex;gap:6px;margin-bottom:10px">'+
-    '<button class="fbtn '+(S.sf==='all'?'on':'')+'" onclick="S.sf=\'all\';rerS()">Wszyscy</button>'+
-    '<button class="fbtn '+(S.sf==='active'?'on':'')+'" onclick="S.sf=\'active\';rerS()">Aktywni</button>'+
-    '<button class="fbtn '+(S.sf==='inactive'?'on':'')+'" onclick="S.sf=\'inactive\';rerS()">Nieaktywni</button>'+
-    '</div><div id="sl">'+rSubsList()+'</div></div>'+
-    '<div id="sd">'+rSubDetail()+'</div></div>';
+  return '<div class="split">'
+    +'<div>'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">'
+    +'<div class="slbl" style="margin:0">Podwykonawcy ('+S.subs.length+')</div>'
+    +'<button class="btn bp" onclick="om(\'as\')">+ Dodaj</button></div>'
+    +'<input placeholder="Szukaj..." value="'+esc(S.ss)+'" oninput="S.ss=this.value;rerS()" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1);margin-bottom:9px">'
+    +'<div style="display:flex;gap:6px;margin-bottom:10px">'
+    +'<button class="fbtn '+(S.sf==='all'?'on':'')+'" onclick="S.sf=\'all\';rerS()">Wszyscy</button>'
+    +'<button class="fbtn '+(S.sf==='active'?'on':'')+'" onclick="S.sf=\'active\';rerS()">Aktywni</button>'
+    +'<button class="fbtn '+(S.sf==='inactive'?'on':'')+'" onclick="S.sf=\'inactive\';rerS()">Nieaktywni</button>'
+    +'</div><div id="sl">'+rSubsList()+'</div></div>'
+    +'<div id="sd">'+rSubDetail()+'</div></div>';
 }
 function rerS(){var e=document.getElementById('sl');if(e)e.innerHTML=rSubsList();var d=document.getElementById('sd');if(d)d.innerHTML=rSubDetail();}
 
+function rNotesPanel(){
+  var items=[];
+  S.projects.forEach(function(p){
+    (p.stages||[]).forEach(function(s){
+      if(s.notes&&s.notes.trim()){
+        var sub=s.subId?GS(s.subId):null;
+        items.push({proj:p.name,stage:s.name,note:s.notes,status:s.status,subName:sub?sub.name:''});
+      }
+    });
+  });
+  if(!items.length)return '';
+  var rows=items.map(function(item){
+    return '<div style="padding:10px 0;border-bottom:0.5px solid var(--bd3)">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">'
+      +'<div>'
+      +'<span style="font-size:13px;font-weight:500">'+esc(item.stage)+'</span>'
+      +(item.subName?'<span style="font-size:11px;color:var(--tx3)"> &middot; '+esc(item.subName)+'</span>':'')
+      +'<span style="font-size:12px;color:var(--tx2);margin-left:8px">'+esc(item.proj)+'</span>'
+      +'</div>'+bdg(item.status)+'</div>'
+      +'<div style="font-size:13px;color:var(--tx2);background:var(--bgw);border-radius:var(--rmd);padding:7px 10px;white-space:pre-wrap">'+esc(item.note)+'</div>'
+      +'</div>';
+  }).join('');
+  return '<div class="card" style="margin-top:1.25rem">'
+    +'<div class="slbl">Notatki do etapow ('+items.length+')</div>'
+    +rows+'</div>';
+}
+
 function rDP(){
   var W=WS();
-  var del=S.projects.reduce(function(a,p){return a+(p.stages||[]).filter(function(s){return s.status==='delayed';}).length;},0);
+  var del=0;S.projects.forEach(function(p){(p.stages||[]).forEach(function(s){if(s.status==='delayed')del++;});});
   var avg=S.projects.length?Math.round(S.projects.reduce(function(a,p){return a+CP(p);},0)/S.projects.length):0;
+  var totalStages=S.projects.reduce(function(a,p){return a+(p.stages||[]).length;},0);
   var wh=W.map(function(w){var n=wpo(w);return '<div class="wc '+(n>=3?'ov':n>=2?'hi':'')+'">T'+w+'</div>';}).join('');
   var pr=S.projects.map(function(p,pi){
     var col=PH[pi%PH.length];
     var cells=W.map(function(w){
-      var act=(p.stages||[]).filter(function(s){return w>=s.start&&w<s.start+s.dur;});
+      var act=[];(p.stages||[]).forEach(function(s){if(w>=s.start&&w<s.start+s.dur)act.push(s);});
       if(!act.length)return '<div class="bc"></div>';
-      var c=act.some(function(s){return s.status==='delayed';})?'#E24B4A':col;
+      var isDel=false;act.forEach(function(s){if(s.status==='delayed')isDel=true;});
+      var c=isDel?'#E24B4A':col;
       var op=act[0].status==='done'?1:act[0].status==='inprogress'?.8:.4;
-      return '<div class="bc"><div class="bf" style="background:'+c+';opacity:'+op+'" title="'+act.map(function(s){var t=s.name;if(s.notes)t+=': '+s.notes;return t;}).join(' | ')+'"></div></div>';
+      var tip=act.map(function(s){return s.name+(s.notes?' ('+s.notes+')':'');}).join(' | ');
+      return '<div class="bc"><div class="bf" style="background:'+c+';opacity:'+op+'" title="'+esc(tip)+'"></div></div>';
     }).join('');
-    return '<div class="br2"><div class="rl" style="width:160px"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px">'+p.name+'</div><div style="font-size:10px;color:var(--tx2)">'+CP(p)+'% · '+p.weeks+' tyg.</div></div><div class="bc2">'+cells+'</div></div>';
+    return '<div class="br2"><div class="rl" style="width:160px"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px">'+esc(p.name)+'</div><div style="font-size:10px;color:var(--tx2)">'+CP(p)+'% &middot; '+p.weeks+' tyg.</div></div><div class="bc2">'+cells+'</div></div>';
   }).join('');
   var ov=W.map(function(w){var n=wpo(w);if(!n)return '<div class="dc"></div>';var c=n>=3?'#E24B4A':n===2?'#BA7517':'#378ADD';var op=n===1?.25:n===2?.55:.85;return '<div class="dc"><div class="df" style="background:'+c+';opacity:'+op+'"></div></div>';}).join('');
-  return '<div class="stats">'+
-    '<div class="stat"><div class="sl">Projekty</div><div class="sv">'+S.projects.length+'</div></div>'+
-    '<div class="stat"><div class="sl">Postęp średni</div><div class="sv">'+avg+'%</div></div>'+
-    '<div class="stat"><div class="sl">Opóźnienia</div><div class="sv" style="color:'+(del?'#E24B4A':'')+'">'+del+'</div></div>'+
-    '<div class="stat"><div class="sl">Etapów łącznie</div><div class="sv">'+S.projects.reduce(function(a,p){return a+(p.stages||[]).length;},0)+'</div></div>'+
-    '</div>'+
-    '<div class="card" style="margin-bottom:1.25rem">'+
-    '<div class="slbl">Wszystkie projekty — oś tygodni</div>'+
-    '<div class="leg">'+S.projects.map(function(p,i){return '<span><span class="lsq" style="background:'+PH[i]+'"></span>'+(p.short||p.name)+'</span>';}).join('')+'</div>'+
-    '<div class="tlw"><div class="tli">'+
-    '<div class="whr"><div class="rl" style="width:160px"></div><div class="rc">'+wh+'</div></div>'+pr+
-    '<div class="dvr" style="margin-top:10px"><div class="rl" style="width:160px;font-size:11px;font-weight:500;color:var(--tx2)">Nakładanie projektów</div><div class="dc2">'+ov+'</div></div>'+
-    '</div></div></div>'+
-    '<div class="card"><div class="slbl">Obciążenie tygodniowe — etapów</div>'+
-    '<div style="position:relative;width:100%;height:170px"><canvas id="cpl" role="img" aria-label="Obciążenie"></canvas></div></div>'+
-    rNotesPanel();
+  return '<div class="stats">'
+    +'<div class="stat"><div class="sl">Projekty</div><div class="sv">'+S.projects.length+'</div></div>'
+    +'<div class="stat"><div class="sl">Postep sredni</div><div class="sv">'+avg+'%</div></div>'
+    +'<div class="stat"><div class="sl">Opoznienia</div><div class="sv" style="color:'+(del?'#E24B4A':'')+'">'+del+'</div></div>'
+    +'<div class="stat"><div class="sl">Etapow lacznie</div><div class="sv">'+totalStages+'</div></div>'
+    +'</div>'
+    +'<div class="card" style="margin-bottom:1.25rem">'
+    +'<div class="slbl">Wszystkie projekty &mdash; os tygodni</div>'
+    +'<div class="leg">'+S.projects.map(function(p,i){return '<span><span class="lsq" style="background:'+PH[i]+'"></span>'+esc(p.short||p.name)+'</span>';}).join('')+'</div>'
+    +'<div class="tlw"><div class="tli">'
+    +'<div class="whr"><div class="rl" style="width:160px"></div><div class="rc">'+wh+'</div></div>'
+    +pr
+    +'<div class="dvr" style="margin-top:10px"><div class="rl" style="width:160px;font-size:11px;font-weight:500;color:var(--tx2)">Nakladanie projektow</div><div class="dc2">'+ov+'</div></div>'
+    +'</div></div></div>'
+    +'<div class="card"><div class="slbl">Obciazenie tygodniowe &mdash; etapow</div>'
+    +'<div style="position:relative;width:100%;height:170px"><canvas id="cpl" role="img" aria-label="Obciazenie"></canvas></div></div>'
+    +rNotesPanel();
 }
 function initCP(){
   var W=WS();
-  var loads=W.map(function(w){return S.projects.reduce(function(a,p){return a+(p.stages||[]).filter(function(s){return w>=s.start&&w<s.start+s.dur;}).length;},0);});
+  var loads=W.map(function(w){var n=0;S.projects.forEach(function(p){(p.stages||[]).forEach(function(s){if(w>=s.start&&w<s.start+s.dur)n++;});});return n;});
   var gc=matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
   if(cpi)cpi.destroy();
   var el=document.getElementById('cpl');if(!el)return;
@@ -375,48 +413,52 @@ function initCP(){
 
 function rDS(){
   var W=WS();var cs=getConflicts();
-  var actS=S.subs.filter(function(s){return S.projects.some(function(p){return(p.stages||[]).some(function(st){return st.subId===s.id;});});});
-  var uC=cs.map(function(c){return c.sub;}).filter(function(v,i,a){return a.indexOf(v)===i;}).length;
-  var peak=W.reduce(function(b,w){return wsl(w)>wsl(b)?w:b;},1);
+  var actS=[];S.subs.forEach(function(s){var has=false;S.projects.forEach(function(p){(p.stages||[]).forEach(function(st){if(st.subId===s.id)has=true;});});if(has)actS.push(s);});
+  var uC=[];cs.forEach(function(c){if(uC.indexOf(c.sub)<0)uC.push(c.sub);});
+  var peak=1;W.forEach(function(w){if(wsl(w)>wsl(peak))peak=w;});
   var grp={};cs.forEach(function(c){if(!grp[c.sub])grp[c.sub]=[];grp[c.sub].push(c);});
-  var alr=cs.length?'<div class="alr"><div style="font-size:13px;font-weight:500;color:var(--txd);margin-bottom:6px">Wykryte konflikty — '+cs.length+' tygodni</div>'+Object.keys(grp).map(function(sub){return '<div style="font-size:12px;color:var(--txd);margin-bottom:2px;padding-left:8px">· '+sub+': '+grp[sub].map(function(i){return 'T'+i.week+' ('+i.projs+')';}).join(', ')+'</div>';}).join('')+'</div>':'';
+  var alr=cs.length?'<div class="alr"><div style="font-size:13px;font-weight:500;color:var(--txd);margin-bottom:6px">Wykryte konflikty &mdash; '+cs.length+' tygodni</div>'+Object.keys(grp).map(function(sub){return '<div style="font-size:12px;color:var(--txd);margin-bottom:2px;padding-left:8px">&middot; '+esc(sub)+': '+grp[sub].map(function(i){return 'T'+i.week+' ('+esc(i.projs)+')';}).join(', ')+'</div>';}).join('')+'</div>':'';
   var wh=W.map(function(w){var n=wsl(w);return '<div class="wc '+(n>=4?'ov':n>=3?'hi':'')+'">T'+w+'</div>';}).join('');
   var srows=actS.map(function(sub){
     var bw={};
-    S.projects.forEach(function(p,pi){(p.stages||[]).filter(function(s){return s.subId===sub.id;}).forEach(function(s){for(var w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,stage:s,pi:pi});}});});
+    S.projects.forEach(function(p,pi){(p.stages||[]).forEach(function(s){if(s.subId!==sub.id)return;for(var w=s.start;w<s.start+s.dur;w++){if(!bw[w])bw[w]=[];bw[w].push({proj:p,stage:s,pi:pi});}});});
     var tw=Object.keys(bw).length;
-    var hc=Object.keys(bw).some(function(w){var e=bw[w];return e.map(function(x){return x.proj.id;}).filter(function(v,i,a){return a.indexOf(v)===i;}).length>1;});
+    var hc=false;Object.keys(bw).forEach(function(w){var ids=[];bw[w].forEach(function(e){if(ids.indexOf(e.proj.id)<0)ids.push(e.proj.id);});if(ids.length>1)hc=true;});
     var sb=hc?'<span class="badge gr" style="font-size:10px">konflikt</span>':(tw?'<span class="badge gg" style="font-size:10px">'+tw+' tyg.</span>':'');
     var cells=W.map(function(w){
       var entries=bw[w];if(!entries||!entries.length)return '<div class="bc"></div>';
-      var uP=entries.map(function(e){return e.proj.id;}).filter(function(v,i,a){return a.indexOf(v)===i;});
-      var isC=uP.length>1;var pi=entries[0].pi;
+      var ids=[];entries.forEach(function(e){if(ids.indexOf(e.proj.id)<0)ids.push(e.proj.id);});
+      var isC=ids.length>1;var pi=entries[0].pi;
       var col=isC?'#E24B4A':PH[pi%PH.length];
       var op=entries[0].stage.status==='done'?1:entries[0].stage.status==='inprogress'?.8:.45;
-      return '<div class="bc"><div class="bf" style="background:'+col+';opacity:'+op++'" title="'+entries.map(function(e){var t=e.stage.name+' ('+e.proj.short+')';if(e.stage.notes)t+=': '+e.stage.notes;return t;}).join(' | ')+'"></div>'+(isC?'<div class="cm2"></div>':'')+'</div>';
+      var tip=entries.map(function(e){return e.stage.name+' ('+esc(e.proj.short||e.proj.name)+')'+(e.stage.notes?' - '+e.stage.notes:'');}).join(' | ');
+      return '<div class="bc"><div class="bf" style="background:'+col+';opacity:'+op+'" title="'+esc(tip)+'"></div>'+(isC?'<div class="cm2"></div>':'')+'</div>';
     }).join('');
-    return '<div class="br2"><div class="rl" style="width:170px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:125px">'+sub.name+'</span>'+sb+'</div><div style="font-size:10px;color:var(--tx2)">'+tw+' tyg. pracy</div></div><div class="bc2">'+cells+'</div></div>';
+    return '<div class="br2"><div class="rl" style="width:170px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:125px">'+esc(sub.name)+'</span>'+sb+'</div><div style="font-size:10px;color:var(--tx2)">'+tw+' tyg. pracy</div></div><div class="bc2">'+cells+'</div></div>';
   }).join('');
-  var lr=W.map(function(w){var n=wsl(w);if(!n)return '<div class="dc"></div>';var mx=Math.max.apply(null,W.map(wsl));var col=n>=4?'#E24B4A':n>=3?'#BA7517':'#378ADD';return '<div class="dc"><div class="df" style="background:'+col+';opacity:.5;top:'+(20-Math.round((n/mx)*16))+'px"></div></div>';}).join('');
-  return '<div class="stats">'+
-    '<div class="stat"><div class="sl">Aktywni podwykonawcy</div><div class="sv">'+actS.length+'</div></div>'+
-    '<div class="stat"><div class="sl">Konflikty</div><div class="sv" style="color:'+(cs.length?'#E24B4A':'')+'">'+cs.length+'</div></div>'+
-    '<div class="stat"><div class="sl">Z konfliktami</div><div class="sv" style="color:'+(uC?'#BA7517':'')+'">'+uC+'</div></div>'+
-    '<div class="stat"><div class="sl">Szczyt obciążenia</div><div class="sv">T'+peak+'</div><div class="ss">'+wsl(peak)+' ekip</div></div>'+
-    '</div>'+alr+
-    '<div class="card" style="margin-bottom:1.25rem">'+
-    '<div class="slbl">Harmonogram podwykonawców</div>'+
-    '<div class="leg">'+S.projects.map(function(p,i){return '<span><span class="lsq" style="background:'+PH[i]+'"></span>'+(p.short||p.name)+'</span>';}).join('')+'<span><span class="lsq" style="background:#E24B4A"></span>konflikt</span></div>'+
-    '<div class="tlw"><div class="tli">'+
-    '<div class="whr"><div class="rl" style="width:170px"></div><div class="rc">'+wh+'</div></div>'+srows+
-    '<div class="dvr" style="margin-top:10px"><div class="rl" style="width:170px;font-size:11px;font-weight:500;color:var(--tx2)">Obciążenie łączne</div><div class="dc2">'+lr+'</div></div>'+
-    '</div></div></div>'+
-    '<div class="card"><div class="slbl">Liczba aktywnych podwykonawców w tygodniu</div>'+
-    '<div style="position:relative;width:100%;height:160px"><canvas id="csl" role="img" aria-label="Podwykonawcy"></canvas></div></div>'+
-    rNotesPanel();
+  var mxLoad=1;W.forEach(function(w){if(wsl(w)>mxLoad)mxLoad=wsl(w);});
+  var lr=W.map(function(w){var n=wsl(w);if(!n)return '<div class="dc"></div>';var col=n>=4?'#E24B4A':n>=3?'#BA7517':'#378ADD';return '<div class="dc"><div class="df" style="background:'+col+';opacity:.5;top:'+(20-Math.round((n/mxLoad)*16))+'px"></div></div>';}).join('');
+  return '<div class="stats">'
+    +'<div class="stat"><div class="sl">Aktywni podwykonawcy</div><div class="sv">'+actS.length+'</div></div>'
+    +'<div class="stat"><div class="sl">Konflikty</div><div class="sv" style="color:'+(cs.length?'#E24B4A':'')+'">'+cs.length+'</div></div>'
+    +'<div class="stat"><div class="sl">Z konfliktami</div><div class="sv" style="color:'+(uC.length?'#BA7517':'')+'">'+uC.length+'</div></div>'
+    +'<div class="stat"><div class="sl">Szczyt obciazenia</div><div class="sv">T'+peak+'</div><div class="ss">'+wsl(peak)+' ekip</div></div>'
+    +'</div>'+alr
+    +'<div class="card" style="margin-bottom:1.25rem">'
+    +'<div class="slbl">Harmonogram podwykonawcow</div>'
+    +'<div class="leg">'+S.projects.map(function(p,i){return '<span><span class="lsq" style="background:'+PH[i]+'"></span>'+esc(p.short||p.name)+'</span>';}).join('')+'<span><span class="lsq" style="background:#E24B4A"></span>konflikt</span></div>'
+    +'<div class="tlw"><div class="tli">'
+    +'<div class="whr"><div class="rl" style="width:170px"></div><div class="rc">'+wh+'</div></div>'
+    +srows
+    +'<div class="dvr" style="margin-top:10px"><div class="rl" style="width:170px;font-size:11px;font-weight:500;color:var(--tx2)">Obciazenie lacznie</div><div class="dc2">'+lr+'</div></div>'
+    +'</div></div></div>'
+    +'<div class="card"><div class="slbl">Liczba aktywnych podwykonawcow w tygodniu</div>'
+    +'<div style="position:relative;width:100%;height:160px"><canvas id="csl" role="img" aria-label="Podwykonawcy"></canvas></div></div>'
+    +rNotesPanel();
 }
 function initCS(){
-  var W=WS();var loads=W.map(wsl);
+  var W=WS();
+  var loads=W.map(wsl);
   var gc=matchMedia('(prefers-color-scheme:dark)').matches?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';
   if(csi)csi.destroy();
   var el=document.getElementById('csl');if(!el)return;
@@ -427,103 +469,76 @@ function rModal(){
   if(!S.modal)return '';
   var m=S.modal;var inner='';
   if(m.t==='np'||m.t==='ep'){
-    var p=m.t==='ep'?GP(S.selP):{};if(!p)p={};
-    inner='<div class="mt">'+(m.t==='ep'?'Edytuj projekt':'Nowy plac budowy')+'</div>'+
-      '<div class="fr"><label>Nazwa projektu</label><input id="mn" value="'+(p.name||'')+'" placeholder="np. Osiedle Różana"></div>'+
-      '<div class="two">'+
-      '<div class="fr"><label>Miejscowość</label><input id="ml" value="'+(p.location||'')+'" placeholder="np. Żywiec"></div>'+
-      '<div class="fr"><label>Tygodni</label><input id="mw" type="number" value="'+(p.weeks||16)+'" min="4" max="60"></div>'+
-      '</div>'+
-      '<div class="fr"><label>Klient / Inwestor</label><input id="mc" value="'+(p.client||'')+'" placeholder="np. Jan Kowalski"></div>'+
-      '<div class="two">'+
-      '<div class="fr"><label>Telefon inwestora</label><input id="mph" value="'+(p.phone||'')+'" placeholder="600 000 000"></div>'+
-      '<div class="fr"><label>E-mail inwestora</label><input id="mem" value="'+(p.email||'')+'" placeholder="jan@firma.pl"></div>'+
-      '</div>'+
-      '<div class="fr"><label>Notatki do projektu</label></div>'+
-      '<textarea id="mnt" rows="3" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1);resize:vertical;margin-bottom:11px" placeholder="Uwagi, ustalenia, ważne informacje…">'+(p.notes||'')+'</textarea>'+
-      '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="'+(m.t==='ep'?'saveP()':'addP()')+'">Zapisz</button></div>';
+    var p=m.t==='ep'?GP(S.selP):null;if(!p)p={};
+    inner='<div class="mt2">'+(m.t==='ep'?'Edytuj projekt':'Nowy plac budowy')+'</div>'
+      +'<div class="fr"><label>Nazwa projektu</label><input id="mn" value="'+esc(p.name||'')+'" placeholder="np. Osiedle Rozana"></div>'
+      +'<div class="two">'
+      +'<div class="fr"><label>Miejscowosc</label><input id="ml" value="'+esc(p.location||'')+'" placeholder="np. Zywiec"></div>'
+      +'<div class="fr"><label>Tygodni</label><input id="mw" type="number" value="'+(p.weeks||16)+'" min="4" max="60"></div>'
+      +'</div>'
+      +'<div class="fr"><label>Klient / Inwestor</label><input id="mc" value="'+esc(p.client||'')+'" placeholder="np. Jan Kowalski"></div>'
+      +'<div class="two">'
+      +'<div class="fr"><label>Telefon inwestora</label><input id="mph" value="'+esc(p.phone||'')+'" placeholder="600 000 000"></div>'
+      +'<div class="fr"><label>E-mail inwestora</label><input id="mem" value="'+esc(p.email||'')+'" placeholder="jan@firma.pl"></div>'
+      +'</div>'
+      +'<div class="fr"><label>Notatki do projektu</label><textarea id="mnt" rows="3" placeholder="Uwagi, ustalenia, wazne informacje...">'+esc(p.notes||'')+'</textarea></div>'
+      +'<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="'+(m.t==='ep'?'saveP()':'addP()')+'">Zapisz</button></div>';
   } else if(m.t==='ns'){
     var p2=GP(S.selP);if(!p2)return '';
-    var so=S.subs.map(function(s){return '<option value="'+s.id+'">'+s.name+'</option>';}).join('');
-    var dlist=DSTAGES.map(function(n){return '<option value="'+n+'">';}).join('');
-    inner='<div class="mt">Nowy etap – '+p2.name+'</div>'+
-      '<div class="fr"><label>Nazwa etapu</label><input id="sn" placeholder="np. Montaż konstrukcji" list="dsl"><datalist id="dsl">'+dlist+'</datalist></div>'+
-      '<div class="fr"><label>Podwykonawca</label><select id="su"><option value="">— bez podwykonawcy —</option>'+so+'</select></div>'+
-      '<div class="two">'+
-      '<div class="fr"><label>Tydzień start</label><input id="st2" type="number" value="1" min="1" max="'+p2.weeks+'"></div>'+
-      '<div class="fr"><label>Czas trwania (tyg.)</label><input id="sd2" type="number" value="2" min="1"></div>'+
-      '</div>'+
-      '<div class="fr"><label>Status</label><select id="ss2">'+
-      '<option value="notstarted">Nie rozpoczęty</option><option value="planned">Planowany</option>'+
-      '<option value="inprogress">W trakcie</option><option value="done">Zakończony</option><option value="delayed">Opóźniony</option>'+
-      '</select></div>'+
-      '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="addStg()">Dodaj etap</button></div>';
+    var so=S.subs.map(function(s){return '<option value="'+s.id+'">'+esc(s.name)+'</option>';}).join('');
+    var dlist=DSTAGES.map(function(n){return '<option value="'+esc(n)+'">';}).join('');
+    inner='<div class="mt2">Nowy etap &mdash; '+esc(p2.name)+'</div>'
+      +'<div class="fr"><label>Nazwa etapu</label><input id="sn" placeholder="np. Montaz konstrukcji" list="dsl"><datalist id="dsl">'+dlist+'</datalist></div>'
+      +'<div class="fr"><label>Podwykonawca</label><select id="su"><option value="">brak</option>'+so+'</select></div>'
+      +'<div class="two">'
+      +'<div class="fr"><label>Tydzien start</label><input id="st2" type="number" value="1" min="1" max="'+p2.weeks+'"></div>'
+      +'<div class="fr"><label>Czas trwania (tyg.)</label><input id="sd2" type="number" value="2" min="1"></div>'
+      +'</div>'
+      +'<div class="fr"><label>Status</label><select id="ss2">'
+      +'<option value="notstarted">Nie rozpoczety</option><option value="planned">Planowany</option>'
+      +'<option value="inprogress">W trakcie</option><option value="done">Zakonczony</option><option value="delayed">Opozniony</option>'
+      +'</select></div>'
+      +'<div class="fr"><label>Notatka do etapu</label><textarea id="snot" rows="2" placeholder="Uwagi, ustalenia z podwykonawca..."></textarea></div>'
+      +'<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="addStg()">Dodaj etap</button></div>';
   } else if(m.t==='es'){
     var p3=GP(S.selP);if(!p3)return '';
-    var s=(p3.stages||[]).find(function(x){return x.id===m.stgid;});if(!s)return '';
-    var so2=S.subs.map(function(sub){return '<option value="'+sub.id+'"'+(sub.id===s.subId?' selected':'')+'>'+sub.name+'</option>';}).join('');
+    var s=null;(p3.stages||[]).forEach(function(x){if(x.id===m.stgid)s=x;});if(!s)return '';
+    var so2=S.subs.map(function(sub){return '<option value="'+sub.id+'"'+(sub.id===s.subId?' selected':'')+'>'+esc(sub.name)+'</option>';}).join('');
     var sto=['notstarted','planned','inprogress','done','delayed'].map(function(v){return '<option value="'+v+'"'+(v===s.status?' selected':'')+'>'+SLX[v]+'</option>';}).join('');
-    inner='<div class="mt">Edytuj etap</div>'+
-      '<div class="fr"><label>Nazwa etapu</label><input id="en" value="'+s.name+'"></div>'+
-      '<div class="fr"><label>Podwykonawca</label><select id="eu"><option value="">— bez podwykonawcy —</option>'+so2+'</select></div>'+
-      '<div class="two">'+
-      '<div class="fr"><label>Tydzień start</label><input id="et" type="number" value="'+s.start+'" min="1" max="'+p3.weeks+'"></div>'+
-      '<div class="fr"><label>Czas trwania (tyg.)</label><input id="ed" type="number" value="'+s.dur+'" min="1"></div>'+
-      '</div>'+
-      '<div class="fr"><label>Status</label><select id="es3">'+sto+'</select></div>'+
-      '<textarea id="enot" rows="3" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--bd2);border-radius:var(--rmd);background:var(--bg2);color:var(--tx1);resize:vertical;margin-bottom:11px" placeholder="Notatka do etapu, ustalenia, uwagi…">'+(s.notes||'')+'</textarea>'+
-      '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="saveStg('+s.id+')">Zapisz zmiany</button></div>';
+    inner='<div class="mt2">Edytuj etap</div>'
+      +'<div class="fr"><label>Nazwa etapu</label><input id="en" value="'+esc(s.name)+'"></div>'
+      +'<div class="fr"><label>Podwykonawca</label><select id="eu"><option value="">brak</option>'+so2+'</select></div>'
+      +'<div class="two">'
+      +'<div class="fr"><label>Tydzien start</label><input id="et" type="number" value="'+s.start+'" min="1" max="'+p3.weeks+'"></div>'
+      +'<div class="fr"><label>Czas trwania (tyg.)</label><input id="ed" type="number" value="'+s.dur+'" min="1"></div>'
+      +'</div>'
+      +'<div class="fr"><label>Status</label><select id="es3">'+sto+'</select></div>'
+      +'<div class="fr"><label>Notatka do etapu</label><textarea id="enot" rows="2" placeholder="Uwagi, ustalenia, problemy...">'+esc(s.notes||'')+'</textarea></div>'
+      +'<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="saveStg('+s.id+')">Zapisz zmiany</button></div>';
   } else if(m.t==='as'||m.t==='es2'){
-    var s2=m.t==='es2'?GS(m.sid):{};if(!s2)s2={};
-    inner='<div class="mt">'+(m.t==='es2'?'Edytuj podwykonawcę':'Nowy podwykonawca')+'</div>'+
-      '<div class="fr"><label>Firma</label><input id="bname" value="'+(s2.name||'')+'" placeholder="np. Hydro Serwis"></div>'+
-      '<div class="two">'+
-      '<div class="fr"><label>Osoba kontaktowa</label><input id="bcont" value="'+(s2.contact||'')+'" placeholder="Jan Kowalski"></div>'+
-      '<div class="fr"><label>Telefon</label><input id="bph" value="'+(s2.phone||'')+'" placeholder="600 000 000"></div>'+
-      '</div>'+
-      '<div class="fr"><label>E-mail</label><input id="bmail" value="'+(s2.email||'')+'" placeholder="biuro@firma.pl"></div>'+
-      '<div class="fr"><label>Specjalności (oddzielone przecinkiem)</label><input id="bspec" value="'+((s2.specs||[]).join(', '))+'" placeholder="np. Instalacje, Montaż"></div>'+
-      '<div class="fr"><label>Uwagi</label><input id="bnot" value="'+(s2.notes||'')+'" placeholder="np. Wymaga zaliczki 30%"></div>'+
-      '<div class="fr"><label>Status</label><select id="bact">'+
-      '<option value="1"'+(s2.active!==false?' selected':'')+'>Aktywny</option>'+
-      '<option value="0"'+(s2.active===false?' selected':'')+'>Nieaktywny</option>'+
-      '</select></div>'+
-      '<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="'+(m.t==='es2'?'saveB('+m.sid+')':'addB()')+'">Zapisz</button></div>';
+    var s2=m.t==='es2'?GS(m.sid):null;if(!s2)s2={};
+    inner='<div class="mt2">'+(m.t==='es2'?'Edytuj podwykonawce':'Nowy podwykonawca')+'</div>'
+      +'<div class="fr"><label>Firma</label><input id="bname" value="'+esc(s2.name||'')+'" placeholder="np. Hydro Serwis"></div>'
+      +'<div class="two">'
+      +'<div class="fr"><label>Osoba kontaktowa</label><input id="bcont" value="'+esc(s2.contact||'')+'" placeholder="Jan Kowalski"></div>'
+      +'<div class="fr"><label>Telefon</label><input id="bph" value="'+esc(s2.phone||'')+'" placeholder="600 000 000"></div>'
+      +'</div>'
+      +'<div class="fr"><label>E-mail</label><input id="bmail" value="'+esc(s2.email||'')+'" placeholder="biuro@firma.pl"></div>'
+      +'<div class="fr"><label>Specjalnosci (oddzielone przecinkiem)</label><input id="bspec" value="'+esc((s2.specs||[]).join(', '))+'" placeholder="np. Instalacje, Montaz"></div>'
+      +'<div class="fr"><label>Uwagi</label><input id="bnot" value="'+esc(s2.notes||'')+'" placeholder="np. Wymaga zaliczki 30%"></div>'
+      +'<div class="fr"><label>Status</label><select id="bact">'
+      +'<option value="1"'+(s2.active!==false?' selected':'')+'>Aktywny</option>'
+      +'<option value="0"'+(s2.active===false?' selected':'')+'>Nieaktywny</option>'
+      +'</select></div>'
+      +'<div class="mbs"><button class="btn" onclick="cm()">Anuluj</button><button class="btn bp" onclick="'+(m.t==='es2'?'saveB('+m.sid+')':'addB()')+'">Zapisz</button></div>';
   }
   return '<div class="mbg" onclick="bgC(event)"><div class="mbox" onclick="event.stopPropagation()">'+inner+'</div></div>';
 }
 
-function rNotesPanel(){
-  var items=[];
-  S.projects.forEach(function(p){
-    (p.stages||[]).filter(function(s){return s.notes&&s.notes.trim();}).forEach(function(s){
-      items.push({proj:p.name,stage:s.name,note:s.notes,status:s.status,sub:s.subId?GS(s.subId):null});
-    });
-  });
-  if(!items.length)return '';
-  var rows=items.map(function(item){
-    var sub=item.sub?'<span style="font-size:11px;color:var(--tx3)"> · '+item.sub.name+'</span>':'';
-    return '<div style="padding:10px 0;border-bottom:0.5px solid var(--bd3)">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">'+
-      '<div>'+
-      '<span style="font-size:13px;font-weight:500;color:var(--tx1)">'+item.stage+'</span>'+sub+
-      '<span style="font-size:12px;color:var(--tx2);margin-left:8px">'+item.proj+'</span>'+
-      '</div>'+
-      bdg(item.status)+
-      '</div>'+
-      '<div style="font-size:13px;color:var(--tx2);background:var(--bgw);border-radius:var(--rmd);padding:7px 10px;white-space:pre-wrap">'+item.note+'</div>'+
-      '</div>';
-  }).join('');
-  return '<div class="card" style="margin-top:1.25rem">'+
-    '<div class="slbl">Notatki do etapów ('+items.length+')</div>'+
-    rows+'</div>';
-}
-
 function render(){
-  var root=document.getElementById('root');
-  if(!root)return;
+  var root=document.getElementById('root');if(!root)return;
   if(!S.auth){root.innerHTML=rLogin();return;}
-  if(S.loading){root.innerHTML='<div class="shell"><div class="spin">Ładowanie danych…</div></div>';return;}
+  if(S.loading){root.innerHTML='<div class="shell"><div class="spin">Ladowanie danych...</div></div>';return;}
   var c='';
   if(S.view==='projects')c=rProjects();
   else if(S.view==='gantt')c=rGantt();
@@ -545,33 +560,36 @@ function bgC(e){if(e.target.className==='mbg')cm();}
 
 function addP(){
   var name=V('mn');if(!name)return;
-  api('POST','/api/projects',{name:name,short:name.split(' ')[0],location:V('ml')||'—',client:V('mc')||'—',phone:V('mph'),email:V('mem'),notes:V('mnt'),weeks:+V('mw')||16,progress:0}).then(function(r){
+  api('POST','/api/projects',{name:name,short:name.split(' ')[0],location:V('ml')||'-',client:V('mc')||'-',phone:V('mph'),email:V('mem'),notes:V('mnt'),weeks:+V('mw')||16,progress:0}).then(function(r){
     if(r){toast('Projekt dodany');cm();loadData().then(function(){S.selP=r.id;S.view='gantt';render();});}
   });
 }
 function saveP(){
   var p=GP(S.selP);if(!p)return;
-  api('PUT','/api/projects/'+p.id,{name:V('mn')||p.name,short:(V('mn')||p.name).split(' ')[0],location:V('ml'),client:V('mc'),phone:V('mph'),email:V('mem'),notes:V('mnt'),weeks:+V('mw')||p.weeks}).then(function(){
+  var name=V('mn')||p.name;
+  api('PUT','/api/projects/'+p.id,{name:name,short:name.split(' ')[0],location:V('ml'),client:V('mc'),phone:V('mph'),email:V('mem'),notes:V('mnt'),weeks:+V('mw')||p.weeks}).then(function(){
     toast('Zapisano');cm();loadData();
   });
 }
 function delProj(id){
-  if(!confirm('Usunąć projekt i wszystkie jego etapy?'))return;
+  if(!confirm('Usunac projekt i wszystkie jego etapy?'))return;
   api('DELETE','/api/projects/'+id).then(function(){
-    toast('Projekt usunięty');S.selP=S.projects[0]?S.projects[0].id:null;loadData().then(function(){S.view='projects';render();});
+    toast('Projekt usuniety');
+    S.selP=S.projects.length>1?S.projects[0].id:null;
+    loadData().then(function(){S.view='projects';render();});
   });
 }
 function addStg(){
   var p=GP(S.selP);if(!p)return;
   var name=V('sn');if(!name)return;
   var subId=V('su')?+V('su'):null;
-  api('POST','/api/projects/'+p.id+'/stages',{name:name,subId:subId,start:+V('st2')||1,dur:+V('sd2')||2,status:V('ss2')||'planned'}).then(function(){
+  api('POST','/api/projects/'+p.id+'/stages',{name:name,subId:subId,start:+V('st2')||1,dur:+V('sd2')||2,status:V('ss2')||'planned',notes:V('snot')}).then(function(){
     toast('Etap dodany');cm();loadData();
   });
 }
 function saveStg(id){
   var p=GP(S.selP);if(!p)return;
-  var s=(p.stages||[]).find(function(x){return x.id===id;});if(!s)return;
+  var s=null;(p.stages||[]).forEach(function(x){if(x.id===id)s=x;});if(!s)return;
   var name=V('en');if(!name)return;
   var subId=V('eu')?+V('eu'):null;
   api('PUT','/api/stages/'+id,{name:name,subId:subId,start:+V('et')||s.start,dur:+V('ed')||s.dur,status:V('es3')||s.status,notes:V('enot')}).then(function(){
@@ -580,14 +598,14 @@ function saveStg(id){
 }
 function qSt(id,ns){
   var p=GP(S.selP);if(!p)return;
-  var s=(p.stages||[]).find(function(x){return x.id===id;});if(!s)return;
-  api('PUT','/api/stages/'+id,{name:s.name,subId:s.subId,start:s.start,dur:s.dur,status:ns}).then(function(){
+  var s=null;(p.stages||[]).forEach(function(x){if(x.id===id)s=x;});if(!s)return;
+  api('PUT','/api/stages/'+id,{name:s.name,subId:s.subId,start:s.start,dur:s.dur,status:ns,notes:s.notes||''}).then(function(){
     toast('Status zmieniony');loadData();
   });
 }
 function delStg(id){
-  if(!confirm('Usunąć ten etap?'))return;
-  api('DELETE','/api/stages/'+id).then(function(){toast('Etap usunięty');loadData();});
+  if(!confirm('Usunac ten etap?'))return;
+  api('DELETE','/api/stages/'+id).then(function(){toast('Etap usuniety');loadData();});
 }
 function addB(){
   var name=V('bname');if(!name)return;
@@ -601,8 +619,8 @@ function saveB(id){
   });
 }
 function delSub(id){
-  if(!confirm('Usunąć podwykonawcę?'))return;
-  api('DELETE','/api/subcontractors/'+id).then(function(){toast('Usunięto');S.selS=null;loadData();});
+  if(!confirm('Usunac podwykonawce?'))return;
+  api('DELETE','/api/subcontractors/'+id).then(function(){toast('Usunieto');S.selS=null;loadData();});
 }
 
 function toCSV(rows){
@@ -611,52 +629,33 @@ function toCSV(rows){
     return r.map(function(c){return '"'+String(c===null||c===undefined?'':c).replace(/"/g,'""')+'"';}).join(';');
   }).join('\r\n');
 }
-function dlFile(csv,filename){
+function dlFile(csv,fn){
   var blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a');
-  a.href=url;a.download=filename;
-  document.body.appendChild(a);a.click();
+  a.href=url;a.download=fn;document.body.appendChild(a);a.click();
   setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},100);
 }
 function exportXls(projId){
-  var p=S.projects.find(function(x){return x.id===projId;});
-  if(!p){toast('Nie znaleziono projektu');return;}
-  var rows=[
-    ['Projekt:',p.name],['Lokalizacja:',p.location||''],['Klient:',p.client||''],['Tygodnie:',p.weeks],
-    [],
-    ['Etap','Podwykonawca','Tydzień start','Czas trwania (tyg.)','Tydzień końca','Status']
-  ];
-  (p.stages||[]).forEach(function(s){
-    var sub=S.subs.find(function(x){return x.id===s.subId;});
-    rows.push([s.name,sub?sub.name:'—',s.start,s.dur,s.start+s.dur-1,SLX[s.status]||s.status]);
-  });
-  var fname='harmonogram_'+(p.name||'projekt').replace(/[^a-zA-Z0-9]/g,'_')+'.csv';
-  dlFile(toCSV(rows),fname);
-  toast('Pobrano: '+fname);
+  var p=GP(projId);if(!p){toast('Nie znaleziono projektu');return;}
+  var rows=[['Projekt:',p.name],['Lokalizacja:',p.location||''],['Klient:',p.client||''],['Telefon:',p.phone||''],['Email:',p.email||''],['Tygodnie:',p.weeks],[],['Etap','Podwykonawca','Tydzien start','Czas trwania (tyg.)','Tydzien konca','Status','Notatka']];
+  (p.stages||[]).forEach(function(s){var sub=s.subId?GS(s.subId):null;rows.push([s.name,sub?sub.name:'-',s.start,s.dur,s.start+s.dur-1,SLX[s.status]||s.status,s.notes||'']);});
+  var fn='harmonogram_'+p.name.replace(/[^a-zA-Z0-9]/g,'_')+'.csv';
+  dlFile(toCSV(rows),fn);toast('Pobrano: '+fn);
 }
 function exportAll(){
-  var rows=[['Projekt','Lokalizacja','Klient','Etap','Podwykonawca','Tydzień start','Czas trwania (tyg.)','Tydzień końca','Status']];
+  var rows=[['Projekt','Lokalizacja','Klient','Etap','Podwykonawca','Tydzien start','Czas trwania','Tydzien konca','Status','Notatka']];
   S.projects.forEach(function(p){
-    if(!(p.stages||[]).length){rows.push([p.name,p.location||'',p.client||'','—','—','','','','']);return;}
-    p.stages.forEach(function(s){
-      var sub=S.subs.find(function(x){return x.id===s.subId;});
-      rows.push([p.name,p.location||'',p.client||'',s.name,sub?sub.name:'—',s.start,s.dur,s.start+s.dur-1,SLX[s.status]||s.status]);
-    });
+    if(!(p.stages||[]).length){rows.push([p.name,p.location||'',p.client||'','-','-','','','','','']);return;}
+    p.stages.forEach(function(s){var sub=s.subId?GS(s.subId):null;rows.push([p.name,p.location||'',p.client||'',s.name,sub?sub.name:'-',s.start,s.dur,s.start+s.dur-1,SLX[s.status]||s.status,s.notes||'']);});
   });
-  dlFile(toCSV(rows),'harmonogram_wszystkie_projekty.csv');
-  toast('Pobrano plik z wszystkimi projektami');
+  dlFile(toCSV(rows),'harmonogram_wszystkie_projekty.csv');toast('Pobrano plik');
 }
 
 api('GET','/api/me').then(function(me){
-  if(me&&me.authenticated){
-    S.auth=true;S.loading=true;render();loadData();
-  } else {
-    S.auth=false;S.loading=false;render();
-  }
-}).catch(function(){
-  S.auth=false;S.loading=false;render();
-});
+  if(me&&me.authenticated){S.auth=true;S.loading=true;render();loadData();}
+  else{S.auth=false;S.loading=false;render();}
+}).catch(function(){S.auth=false;S.loading=false;render();});
 </script>
 </body>
 </html>
